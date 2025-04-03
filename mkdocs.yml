@@ -1,1 +1,4 @@
-site_name: My Docs
+site_name: fast-agent documentation
+site_url: https://fast-agent.ai
+theme:
+  name: material
