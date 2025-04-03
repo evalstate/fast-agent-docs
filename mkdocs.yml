@@ -11,6 +11,7 @@ theme:
     - navigation.expand
     - navigation.path
     - navigation.top
+    - navigation.footer
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -37,3 +38,14 @@ repo_name: evalstate/fast-agent
 
 markdown_extensions:
   - attr_list
+  - admonition
+
+extra:
+  social:
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/llmindsetuk
+    - icon: fontawesome/brands/github
+      link: https://github.com/evalstate
+copyright: © 2025 llmindset.co.uk
+plugins:
+  - social
