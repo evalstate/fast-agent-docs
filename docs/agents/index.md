@@ -36,8 +36,9 @@ Prompt Files can include Resources:
 
 ```md title="agent_script.txt"
 ---USER
-When asked to process CSS files, include only colours in this format:
-
-hello, world
----ASSISTANT
+Please extract the major colours from this CSS file:
+---RESOURCE
+index.css
 ```
+
+They can either be loaded with the `load_prompt_multipart` function, or delivered via the built-in `prompt-server`.
