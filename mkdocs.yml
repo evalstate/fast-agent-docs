@@ -61,4 +61,5 @@ plugins:
 nav:
  - fast-agent: index.md
  - Agents: agents/
+ - Models: models/
  - MCP: mcp/index.md
