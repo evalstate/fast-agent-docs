@@ -59,4 +59,6 @@ plugins:
   - social
 
 nav:
+ - fast-agent: index.md
+ - Agents: agents/
  - MCP: mcp/index.md
