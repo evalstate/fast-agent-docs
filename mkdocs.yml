@@ -50,7 +50,7 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg      
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 plugins:
   - social
@@ -63,7 +63,10 @@ extra:
 copyright: © 2025 llmindset.co.uk
 
 nav:
- - fast-agent: index.md
- - Agents: agents/
- - Models: models/
- - MCP: mcp/index.md
+  - fast-agent: index.md
+  - Agents:
+      - agents/prompting.md
+  - Models: models/
+  - MCP:
+      - mcp/index.md
+      - mcp/types.md

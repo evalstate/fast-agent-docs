@@ -1,6 +1,17 @@
 ---
-title: MCP
+title: MCP Features
 ---
 
-# MCP
+# MCP Features
 
+## Tools
+
+## Roots
+
+## Sampling
+
+## Prompts
+
+## Resources
+
+## Instructions
