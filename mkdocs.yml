@@ -49,3 +49,6 @@ extra:
 copyright: © 2025 llmindset.co.uk
 plugins:
   - social
+
+nav:
+ - MCP: mcp/index.md
