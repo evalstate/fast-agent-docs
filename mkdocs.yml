@@ -40,14 +40,20 @@ repo_name: evalstate/fast-agent
 markdown_extensions:
   - attr_list
   - admonition
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - md_in_html
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg      
 
+plugins:
+  - social
 extra:
   social:
     - icon: fontawesome/brands/x-twitter
@@ -55,8 +61,6 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/evalstate
 copyright: © 2025 llmindset.co.uk
-plugins:
-  - social
 
 nav:
  - fast-agent: index.md

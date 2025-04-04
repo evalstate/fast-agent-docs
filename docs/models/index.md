@@ -2,6 +2,8 @@
 
 ## Specifying Models
 
+Models in fast-agent are specified using a model string, that takes the format `provider.model_name.<reasoning_effort>`
+
 ### Precedence
 
 ### Format
@@ -9,6 +11,14 @@
 ### Reasoning
 
 ## Providers
+
+### Anthropic
+
+### OpenAI
+
+fast-agent supports OpenAI gpt-4o and o1/o3 series models.
+
+### DeepSeek
 
 ### Generic OpenAI LLM
 
