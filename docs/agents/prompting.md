@@ -12,20 +12,7 @@ The simplest way of sending a message to an agent is the `send` method:
 response: str = await agent.send("how are you?")
 ```
 
-You can also use the MCP PromptMessage directly:
-
-```python
-from mcp.types import PromptMessage, TextContent
-
-mcp_prompt: PromptMessage = PromptMessage(
-    role="user", content=TextContent(type="text", text="how are you?")
-)
-result: str = await agent.send(mcp_prompt)
-```
-
-## Multipart Messages
-
-Prompts can contain a mixture of content types (dependent on model support). You can use `Prompt.user()` to easily attach files and resources to your message:
+To attach files, use the `Prompt.user()` convenience method:
 
 ```python
 from mcp_agent.core.prompt import Prompt
@@ -41,28 +28,43 @@ plans: str = await agent.send(
 
 Attached files are converted to the appropriate MCP Type (e.g. ImageContent for Images, EmbeddedResource for PDF and TextResource).
 
-`Prompt.user()` also accepts MCP Native types for constructing messages.
+### MCP Resources
 
-This makes working with MCP Resources simple:
+This also works with MCP Resources:
 
 ```python
-resource: ReadResourceResult = agent.openai.get_resource(
-    "server_name", "resource://images/cat.png"
+from mcp.types import ReadResourceResult
+
+resource: ReadResourceResult = agent.get_resource(
+    "mcp_server_name", "resource://images/cat.png"
 )
-response: str = agent.haiku.send(
+response: str = agent.send(
     Prompt.user("What is in this image?", resource)
 )
 ```
 
-Alternatively, there is a convenience method to send a message with a resource:
+Alternatively, use the _with_resource_ convenience method:
 
 ```python
-response: str = agent.haiku.with_resource(
+response: str = agent.with_resource(
     "What is in this image?",
-    "server_name",
+    "mcp_server_name",
     "resource://images/cat/png"
 )
 
+```
+
+### MCP Prompts
+
+You can also use the MCP `PromptMessage` type directly:
+
+```python
+from mcp.types import PromptMessage, TextContent
+
+mcp_prompt: PromptMessage = PromptMessage(
+    role="user", content=TextContent(type="text", text="how are you?")
+)
+result: str = await agent.send(mcp_prompt)
 ```
 
 > Note there is also `Prompt.assistant()` which produces a `PromptMessageMultipart` for the assistant role.
@@ -98,5 +100,3 @@ response.
 ```
 
 -->
-
-## Prompt Files
