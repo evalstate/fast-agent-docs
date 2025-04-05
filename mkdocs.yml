@@ -51,9 +51,18 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 plugins:
   - social
+  - llmstxt:
+      files:
+      - output: llms.txt
+        inputs:
+        - agents/index.md
 extra:
   social:
     - icon: fontawesome/brands/x-twitter
@@ -64,9 +73,17 @@ copyright: © 2025 llmindset.co.uk
 
 nav:
   - fast-agent: index.md
+  - Get Started:
+      - get-started/index.md
+      - get-started/interactive.md
+      - get-started/mcp-config.md
   - Agents:
+      - agents/index.md
       - agents/prompting.md
-  - Models: models/
+      - agents/architecture.md
+  - Models: 
+      - models/index.md
   - MCP:
       - mcp/index.md
       - mcp/types.md
+      - mcp/aggregator.md

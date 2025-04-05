@@ -12,7 +12,7 @@ The simplest way of sending a message to an agent is the `send` method:
 response: str = await agent.send("how are you?")
 ```
 
-To attach files, use the `Prompt.user()` convenience method:
+To attach files, use `Prompt.user()`:
 
 ```python
 from mcp_agent.core.prompt import Prompt
@@ -28,9 +28,37 @@ plans: str = await agent.send(
 
 Attached files are converted to the appropriate MCP Type (e.g. ImageContent for Images, EmbeddedResource for PDF and TextResource).
 
+> Note there is also `Prompt.assistant()` which produces messages for the `assistant` role.
+
+### MCP Prompts
+
+Apply a Prompt from an MCP Server to the agent with:
+
+```python
+response: str = await agent.apply_prompt(
+    "setup_sizing",
+    arguments: {"units","metric"}
+)
+```
+
+You can list and get Prompts from attached MCP Servers:
+```python
+from mcp.types import GetPromptResult, PromptMessage
+
+prompt: GetPromptResult = await agent.get_prompt("setup_sizing")
+first_message: PromptMessage = prompt[0]
+```
+
+and send the native MCP `PromptMessage` to the agent with:
+```python
+response: str = agent.send(first_message)
+```
+
+> If the last message in the conversation is from the `assistant`, that content is returned as the response.
+
 ### MCP Resources
 
-`Prompt.user` also works with MCP Resources:
+You can use `Prompt.user` to work with MCP Resources:
 
 ```python
 from mcp.types import ReadResourceResult
@@ -54,22 +82,9 @@ response: str = agent.with_resource(
 
 ```
 
-### MCP Prompts
-
-You can also use the MCP `PromptMessage` type directly:
-
-```python
-from mcp.types import PromptMessage, TextContent
-
-mcp_prompt: PromptMessage = PromptMessage(
-    role="user", content=TextContent(type="text", text="how are you?")
-)
-result: str = await agent.send(mcp_prompt)
-```
-
-> Note there is also `Prompt.assistant()` which produces a `PromptMessageMultipart` for the assistant role.
-
 ## Structured Outputs
+
+
 
 ## Multiturn Conversations
 

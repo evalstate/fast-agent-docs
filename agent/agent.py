@@ -1,5 +1,7 @@
 import asyncio
+from pathlib import Path
 from mcp_agent.core.fastagent import FastAgent
+from mcp_agent.core.prompt import Prompt
 import subprocess
 
 # Create the application
@@ -8,20 +10,35 @@ fast = FastAgent("FastAgent Example")
 
 # Define the agent
 @fast.agent(
-    instruction="You are a documentation production assistant", servers=["filesystem"]
+    instruction="You are a documentation production assistant. We are maintaining a documentation site using mkdocs" \
+    "with the material theme. Your role is to assist the Human with maintaining, creating and ensuring the veracity of" \
+    "the documentation. We can create test/example programs as needed to prove it working", servers=["filesystem"]
 )
 async def main():
-    # use the --model command line switch or agent arguments to change model
     async with fast.run() as agent:
-        # Execute shell command
-        result = subprocess.run(
-            ["repomix", "../fast-agent/", "repo.xml"], capture_output=True, text=True
-        )
-        result = result.stdout  # Or use result.stdout + result.stderr if you want both
-        # You can print or process the result if needed
-        print(f"Command output: {result}")
 
-        # Continue with agent interaction if needed
+        chunks = {"core": "core",
+                  "agents": "agents",
+                  "mcp":"mcp",
+                  "llm":"llm"}
+        
+        for part,file in chunks.items():
+            result = subprocess.run(
+                ["repomix", str(Path.home() / f"source/fast-agent/src/mcp_agent/{part}"), 
+                 "--ignore", "**/*.csv,resources/examples","--output",f"{file}.xml"],
+                cwd=".",
+                capture_output=True,
+                text=True
+            )
+            print(f"Command output: {result}")
+
+        repomix = Prompt.user("Here is the content of the repository we are documenting",
+                              Path("core.xml"),
+                                   Path("agents.xml"),
+                                   Path("mcp.xml"),
+                                   str(Path.home() / "/source/fast-agent/README.md"),
+                                "Await further instructions")
+        await agent(repomix)
         await agent()
 
 
