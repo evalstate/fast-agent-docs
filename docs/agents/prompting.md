@@ -1,8 +1,8 @@
 # Prompting Agents
 
-## Introduction
+**fast-agent** provides a flexible MCP based API for sending messages to agents, with convenience methods for handling Files, Prompts and Resources.
 
-**fast-agent** provides a flexible MCP based API for sending messages to Agent, with convenience methods for handling Files, Prompts and Resources. Read more about the use of MCP types in **fast-agent** [here](/mcp/types/).
+Read more about the use of MCP types in **fast-agent** [here](/mcp/types/).
 
 ## Sending Messages
 
@@ -30,7 +30,7 @@ Attached files are converted to the appropriate MCP Type (e.g. ImageContent for 
 
 ### MCP Resources
 
-This also works with MCP Resources:
+`Prompt.user` also works with MCP Resources:
 
 ```python
 from mcp.types import ReadResourceResult
@@ -49,7 +49,7 @@ Alternatively, use the _with_resource_ convenience method:
 response: str = agent.with_resource(
     "What is in this image?",
     "mcp_server_name",
-    "resource://images/cat/png"
+    "resource://images/cat.png"
 )
 
 ```
