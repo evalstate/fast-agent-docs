@@ -32,12 +32,12 @@ async def main():
             )
             print(f"Command output: {result}")
 
-        repomix = Prompt.user("Here is the content of the repository we are documenting",
+        repomix = Prompt.user("The following content contains the repo we are documenting. AWAIT FURTHER INSTRUCTIONS before taking action",
                               Path("core.xml"),
                                    Path("agents.xml"),
                                    Path("mcp.xml"),
                                    str(Path.home() / "/source/fast-agent/README.md"),
-                                "Await further instructions")
+                                "AWAIT FURTHER INSTRUCTIONS - ASK FOR THE NEXT STEP")
         await agent(repomix)
         await agent()
 
