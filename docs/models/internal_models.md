@@ -39,12 +39,12 @@ Alternatively, you can load the file. JSON contents can be converted to structur
 
 ...
 
-playback_messages = load_message_multipart(Path("playback.txt"))
+playback_messages: List[PromptMessageMultipart] = load_message_multipart(Path("playback.txt"))
 # Set up the Conversation
-assert ("HISTORY LOADED") == agent.generate(playback_messages)
+assert ("HISTORY LOADED") == agent.playback.generate(playback_messages)
 
-response: str = agent.send("Good morning!") # Returns Hello
-temperature, _ = agent.structured("Generate some JSON")
+response: str = agent.playback.send("Good morning!") # Returns Hello
+temperature, _ = agent.playback.structured("Generate some JSON")
 
 ```
 
