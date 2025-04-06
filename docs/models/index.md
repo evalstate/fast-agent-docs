@@ -1,32 +1,42 @@
-# Models
+---
+title: Specifying Models
+---
 
-## Specifying Models
+# Specifying Models
 
-Models in fast-agent are specified using a model string, that takes the format `provider.model_name.<reasoning_effort>`
+Models in **fast-agent** are specified with a model string, that takes the format `provider.model_name.<reasoning_effort>`
 
 ### Precedence
 
+Model specifications in fast-agent follow this precedence order (highest to lowest):
+
+1. Explicitly set in agent decorators
+1. Command line arguments with `--model` flag
+1. Default model in `fastagent.config.yaml`
+
 ### Format
 
-### Reasoning
+Model strings follow this format: `provider.model_name.reasoning_effort`
 
-## Parameters
+- **provider**: The LLM provider (e.g., `anthropic`, `openai`, `deepseek`, `generic`)
+- **model_name**: The specific model to use in API calls
+- **reasoning_effort** (optional): Controls the reasoning effort for supported models
 
-## Providers
+Examples:
 
-### Anthropic
+- `anthropic.claude-3-7-sonnet-latest`
+- `openai.gpt-4o`
+- `openai.o3-mini.high`
+- `generic.llama3.2:latest`
 
-### OpenAI
+#### Reasoning Effort
 
-fast-agent supports OpenAI gpt-4o and o1/o3 series models.
+For models that support it (`o1`, `o1-preview` and `o3-mini`), you can specify a reasoning effort of **`high`**, **`medium`** or **`low`** - for example `openai.o3-mini.high`. **`medium`** is the default if not specified.
 
-### DeepSeek
+#### Aliases
 
-### Generic OpenAI LLM
+For convenience, popular models have an alias set such as `gpt-4o` or `sonnet`. These are documented on the [LLM Providers](llm_providers.md) page.
 
-!!! warning
+### History Saving
 
-    Use the Generic Provider to connect to OpenAI compatible models (including Ollama).
-    Tool Calling and other modalities for generic models are not included in the e2e test suite, and should be used at your own risk.
-
-Models prefixed with `generic` will use a generic OpenAI endpoint, with the defaults configured to work with Ollama. For example, to run with Llama 3.2 latest you can specify `generic.llama3.2:latest`. As with other models `base_url` can be overridden. The associated API key environment variable is `GENERIC_API_KEY`, with `ollama` used as the default.
+You can save the conversation history to a file by sending a `***SAVE_HISTORY <filename>` message. This can then be reviewed, edited, loaded, or served with the `prompt-server` or replayed with the `playback` model.

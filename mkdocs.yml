@@ -75,7 +75,10 @@ nav:
   - fast-agent: index.md
   - Agents:
       - agents/prompting.md
-  - Models: models/
+  - Models:
+      - Specifying Models: models/index.md
+      - Internal Models: models/internal_models.md
+      - LLM Providers: models/llm_providers.md
   - MCP:
       - mcp/index.md
       - mcp/types.md
