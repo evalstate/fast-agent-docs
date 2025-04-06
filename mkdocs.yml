@@ -80,5 +80,5 @@ nav:
       - Internal Models: models/internal_models.md
       - LLM Providers: models/llm_providers.md
   - MCP:
-      - mcp/index.md
       - mcp/types.md
+      - mcp/index.md

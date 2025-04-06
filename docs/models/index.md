@@ -37,6 +37,14 @@ For models that support it (`o1`, `o1-preview` and `o3-mini`), you can specify a
 
 For convenience, popular models have an alias set such as `gpt-4o` or `sonnet`. These are documented on the [LLM Providers](llm_providers.md) page.
 
+### Default Configuration
+
+You can set a default model for your application in your `fastagent.config.yaml`:
+
+```yaml
+default_model: "openai.gpt-4o" # Default model for all agents
+```
+
 ### History Saving
 
 You can save the conversation history to a file by sending a `***SAVE_HISTORY <filename>` message. This can then be reviewed, edited, loaded, or served with the `prompt-server` or replayed with the `playback` model.

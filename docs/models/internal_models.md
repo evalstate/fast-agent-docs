@@ -25,8 +25,8 @@ Hello
 Generate some JSON
 ---ASSISTANT
 {
-"city": "London",
-"temperature": 72
+   "city": "London",
+   "temperature": 72
 }
 ```
 
