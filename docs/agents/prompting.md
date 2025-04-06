@@ -127,7 +127,7 @@ size: 1.2
 units: M
 ```
 
-Multiple messages can be applied with the `generate()` method:
+Multiple messages (conversations) can be applied with the `generate()` method:
 
 ```python
 from mcp_agent.mcp.prompts import load_prompt

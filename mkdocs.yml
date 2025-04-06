@@ -58,7 +58,9 @@ plugins:
       files:
         - output: llms.txt
           inputs:
-            - agents/index.md
+            - agents/*.md
+            - models/*.md
+            - mcp/*.md
 extra:
   social:
     - icon: fontawesome/brands/discord
