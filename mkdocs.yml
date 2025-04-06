@@ -76,7 +76,7 @@ nav:
   - Agents:
       - agents/prompting.md
   - Models:
-      - Specifying Models: models/index.md
+      - Model Features: models/index.md
       - Internal Models: models/internal_models.md
       - LLM Providers: models/llm_providers.md
   - MCP:

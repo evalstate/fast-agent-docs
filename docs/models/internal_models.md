@@ -32,7 +32,9 @@ Generate some JSON
 
 This can then be used with the `prompt-server` you can apply the MCP Prompt to the agent, either programatically with `apply_prompt` or with the `/prompts` command in the interactive shell.
 
-Alternatively, you can load the file. JSON contents can be converted to structured outputs:
+Alternatively, you can load the file with `load_message_multipart`. 
+
+JSON contents can be converted to structured outputs:
 
 ```python
 @fast.agent(name="playback",model="playback")

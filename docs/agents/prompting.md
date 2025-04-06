@@ -161,6 +161,12 @@ prompt: List[PromptMessageMultipart] = load_prompt_multipart(Path("prompt_secret
 result: PromptMessageMultipart = await agent.generate(prompt)
 ```
 
+!!! Note "File Format / MCP Serialization"
+
+    If the filetype is `json`, then messages are deserialized using the MCP Prompt schema format. The `load_prompt`, `load_prompt_multipart` and `prompt-server` will load either the text or JSON format directly.
+    See [History Saving](../models/index.md#history-saving) to learn how to save a conversation to a file for editing or playback.
+
+
 ### Using the MCP prompt-server
 
 Prompt files can also be served using the inbuilt `prompt-server`. The `prompt-server` command is installed with `fast-agent` making it convenient to set up and use:
