@@ -54,8 +54,15 @@ markdown_extensions:
 
 plugins:
   - social
+  - llmstxt:
+      files:
+        - output: llms.txt
+          inputs:
+            - agents/index.md
 extra:
   social:
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/xg5cJ7ndN6
     - icon: fontawesome/brands/x-twitter
       link: https://x.com/llmindsetuk
     - icon: fontawesome/brands/github
