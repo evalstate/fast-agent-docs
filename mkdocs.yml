@@ -74,8 +74,9 @@ copyright: © 2025 llmindset.co.uk
 nav:
   - fast-agent: index.md
   - Agents:
-      - agents/prompting.md
+      - agents/defining.md
       - agents/running.md
+      - agents/prompting.md
   - Models:
       - Model Features: models/index.md
       - Internal Models: models/internal_models.md
