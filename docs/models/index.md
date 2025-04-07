@@ -57,4 +57,4 @@ This can be helpful when developing applications to:
 
 * Save a conversation for editing
 * Set up in-context learning
-* Produce realistic test scenarios to exercise edge conditions etc. with the [Playback model](internal_models#playback)
+* Produce realistic test scenarios to exercise edge conditions etc. with the [Playback model](internal_models.md#playback)

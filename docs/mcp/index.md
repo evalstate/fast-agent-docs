@@ -1,17 +1,13 @@
 ---
-title: MCP Features
+title: Configuring Servers
 ---
 
-# MCP Features
+## Configuration and Secrets
 
-## Tools
+## Command
+
+## Environment Variables
 
 ## Roots
 
 ## Sampling
-
-## Prompts
-
-## Resources
-
-## Instructions
