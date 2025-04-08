@@ -77,6 +77,8 @@ copyright: © 2025 llmindset.co.uk
 
 nav:
   - fast-agent: index.md
+  - Get Started: 
+        Get Started: welcome/index.md  
   - Agents:
       - agents/defining.md
       - agents/running.md
