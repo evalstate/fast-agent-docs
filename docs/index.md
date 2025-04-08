@@ -60,17 +60,27 @@ hide:
 </div>
 
 <center>
-## Get Started
+## Getting Started
 </center>
 <br />
 <div class="grid" markdown>
+<div align="top" markdown>
+**fast-agent** lets you create and interact with sophisticated Agents and Workflows in minutes. It's multi-modal - supporting Images and PDFs in Prompts, Resources and MCP Tool Call results.  
 
+Prebuilt agents and examples implementing the patterns in Anthropic's [building effective agents](https://www.anthropic.com/engineering/building-effective-agents) get you building valuable applications quickly. 
 
 * `uv pip install fast-agent-mcp` - Install fast-agent.
 * `fast-agent setup` - Create Agent and Configuration files.
 * `uv run agent.py` - Run your first Agent
 * `fast-agent bootstrap workflow` - Create Agent workflow examples
-
-![Image title](welcome_small.png)
-
 </div>
+<div markdown>
+<!--[Welcome Image](welcome_small.png)-->
+<img src="welcome_small.png" style="padding: 0.5em;" />
+</div>
+</div>
+
+
+
+
+
