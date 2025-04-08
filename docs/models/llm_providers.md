@@ -7,10 +7,9 @@ For each model provider, you can configure parameters either through environment
 In your `fastagent.config.yaml`:
 
 ```yaml
-models:
-  <provider>:
-    api_key: "your_api_key" # Override with API_KEY env var
-    base_url: "https://api.example.com" # Base URL for API calls
+<provider>:
+  api_key: "your_api_key" # Override with API_KEY env var
+  base_url: "https://api.example.com" # Base URL for API calls
 ```
 
 ### Anthropic
@@ -20,10 +19,9 @@ Anthropic models support Text, Vision and PDF content.
 **YAML Configuration:**
 
 ```yaml
-models:
-  anthropic:
-    api_key: "your_anthropic_key" # Required
-    base_url: "https://api.anthropic.com/v1" # Default, only include if required
+anthropic:
+  api_key: "your_anthropic_key" # Required
+  base_url: "https://api.anthropic.com/v1" # Default, only include if required
 ```
 
 **Environment Variables:**
@@ -56,10 +54,9 @@ Future versions of **fast-agent** will have enhanced model capability handling.
 **YAML Configuration:**
 
 ```yaml
-models:
-  openai:
-    api_key: "your_openai_key" # Default
-    base_url: "https://api.openai.com/v1" # Default, only include if required
+openai:
+  api_key: "your_openai_key" # Default
+  base_url: "https://api.openai.com/v1" # Default, only include if required
 ```
 
 **Environment Variables:**
@@ -85,10 +82,9 @@ DeepSeek v3 is supported for Text and Tool calling.
 **YAML Configuration:**
 
 ```yaml
-models:
-  deepseek:
-    api_key: "your_deepseek_key"
-    base_url: "https://api.deepseek.com/v1"
+deepseek:
+  api_key: "your_deepseek_key"
+  base_url: "https://api.deepseek.com/v1"
 ```
 
 **Environment Variables:**
@@ -117,10 +113,9 @@ For example, to run with Llama 3.2 latest you can specify `generic.llama3.2:late
 **YAML Configuration:**
 
 ```yaml
-models:
-  generic:
-    api_key: "ollama" # Default for Ollama, change as needed
-    base_url: "http://localhost:11434/v1" # Default for Ollama
+generic:
+  api_key: "ollama" # Default for Ollama, change as needed
+  base_url: "http://localhost:11434/v1" # Default for Ollama
 ```
 
 **Environment Variables:**
