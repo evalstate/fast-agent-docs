@@ -77,4 +77,6 @@ mcp:
       model: "provider.model.<reasoning_effort>"        
 ```
 
-Read more about The model string and settings [here](../models/index.md) 
+Read more about The model string and settings [here](../models/index.md). Sampling requests support vision - try [`@llmindset/mcp-webcam`](https://github.com/evalstate/mcp-webcam) for an example.
+
+<!-- update with mcp-advanced examples-->

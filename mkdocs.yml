@@ -14,6 +14,7 @@ theme:
     - navigation.footer
     - content.code.copy
     - announce.dismiss
+    - search.suggest
   custom_dir: overrides
 
   palette:
@@ -56,6 +57,7 @@ markdown_extensions:
 
 plugins:
   - social
+  - search
   - llmstxt:
       files:
         - output: llms.txt
