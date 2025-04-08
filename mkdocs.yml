@@ -13,6 +13,7 @@ theme:
     - navigation.top
     - navigation.footer
     - content.code.copy
+  custom_dir: overrides
 
   palette:
     # Palette toggle for automatic mode
