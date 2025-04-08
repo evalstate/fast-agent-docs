@@ -2,7 +2,7 @@
 
 **fast-agent** provides a flexible MCP based API for sending messages to agents, with convenience methods for handling Files, Prompts and Resources.
 
-Read more about the use of MCP types in **fast-agent** [here](/mcp/types/).
+Read more about the use of MCP types in **fast-agent** [here](../mcp/types.md).
 
 ## Sending Messages
 
