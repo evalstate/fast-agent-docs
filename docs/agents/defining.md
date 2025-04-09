@@ -248,7 +248,7 @@ Read more about prompting agents [here](prompting.md)
   servers=["filesystem"],                # list of MCP Servers for the agent
   model="o3-mini.high",                  # specify a model for the agent
   use_history=True,                      # agent maintains chat history
-  request_params={"temperature": 0.7},   # additional parameters for the LLM (or RequestParams())
+  request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
   human_input=True,                      # agent can request human input
 )
 ```
