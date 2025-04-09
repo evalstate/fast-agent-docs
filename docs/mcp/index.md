@@ -32,7 +32,7 @@ This MCP Server can then be used with an agent as follows:
 
 ## Adding an SSE Server
 
-To use SSE Servers, specify the `sse` transport and specify the endpoint URL:
+To use SSE Servers, specify the `sse` transport and specify the endpoint URL and headers:
 
 ```yaml title="fastagent.config.yaml"
 mcp:
@@ -41,6 +41,8 @@ mcp:
     transport: "sse"
     # url to connect
     url: "http://localhost:8000/sse"
+    headers: 
+      Authorization: "Bearer <secret>"
 ```
 
 ## Roots
