@@ -16,7 +16,7 @@ hide:
     Install [`fast-agent-mcp`](https://pypi.org/project/fast-agent-mcp/) with [`uv`](https://docs.astral.sh/uv/) and get up
     and running in minutes
 
-    [:octicons-arrow-right-24: Get started](#get-started)
+    <!-- [:octicons-arrow-right-24: Get started](#get-started) -->
 
 
 -   :material-battery-charging:{ .lg .middle } __Batteries Included__
