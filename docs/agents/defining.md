@@ -125,6 +125,8 @@ This starts an interactive session, which produces a short social media post for
 
 Chains can be incorporated in other workflows, or contain other workflow elements (including other Chains). You can set an `instruction` to describe it's capabilities to other workflow steps if needed.
 
+Chains are also helpful for capturing content before being dispatched by a `router`, or summarizing content before being used in the downstream workflow.
+
 ### Human Input
 
 Agents can request Human Input to assist with a task or get additional context:
@@ -200,6 +202,8 @@ Routers use an LLM to assess a message, and route it to the most appropriate Age
 )
 ```
 
+NB - If only one agent is supplied to the router, it forwards directly.
+
 Look at the `router.py` workflow for an example.
 
 ### Orchestrator
@@ -246,7 +250,7 @@ Read more about prompting agents [here](prompting.md)
   servers=["filesystem"],                # list of MCP Servers for the agent
   model="o3-mini.high",                  # specify a model for the agent
   use_history=True,                      # agent maintains chat history
-  request_params={"temperature": 0.7},   # additional parameters for the LLM (or RequestParams())
+  request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
   human_input=True,                      # agent can request human input
 )
 ```
@@ -293,6 +297,8 @@ Read more about prompting agents [here](prompting.md)
 @fast.router(
   name="route",                          # name of the router
   agents=["agent1", "agent2", "agent3"], # list of agent names router can delegate to
+  instruction="routing instruction",     # any extra routing instructions
+  servers=["filesystem"]                 # list of servers for the routing agent
   model="o3-mini.high",                  # specify routing model
   use_history=False,                     # router maintains conversation history
   human_input=False,                     # whether router can request human input
