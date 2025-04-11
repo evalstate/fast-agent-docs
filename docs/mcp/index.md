@@ -41,8 +41,12 @@ mcp:
     transport: "sse"
     # url to connect
     url: "http://localhost:8000/sse"
+    # timeout in seconds to use for sse sessions (optional)
+    read_transport_sse_timeout_seconds: 300
+    # request headers for connection
     headers: 
-      Authorization: "Bearer <secret>"
+          Authorization: "Bearer <secret>"
+
 ```
 
 ## Roots
