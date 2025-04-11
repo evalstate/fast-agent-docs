@@ -18,7 +18,7 @@ Model specifications in fast-agent follow this precedence order (highest to lowe
 
 Model strings follow this format: `provider.model_name.reasoning_effort`
 
-- **provider**: The LLM provider (e.g., `anthropic`, `openai`, `deepseek`, `generic`)
+- **provider**: The LLM provider (e.g., `anthropic`, `openai`, `deepseek`, `generic`,`openrouter`)
 - **model_name**: The specific model to use in API calls
 - **reasoning_effort** (optional): Controls the reasoning effort for supported models
 
@@ -28,6 +28,7 @@ Examples:
 - `openai.gpt-4o`
 - `openai.o3-mini.high`
 - `generic.llama3.2:latest`
+- `openrouter.google/gemini-2.5-pro-exp-03-25:free`
 
 #### Reasoning Effort
 

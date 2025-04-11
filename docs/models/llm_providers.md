@@ -125,3 +125,26 @@ generic:
 
 **Usage with other OpenAI API compatible providers:**
 By configuring the `base_url` and appropriate `api_key`, you can connect to any OpenAI API-compatible provider.
+
+### OpenRouter
+
+Uses the [OpenRouter](https://openrouter.ai/) aggregation service. Models are accessed via an OpenAI-compatible API. Supported modalities depend on the specific model chosen on OpenRouter.
+
+Models *must* be specified using the `openrouter.` prefix followed by the full model path from OpenRouter (e.g., `openrouter.google/gemini-flash-1.5`).
+
+**YAML Configuration:**
+
+```yaml
+openrouter:
+  api_key: "your_openrouter_key" # Required
+  base_url: "https://openrouter.ai/api/v1" # Default, only include to override
+```
+
+**Environment Variables:**
+
+- `OPENROUTER_API_KEY`: Your OpenRouter API key
+- `OPENROUTER_BASE_URL`: Override the API endpoint
+
+**Model Name Aliases:**
+
+OpenRouter does not use aliases in the same way as Anthropic or OpenAI. You must always use the `openrouter.provider/model-name` format.
