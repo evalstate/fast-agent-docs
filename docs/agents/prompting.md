@@ -78,8 +78,8 @@ Alternatively, use the _with_resource_ convenience method:
 ```python
 response: str = agent.with_resource(
     "What is in this image?",
-    "mcp_server_name",
     "resource://images/cat.png"
+    "mcp_server_name",
 )
 
 ```
