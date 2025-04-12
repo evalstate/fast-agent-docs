@@ -66,7 +66,7 @@ response: str = agent.send(first_message)
 from mcp.types import ReadResourceResult
 
 resource: ReadResourceResult = agent.get_resource(
-    "mcp_server_name", "resource://images/cat.png"
+    "resource://images/cat.png", "mcp_server_name" 
 )
 response: str = agent.send(
     Prompt.user("What is in this image?", resource)
