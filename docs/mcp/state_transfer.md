@@ -2,9 +2,11 @@
 
 In this quick start, we'll show how `fast-agent` can transfer state between two agents using MCP Prompts. 
 
-We'll create two agents (`agent_one.py` and `agent_two.py`), start a conversation with `agent_one` using the MCP Inspector, and then continue the conversation with `agent_two`. 
+We'll create two agents (`agent_one.py` and `agent_two.py`), start a conversation with `agent_one` using the MCP Inspector, and then transfer and continue the conversation with `agent_two`. 
 
-You'll need to have API Keys to connect to a supported model, or use ollama's OpenAI compatibility server to use local models.
+PICTURE OF INSPECTOR OR IMAGE HERE
+
+You'll need to have API Keys to connect for a [supported model](../models/llm_providers.md) or use ollama's [OpenAI compatibility](https://github.com/ollama/ollama/blob/main/docs/openai.md) mode for local models.
 
 ## Install fast-agent
 
@@ -20,10 +22,9 @@ You'll need to have API Keys to connect to a supported model, or use ollama's Op
 
     # setup fast-agent
     uv pip install fast-agent-mcp
-    fast-agent setup
 
-    # create a second agent
-    cp agent.py agent_server.py
+    # create the state transfer example
+    fast-agent quickstart state-transfer
     ```
 === "Windows"
 
@@ -37,13 +38,18 @@ You'll need to have API Keys to connect to a supported model, or use ollama's Op
 
     # setup fast-agent
     uv pip install fast-agent-mcp
-    fast-agent setup
 
-    # create a second agent
-    cp agent.py agent_server.py
+    # create the state transfer example
+    fast-agent quickstart state-transfer
     ```
 
-## Setup fast-agent client/server
+Change to the state-transfer directory (`cd state-transfer`) and edit `fastagent.config.yaml` to enter the API Keys for the providers you wish to use. 
+
+Finally, run `uv run agent_one.py` and send a test message to make sure everything is set up. Type `exit` to return to the command line.
+
+## Staring agent_one as an MCP Server
+
+To run `agent_one` as an MCP Server, 
 
 Start the **fast-agent** `uv run agent_server.py --server --transport sse`. you can add the `--quiet` switch if you want to supress chat message output.
 

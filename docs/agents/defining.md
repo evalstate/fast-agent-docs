@@ -51,7 +51,7 @@ Specify a model with the `--model` switch - for example `uv run sizer.py --model
 
 ## Workflows and MCP Servers
 
-_To generate examples use `fast-agent bootstrap workflow`. This example can be run with `uv run workflow/chaining.py`. fast-agent looks for configuration files in the current directory before checking parent directories recursively._
+_To generate examples use `fast-agent quickstart workflow`. This example can be run with `uv run workflow/chaining.py`. fast-agent looks for configuration files in the current directory before checking parent directories recursively._
 
 Agents can be chained to build a workflow, using MCP Servers defined in the `fastagent.config.yaml` file:
 
@@ -189,7 +189,7 @@ async with fast.run() as agent:
 
 When used in a workflow, it returns the last `generator` message as the result.
 
-See the `evaluator.py` workflow example, or `fast-agent bootstrap researcher` for a more complete example.
+See the `evaluator.py` workflow example, or `fast-agent quickstart researcher` for a more complete example.
 
 ### Router
 

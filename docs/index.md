@@ -72,7 +72,7 @@ Prebuilt agents and examples implementing the patterns in Anthropic's [building 
 * `uv pip install fast-agent-mcp` - Install fast-agent.
 * `fast-agent setup` - Create Agent and Configuration files.
 * `uv run agent.py` - Run your first Agent
-* `fast-agent bootstrap workflow` - Create Agent workflow examples
+* `fast-agent quickstart workflow` - Create Agent workflow examples
 </div>
 <div markdown>
 <!--[Welcome Image](welcome_small.png)-->

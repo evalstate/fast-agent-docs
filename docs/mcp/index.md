@@ -68,7 +68,7 @@ As per the [MCP specification](https://github.com/modelcontextprotocol/specifica
 
 If a server_uri_alias is supplied, **fast-agent** presents this to the MCP Server. This allows you to present a consistent interface to the MCP Server. An example of this usage would be mounting a local directory to a docker volume, and presenting it as `/mnt/data` to the MCP Server for consistency.
 
-The data analysis example (`fast-agent bootstrap data-analysis` has a working example of roots).
+The data analysis example (`fast-agent quickstart data-analysis` has a working example of MCP Roots).
 
 ## Sampling
 
