@@ -54,6 +54,8 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tabbed:
+      alternate_style: true
 
 plugins:
   - social
@@ -89,3 +91,4 @@ nav:
       - Configuring Servers: mcp/index.md
       - mcp/types.md
       - mcp/resources.md
+      - Agent State Transfer: mcp/state_transfer.md
