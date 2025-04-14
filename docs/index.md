@@ -25,6 +25,13 @@ hide:
 
     Out-of-the box examples of sophisticated Agents, Workflows and advanced MCP Usage.
 
+-   :material-connection:{ .lg .middle } __New Quickstart Guide__
+
+    ---
+
+    Learn how to use MCP Prompts to transfer state, save and load conversations. 
+    [:octicons-arrow-right-24: Try now](./mcp/state_transfer.md)
+
 -   :material-beaker-check-outline:{ .lg .middle } __Comprehensive Test Suite__
 
     ---
@@ -39,12 +46,6 @@ hide:
     First MCP Host to support Tools, Prompts, Resources, Sampling and Roots
 
     [:octicons-arrow-right-24: Reference](mcp/index.md)
-
--   :material-connection:{ .lg .middle } __MCP Native__
-
-    ---
-
-    MCP-first design makes multi-modal Agent application development easy. 
 
 -   :material-application-braces-outline:{ .lg .middle } __Agent Developer Friendly__
 

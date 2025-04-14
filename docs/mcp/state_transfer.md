@@ -191,6 +191,6 @@ And then update `agent_two.py` to use the new server:
 
 ```
 
-Run `uv run agent_two.py`, and you can then use the `/prompts` command to load the earlier conversation history, and continue where you left off.
+Run `uv run agent_two.py`, and you can then use the `/prompts` command to load the earlier conversation history, and continue where you left off. 
 
-
+You can also use the [Playback LLM](../models/internal_models.md) to replay an earlier chat (useful for testing!)
