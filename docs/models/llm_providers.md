@@ -44,7 +44,7 @@ anthropic:
 
 ## OpenAI
 
-**fast-agent** supports OpenAI `gpt-4o`, `gpt-4o-mini`, `o1-preview`, `o1` and `o3-mini` models. Arbitrary model names are supported with `openai.<model_name>`. Supported modalities are model-dependent, check the [OpenAI Models Page](https://platform.openai.com/docs/models) for the latest information.
+**fast-agent** supports OpenAI `gpt-4.1`, `gpt-4.1-mini`, `o1-preview`, `o1` and `o3-mini` models. Arbitrary model names are supported with `openai.<model_name>`. Supported modalities are model-dependent, check the [OpenAI Models Page](https://platform.openai.com/docs/models) for the latest information.
 
 Structured outputs use the OpenAI API Structured Outputs feature.
 
@@ -69,6 +69,9 @@ openai:
 | ------------- | ------------- |
 | `gpt-4o`      | `gpt-4o`      |
 | `gpt-4o-mini` | `gpt-4o-mini` |
+| `gpt-4.1`     | `gpt-4.1`     |
+| `gpt-4.1-mini`| `gpt-4.1-mini`|
+| `gpt-4.1-nano`| `gpt-4.1-nano`|
 | `o1`          | `o1`          |
 | `o1-mini`     | `o1-mini`     |
 | `o1-preview`  | `o1-preview`  |
