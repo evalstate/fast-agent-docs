@@ -8,4 +8,4 @@ Below are some recommended resources for developing with the Model Context Proto
 | [Repomix](https://repomix.com/guide/) | Create LLM Friendly files from folders or directly from GitHub. Include as an MCP Server - or run from a script prior to create Agent inputs | 
 | [PromptMesh Tools](https://promptmesh.io/) | High quality tools and libraries at the cutting edge of MCP development |
 | [mcp-hfspace](https://github.com/evalstate/mcp-hfspace) | Seamlessly connect to hundreds of Open Source models including Image and Audio generators and more |
-
+| [wong2 mcp-cli](https://github.com/wong2/mcp-cli) | A fast, lightweight, command line alternative to the official MCP Inspector |

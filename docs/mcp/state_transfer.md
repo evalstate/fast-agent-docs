@@ -1,20 +1,26 @@
-# MCP Agent State Transfer -  Quick Start
+# Quick Start: Agent State Transfer with MCP
 
-In this quick start, we'll show how `fast-agent` can transfer state between two agents using MCP Prompts. 
+In this quick start, we'll demonstrate how **fast-agent** can transfer state between two agents using MCP Prompts. 
 
-We'll create two agents (`agent_one.py` and `agent_two.py`), start a conversation with `agent_one` using the MCP Inspector, and then transfer and continue the conversation with `agent_two`. 
+First, we'll start `agent_one` as an MCP Server, and send it some messages with the MCP Inspector tool. 
 
-PICTURE OF INSPECTOR OR IMAGE HERE
+Next, we'll run `agent_two` and transfer the conversation from `agent_one` using an MCP Prompt.
 
-You'll need to have API Keys to connect for a [supported model](../models/llm_providers.md) or use ollama's [OpenAI compatibility](https://github.com/ollama/ollama/blob/main/docs/openai.md) mode for local models.
+Finally, we'll take a look at **fast-agent**'s `prompt-server` and how it can assist building agent applications
 
-## Install fast-agent
+<!-- PICTURE OF INSPECTOR OR IMAGE HERE. -->
+
+You'll need API Keys to connect to a [supported model](../models/llm_providers.md), or use Ollama's [OpenAI compatibility](https://github.com/ollama/ollama/blob/main/docs/openai.md) mode to use local models. 
+
+The quick start also uses the MCP Inspector - check [here](https://modelcontextprotocol.io/docs/tools/inspector) for installation instructions.
+
+## Step 1: Setup **fast-agent**
 
 === "Linux/MacOS"
 
     ```bash
     # create, and change to a new directory
-    mkdir state-transfer && cd state-transfer
+    mkdir fast-agent && cd fast-agent
 
     # create and activate a python environment
     uv venv
@@ -30,7 +36,7 @@ You'll need to have API Keys to connect for a [supported model](../models/llm_pr
 
     ```pwsh
     # create, and change to a new directory
-    md state-transfer |cd
+    md fast-agent |cd
 
     # create and activate a python environment
     uv venv
@@ -43,42 +49,148 @@ You'll need to have API Keys to connect for a [supported model](../models/llm_pr
     fast-agent quickstart state-transfer
     ```
 
-Change to the state-transfer directory (`cd state-transfer`) and edit `fastagent.config.yaml` to enter the API Keys for the providers you wish to use. 
+Change to the state-transfer directory (`cd state-transfer`), rename `fastagent.secrets.yaml.example` to `fastagent.secrets.yaml` and enter the API Keys for the providers you wish to use. 
 
-Finally, run `uv run agent_one.py` and send a test message to make sure everything is set up. Type `exit` to return to the command line.
+The supplied `fastagent.config.yaml` file contains a default of `gpt-4o` - edit this if you wish. 
 
-## Staring agent_one as an MCP Server
-
-To run `agent_one` as an MCP Server, 
-
-Start the **fast-agent** `uv run agent_server.py --server --transport sse`. you can add the `--quiet` switch if you want to supress chat message output.
-
-We are going to run 2 agents - 1 as an MCP Server, the other as a client.
-
-Now we'll start `agent_server.py` as an MCP Server. 
+Finally, run `uv run agent_one.py` and send a test message to make sure that everything working. Enter `stop` to return to the command line.
 
 
-We can now interact with the agent using MCP Tool calls. Run `npx @wong2/mcp-cli --sse http://localhost:8001/sse` and use the `default_send` tool to send messages to the agent. In this example I asked "write me a story about cats and kittens" and got the output.
+
+## Step 2: Run **agent one** as an MCP Server
+
+To start `"agent_one"` as an MCP Server, run the following command:
+
+=== "Linux/MacOS"
+
+    ```bash
+    # start agent_one as an MCP Server:
+    uv run agent_one.py --server --transport sse --port 8001
+    ```
+=== "Windows"
+
+    ```pwsh
+    # start agent_one as an MCP Server:
+    uv run agent_one.py --server --transport sse --port 8001
+    ```
+
+The agent is now available as an MCP Server. 
+
+<!-- PICTURE OF STARTED SERVER HERE -->
+
+!!! note
+
+    This example starts the server on port 8001. To use a different port, update the URLs in `fastagent.config.yaml` and the MCP Inspector.
+
+## Step 3: Connect and chat with **agent one**
+
+From another command line, run the Model Context Protocol inspector to connect to the agent:
+
+=== "Linux/MacOS"
+
+    ```bash
+    # run the MCP inspector
+    npx @modelcontextprotocol/inspector
+    ```
+=== "Windows"
+
+    ```pwsh
+    # run the MCP inspector
+    npx @modelcontextprotocol/inspector
+    ```
+
+Choose the SSE transport type, and the url `http://localhost:8001/sse`. After clicking the `connect` button, you can interact with the agent from the `tools` tab. Use the `agent_one_send` tool to send the agent a chat message and see it's response.
+
+The conversation history can be viewed from the `prompts` tab. Use the `agent_one_history` prompt to view it.
+
+Disconnect the Inspector, then press `ctrl+c` in the command window to stop the process. 
+
+## Step 4: Transfer the conversation to **agent two**
+
+We can now transfer and continue the conversation with `agent_two`. 
+
+Run `agent_two` with the following command:
+
+=== "Linux/MacOS"
+
+    ```bash
+    # start agent_two as an MCP Server:
+    uv run agent_two.py
+    ```
+=== "Windows"
+
+    ```pwsh
+    # start agent_two as an MCP Server:
+    uv run agent_two.py
+    ```
+
+Once started, type `'/prompts'` to see the available prompts. Select `1` to apply the Prompt from `agent_one` to `agent_two`, transferring the conversation context.
+
+You can now continue the chat with `agent_two` (potentially using different Models, MCP Tools or Workflow components).
+
+<!-- PICTURE OF PROMPTS HERE -->
+
+### Configuration Overview
+
+**fast-agent** uses the following configuration file to connect to the `agent_one` MCP Server:
 
 ```yaml title="fastagent.config.yaml"
 # MCP Servers
 mcp:
     servers:
-        history_server:
+        agent_one:
           transport: sse
           url: http://localhost:8001
 ```
 
+`agent_two` then references the server in it's definition:
 
-```python title="agent.py" linenums="36" hl_lines="2"
+```python title="agent_two.py" linenums="10" hl_lines="4"
 
 # Define the agent
-@fast.agent(instruction="You are a helpful AI Agent",servers=["history_server")
+@fast.agent(name="agent_two",
+            instruction="You are a helpful AI Agent",
+            servers=["agent_one"])
+
 async def main():
     # use the --model command line switch or agent arguments to change model
     async with fast.run() as agent:
         await agent.interactive()
 ```
 
+## Step 5: Save/Reload the conversation
 
-Use the inspector to 
+**fast-agent** gives you the ability to save and reload conversations. 
+
+Enter `***SAVE_HISTORY history.json` in the `agent_two` chat to save the conversation history in MCP `GetPromptResult` format.
+
+You can also save it in a text format for easier editing.
+
+By using the supplied MCP `prompt-server`, we can reload the saved prompt and apply it to our agent. Add the following to your `fastagent.config.yaml` file:
+
+```yaml title="fastagent.config.yaml" linenums="23" hl_lines="4-6"
+# MCP Servers
+mcp:
+    servers:
+        prompts:
+            command: prompt-server
+            args: ["history.json"]
+        agent_one:
+          transport: sse
+          url: http://localhost:8001
+```
+
+And then update `agent_two.py` to use the new server:
+
+```python title="agent_two.py" linenums="10" hl_lines="4"
+
+# Define the agent
+@fast.agent(name="agent_two",
+            instruction="You are a helpful AI Agent",
+            servers=["prompts"])
+
+```
+
+Run `uv run agent_two.py`, and you can then use the `/prompts` command to load the earlier conversation history, and continue where you left off.
+
+

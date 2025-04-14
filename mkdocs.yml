@@ -15,6 +15,7 @@ theme:
     - content.code.copy
     - announce.dismiss
     - search.suggest
+    - content.tabs.link
   custom_dir: overrides
 
   palette:
@@ -85,10 +86,10 @@ nav:
       - agents/prompting.md
   - Models:
       - Model Features: models/index.md
-      - Internal Models: models/internal_models.md
       - LLM Providers: models/llm_providers.md
+      - Internal Models: models/internal_models.md
   - MCP:
       - Configuring Servers: mcp/index.md
       - mcp/types.md
-      - mcp/resources.md
       - Agent State Transfer: mcp/state_transfer.md
+      - mcp/resources.md

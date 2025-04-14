@@ -1,8 +1,7 @@
-## Providers
 
 For each model provider, you can configure parameters either through environment variables or in your `fastagent.config.yaml` file.
 
-### Common Configuration Format
+## Common Configuration Format
 
 In your `fastagent.config.yaml`:
 
@@ -12,7 +11,7 @@ In your `fastagent.config.yaml`:
   base_url: "https://api.example.com" # Base URL for API calls
 ```
 
-### Anthropic
+## Anthropic
 
 Anthropic models support Text, Vision and PDF content.
 
@@ -43,7 +42,7 @@ anthropic:
 | `opus`      | `claude-3-opus-latest`     |
 | `opus3`     | `claude-3-opus-latest`     |
 
-### OpenAI
+## OpenAI
 
 **fast-agent** supports OpenAI `gpt-4o`, `gpt-4o-mini`, `o1-preview`, `o1` and `o3-mini` models. Arbitrary model names are supported with `openai.<model_name>`. Supported modalities are model-dependent, check the [OpenAI Models Page](https://platform.openai.com/docs/models) for the latest information.
 
@@ -75,7 +74,7 @@ openai:
 | `o1-preview`  | `o1-preview`  |
 | `o3-mini`     | `o3-mini`     |
 
-### DeepSeek
+## DeepSeek
 
 DeepSeek v3 is supported for Text and Tool calling.
 
@@ -99,16 +98,18 @@ deepseek:
 | `deepseek`  | `deepseek-chat` |
 | `deepseek3` | `deepseek-chat` |
 
-### Generic OpenAI / Ollama
+## Generic OpenAI / Ollama
+
+
+Models prefixed with `generic` will use a generic OpenAI endpoint, with the defaults configured to work with Ollama [OpenAI compatibility](https://github.com/ollama/ollama/blob/main/docs/openai.md). 
+
+This means that to run Llama 3.2 latest you can specify `generic.llama3.2:latest` for the model string, and no further configuration should be required.
+
 
 !!! warning
 
-    Use the Generic Provider to connect to OpenAI compatible models (including Ollama).
-    Tool Calling and other modalities for generic models are not included in the e2e test suite, and should be used at your own risk.
+    The generic provider is tested for tool calling and structured generation with `qwen2.5:latest` and `llama3.2:latest`. Other models and configurations may not work as expected - use at your own risk.
 
-Models prefixed with `generic` will use a generic OpenAI endpoint, with the defaults configured to work with Ollama. 
-
-For example, to run with Llama 3.2 latest you can specify `generic.llama3.2:latest` and no further configuration should be required.
 
 **YAML Configuration:**
 
@@ -126,7 +127,7 @@ generic:
 **Usage with other OpenAI API compatible providers:**
 By configuring the `base_url` and appropriate `api_key`, you can connect to any OpenAI API-compatible provider.
 
-### OpenRouter
+## OpenRouter
 
 Uses the [OpenRouter](https://openrouter.ai/) aggregation service. Models are accessed via an OpenAI-compatible API. Supported modalities depend on the specific model chosen on OpenRouter.
 
