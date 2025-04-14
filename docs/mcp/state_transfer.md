@@ -1,3 +1,7 @@
+---
+Title: Quick start guide - Agent State Transfer with MCP
+---
+
 # Quick Start: Agent State Transfer with MCP
 
 In this quick start, we'll demonstrate how **fast-agent** can transfer state between two agents using MCP Prompts. 
@@ -197,6 +201,6 @@ And then update `agent_two.py` to use the new server:
 
 ```
 
-Run `uv run agent_two.py`, and you can then use the `/prompts` command to load the earlier conversation history, and continue where you left off.
+Run `uv run agent_two.py`, and you can then use the `/prompts` command to load the earlier conversation history, and continue where you left off. 
 
-
+You can also use the [Playback LLM](../models/internal_models.md) to replay an earlier chat (useful for testing!)
