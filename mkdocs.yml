@@ -91,5 +91,5 @@ nav:
   - MCP:
       - Configuring Servers: mcp/index.md
       - mcp/types.md
-      - Agent State Transfer: mcp/state_transfer.md
+      - Quickstart - State Transfer: mcp/state_transfer.md
       - mcp/resources.md

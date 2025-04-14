@@ -29,7 +29,7 @@ hide:
 
     ---
 
-    Learn how to use MCP Prompts to transfer state, save and load conversations. 
+    Learn how to use MCP Prompts to transfer state, save, and load conversations. 
     [:octicons-arrow-right-24: Try now](./mcp/state_transfer.md)
 
 -   :material-beaker-check-outline:{ .lg .middle } __Comprehensive Test Suite__
