@@ -1,3 +1,7 @@
+---
+Title: Quick start guide - Agent State Transfer with MCP
+---
+
 # Quick Start: Agent State Transfer with MCP
 
 In this quick start, we'll demonstrate how **fast-agent** can transfer state between two agents using MCP Prompts. 
