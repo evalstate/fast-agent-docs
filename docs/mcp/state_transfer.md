@@ -2,6 +2,8 @@
 
 In this quick start, we'll demonstrate how **fast-agent** can transfer state between two agents using MCP Prompts. 
 
+![Placeholder](./pics/opening_small.png){: align=right }
+
 First, we'll start `agent_one` as an MCP Server, and send it some messages with the MCP Inspector tool. 
 
 Next, we'll run `agent_two` and transfer the conversation from `agent_one` using an MCP Prompt.
@@ -55,7 +57,7 @@ The supplied `fastagent.config.yaml` file contains a default of `gpt-4o` - edit 
 
 Finally, run `uv run agent_one.py` and send a test message to make sure that everything working. Enter `stop` to return to the command line.
 
-
+![Placeholder](./pics/test_message.png)
 
 ## Step 2: Run **agent one** as an MCP Server
 
@@ -101,6 +103,8 @@ From another command line, run the Model Context Protocol inspector to connect t
 
 Choose the SSE transport type, and the url `http://localhost:8001/sse`. After clicking the `connect` button, you can interact with the agent from the `tools` tab. Use the `agent_one_send` tool to send the agent a chat message and see it's response.
 
+![Placeholder](./pics/inspector_chat.png)
+
 The conversation history can be viewed from the `prompts` tab. Use the `agent_one_history` prompt to view it.
 
 Disconnect the Inspector, then press `ctrl+c` in the command window to stop the process. 
@@ -127,6 +131,8 @@ Run `agent_two` with the following command:
 Once started, type `'/prompts'` to see the available prompts. Select `1` to apply the Prompt from `agent_one` to `agent_two`, transferring the conversation context.
 
 You can now continue the chat with `agent_two` (potentially using different Models, MCP Tools or Workflow components).
+
+![Placeholder](./pics/loaded_chat.png)
 
 <!-- PICTURE OF PROMPTS HERE -->
 
