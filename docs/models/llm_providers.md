@@ -1,6 +1,10 @@
 
 For each model provider, you can configure parameters either through environment variables or in your `fastagent.config.yaml` file.
 
+Be sure to run `fast-agent check` to troubleshoot API Key issues:
+
+![Key Check](check.png)
+
 ## Common Configuration Format
 
 In your `fastagent.config.yaml`:
@@ -100,6 +104,27 @@ deepseek:
 | ----------- | -------------------------- |
 | `deepseek`  | `deepseek-chat` |
 | `deepseek3` | `deepseek-chat` |
+
+
+## Google
+
+Google is currently supported through the OpenAI compatibility endpoint, with first-party support planned soon.
+
+**YAML Configuration:**
+
+```yaml
+google:
+  api_key: "your_google_key"
+  base_url: "https://generativelanguage.googleapis.com/v1beta/openai"
+```
+
+**Environment Variables:**
+
+- `GOOGLE_API_KEY`: Your Google API key
+
+**Model Name Aliases:**
+
+_None mapped_
 
 ## Generic OpenAI / Ollama
 
