@@ -34,17 +34,13 @@ anthropic:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    |
-| ----------- | -------------------------- |
-| `claude`    | `claude-3-7-sonnet-latest` |
-| `sonnet`    | `claude-3-7-sonnet-latest` |
-| `sonnet35`  | `claude-3-5-sonnet-latest` |
-| `sonnet37`  | `claude-3-7-sonnet-latest` |
-| `haiku`     | `claude-3-5-haiku-latest`  |
-| `haiku3`    | `claude-3-haiku-20240307`  |
-| `haiku35`   | `claude-3-5-haiku-latest`  |
-| `opus`      | `claude-3-opus-latest`     |
-| `opus3`     | `claude-3-opus-latest`     |
+| Model Alias | Maps to                    | Model Alias | Maps to                    |
+| ----------- | -------------------------- | ----------- | -------------------------- |
+| `claude`    | `claude-3-7-sonnet-latest` | `haiku`     | `claude-3-5-haiku-latest`  |
+| `sonnet`    | `claude-3-7-sonnet-latest` | `haiku3`    | `claude-3-haiku-20240307`  |
+| `sonnet35`  | `claude-3-5-sonnet-latest` | `haiku35`   | `claude-3-5-haiku-latest`  |
+| `sonnet37`  | `claude-3-7-sonnet-latest` | `opus`      | `claude-3-opus-latest`     |
+| `opus3`     |     `claude-3-opus-latest` |      |     |
 
 ## OpenAI
 
@@ -69,17 +65,13 @@ openai:
 
 **Model Name Aliases:**
 
-| Model Alias   | Maps to       |
-| ------------- | ------------- |
-| `gpt-4o`      | `gpt-4o`      |
-| `gpt-4o-mini` | `gpt-4o-mini` |
-| `gpt-4.1`     | `gpt-4.1`     |
-| `gpt-4.1-mini`| `gpt-4.1-mini`|
-| `gpt-4.1-nano`| `gpt-4.1-nano`|
-| `o1`          | `o1`          |
-| `o1-mini`     | `o1-mini`     |
-| `o1-preview`  | `o1-preview`  |
-| `o3-mini`     | `o3-mini`     |
+| Model Alias   | Maps to       | Model Alias   | Maps to       |
+| ------------- | ------------- | ------------- | ------------- |
+| `gpt-4o`      | `gpt-4o`      | `gpt-4.1`     | `gpt-4.1`     |
+| `gpt-4o-mini` | `gpt-4o-mini` | `gpt-4.1-mini`| `gpt-4.1-mini`|
+| `o1`          | `o1`          | `gpt-4.1-nano`| `gpt-4.1-nano`|
+| `o1-mini`     | `o1-mini`     | `o1-preview`  | `o1-preview`  |
+| `o3-mini`     | `o3-mini`     |               |               |
 
 ## DeepSeek
 
@@ -160,6 +152,11 @@ By configuring the `base_url` and appropriate `api_key`, you can connect to any 
 Uses the [OpenRouter](https://openrouter.ai/) aggregation service. Models are accessed via an OpenAI-compatible API. Supported modalities depend on the specific model chosen on OpenRouter.
 
 Models *must* be specified using the `openrouter.` prefix followed by the full model path from OpenRouter (e.g., `openrouter.google/gemini-flash-1.5`).
+
+!!! warning
+
+    There is an issue with between OpenRouter and Google Gemini models causing large Tool Call block content to be removed.
+
 
 **YAML Configuration:**
 

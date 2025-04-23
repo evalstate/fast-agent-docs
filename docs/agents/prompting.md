@@ -12,7 +12,9 @@ The simplest way of sending a message to an agent is the `send` method:
 response: str = await agent.send("how are you?")
 ```
 
-Attach files by using the `Prompt.user()` method to construct the message:
+This returns the text of the agent's response as a string, making it ideal for simple interactions.
+
+You can attach files by using `Prompt.user()` method to construct your message:
 
 ```python
 from mcp_agent.core.prompt import Prompt
@@ -26,9 +28,82 @@ plans: str = await agent.send(
 )
 ```
 
-Attached files are converted to the appropriate MCP Type (e.g. ImageContent for Images, EmbeddedResource for PDF and TextResource).
+`Prompt.user()` automatically converts content to the appropriate MCP Type. For example, `image/png` becomes `ImageContent` and `application/pdf` becomes an EmbeddedResource.
+
+You can also use MCP Types directly - for example:
+
+```python
+from mcp.types import ImageContent, TextContent
+
+mcp_text: TextContent = TextContent(type="text", text="Analyse this image.")
+mcp_image: ImageContent = ImageContent(type="image", 
+                          mimeType="image/png",
+                          data=base_64_encoded)
+
+response: str  = await agent.send(
+    Prompt.user(
+        mcp_text,
+        mcp_image
+    )
+)
+```
 
 > Note: use `Prompt.assistant()` to produce messages for the `assistant` role.
+
+I'll adjust the focus to emphasize that `generate()` primarily returns a `PromptMessageMultipart` object, with the multi-turn aspect being secondary:
+
+## Working with content using `generate()`
+
+When you need access to the full structured response from an agent rather than just the text, use the `generate()` method:
+
+```python
+from mcp_agent.core.prompt import Prompt
+from mcp_agent.mcp.prompt_message_multipart import PromptMessageMultipart
+
+message = Prompt.user("Describe an image of a sunset")
+
+response: PromptMessageMultipart = await agent.generate([message])
+
+print(response.last_text())  # Main text response
+```
+
+The key difference between `send()` and `generate()` is that `generate()` returns a `PromptMessageMultipart` object, giving you access to the complete response structure:
+
+- `last_text()`: Gets the main text response
+- `first_text()`: Gets the first text content if multiple text blocks exist
+- `all_text()`: Combines all text content in the response
+- `content`: Direct access to the full list of content parts
+
+This is particularly useful when working with multimodal responses or tool outputs:
+
+```python
+# Generate a response that might include multiple content types
+response = await agent.generate([
+    Prompt.user("Analyze this image", Path("chart.png"))
+])
+
+for content in response.content:
+    if content.type == "text":
+        print("Text response:", content.text[:100], "...")
+    elif content.type == "image":
+        print("Image content:", content.mimeType)
+    elif content.type == "resource":
+        print("Resource:", content.resource.uri)
+```
+
+You can also use `generate()` for multi-turn conversations by passing multiple messages:
+
+```python
+messages = [
+    Prompt.user("What is the capital of France?"),
+    Prompt.assistant("The capital of France is Paris."),
+    Prompt.user("And what is its population?")
+]
+
+response = await agent.generate(messages)
+```
+
+The `generate()` method provides the foundation for working with content returned by the LLM, and MCP Tool, Prompt and Resource calls.
 
 ### MCP Prompts
 
