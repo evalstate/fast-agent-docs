@@ -50,8 +50,6 @@ response: str  = await agent.send(
 
 > Note: use `Prompt.assistant()` to produce messages for the `assistant` role.
 
-I'll adjust the focus to emphasize that `generate()` primarily returns a `PromptMessageMultipart` object, with the multi-turn aspect being secondary:
-
 ## Using `generate()` for multipart content
 
 When you need access to multimodal content from an agents rather than just text, use the `generate()` method:
