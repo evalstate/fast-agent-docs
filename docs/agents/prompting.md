@@ -52,9 +52,9 @@ response: str  = await agent.send(
 
 I'll adjust the focus to emphasize that `generate()` primarily returns a `PromptMessageMultipart` object, with the multi-turn aspect being secondary:
 
-## Working with content using `generate()`
+## Using `generate()` for multipart content
 
-When you need access to the full structured response from an agent rather than just the text, use the `generate()` method:
+When you need access to multimodal content from an agents rather than just text, use the `generate()` method:
 
 ```python
 from mcp_agent.core.prompt import Prompt
@@ -72,7 +72,7 @@ The key difference between `send()` and `generate()` is that `generate()` return
 - `last_text()`: Gets the main text response
 - `first_text()`: Gets the first text content if multiple text blocks exist
 - `all_text()`: Combines all text content in the response
-- `content`: Direct access to the full list of content parts
+- `content`: Direct access to the full list of content parts, including Images and EmbeddedResources
 
 This is particularly useful when working with multimodal responses or tool outputs:
 

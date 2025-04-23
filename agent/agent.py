@@ -3,7 +3,7 @@ from mcp_agent.core.fastagent import FastAgent
 import subprocess
 
 # Create the application
-fast = FastAgent("FastAgent Example")
+fast = FastAgent("fast-agent example",config_path="my-special-place.yaml")
 
 
 # Define the agent
