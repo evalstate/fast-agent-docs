@@ -159,10 +159,10 @@ execution_engine: "asyncio"
 
 # Model provider settings
 anthropic:
-  api_key: "${ANTHROPIC_API_KEY}"  # Environment variable reference
+  api_key: API_KEY
 
 openai:
-  api_key: "${OPENAI_API_KEY}"
+  api_key: API_KEY
   reasoning_effort: "high"
 
 # MCP servers
@@ -176,7 +176,7 @@ mcp:
     prompts:
       transport: "stdio"
       command: "prompt-server"
-      args: ["prompts/"]
+      args: ["prompts/myprompt.txt"]
       
     filesys:
       transport: "stdio"
