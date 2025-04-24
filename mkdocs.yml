@@ -93,3 +93,5 @@ nav:
       - mcp/types.md
       - Quickstart - State Transfer: mcp/state_transfer.md
       - mcp/resources.md
+  - Reference:
+      - Config File: ref/config_file.md
