@@ -95,3 +95,4 @@ nav:
       - mcp/resources.md
   - Reference:
       - Config File: ref/config_file.md
+      - Command Line: ref/cmd_switches.md
