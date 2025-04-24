@@ -50,9 +50,9 @@ response: str  = await agent.send(
 
 > Note: use `Prompt.assistant()` to produce messages for the `assistant` role.
 
-## Using `generate()` for multipart content
+### Using `generate()` and multipart content
 
-When you need access to multimodal content from an agents rather than just text, use the `generate()` method:
+The `generate()` method allows you to access multimodal content from an agent, or its Tool Calls as well as send conversational pairs.
 
 ```python
 from mcp_agent.core.prompt import Prompt
@@ -103,7 +103,63 @@ response = await agent.generate(messages)
 
 The `generate()` method provides the foundation for working with content returned by the LLM, and MCP Tool, Prompt and Resource calls.
 
-### MCP Prompts
+### Using `structured()` for typed responses
+
+When you need the agent to return data in a specific format, use the `structured()` method. This parses the agent's response into a Pydantic model:
+
+```python
+from pydantic import BaseModel
+from typing import List
+
+# Define your expected response structure
+class CityInfo(BaseModel):
+    name: str
+    country: str
+    population: int
+    landmarks: List[str]
+
+# Request structured information
+result, message = await agent.structured(
+    [Prompt.user("Tell me about Paris")], 
+    CityInfo
+)
+
+# Now you have strongly typed data
+if result:
+    print(f"City: {result.name}, Population: {result.population:,}")
+    for landmark in result.landmarks:
+        print(f"- {landmark}")
+```
+
+The `structured()` method returns a tuple containing:
+1. The parsed Pydantic model instance (or `None` if parsing failed)
+2. The full `PromptMessageMultipart` response
+
+This approach is ideal for:
+- Extracting specific data points in a consistent format
+- Building workflows where agents need structured inputs/outputs
+- Integrating agent responses with typed systems
+
+Always check if the first value is `None` to handle cases where the response couldn't be parsed into your model:
+
+```python
+result, message = await agent.structured([Prompt.user("Describe Paris")], CityInfo)
+
+if result is None:
+    # Fall back to the text response
+    print("Could not parse structured data, raw response:")
+    print(message.last_text())
+```
+
+The `structured()` method provides the same request parameter options as `generate()`.
+
+!!! note
+
+    LLMs produce JSON when producing Structured responses, which can conflict with Tool Calls. Use a `chain` to combine Tool Calls with Structured Outputs. 
+
+
+
+## MCP Prompts
 
 Apply a Prompt from an MCP Server to the agent with:
 
@@ -131,7 +187,7 @@ response: str = agent.send(first_message)
 
 > If the last message in the conversation is from the `assistant`, it is returned as the response.
 
-### MCP Resources
+## MCP Resources
 
 `Prompt.user` also works with MCP Resources:
 
@@ -157,7 +213,7 @@ response: str = agent.with_resource(
 
 ```
 
-### Prompt Files
+## Prompt Files
 
 Long prompts can be stored in text files, and loaded with the `load_prompt` utility:
 
@@ -240,7 +296,7 @@ result: PromptMessageMultipart = await agent.generate(prompt)
     See [History Saving](../models/index.md#history-saving) to learn how to save a conversation to a file for editing or playback.
 
 
-### Using the MCP prompt-server
+### Using the `prompt-server`
 
 Prompt files can also be served using the inbuilt `prompt-server`. The `prompt-server` command is installed with `fast-agent` making it convenient to set up and use:
 
