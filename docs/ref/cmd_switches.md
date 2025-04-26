@@ -52,6 +52,21 @@ uv run agent.py --server --transport stdio
 uv run agent.py --quiet --message "Generate a report"
 ```
 
+### Programmatic Control of Command Line Parsing
+
+When embedding FastAgent in other applications (like web frameworks or GUI applications), you can disable command line parsing by setting `parse_cli_args=False` in the constructor:
+
+```python
+# Create FastAgent without parsing command line arguments
+fast = FastAgent("Embedded Agent", parse_cli_args=False)
+```
+
+This is particularly useful when:
+- Integrating with frameworks like FastAPI/Uvicorn that have their own argument parsing
+- Building GUI applications where command line arguments aren't relevant
+- Creating applications with custom argument parsing requirements
+
+
 ## fast-agent go Command
 
 The `fast-agent go` command lets you run an interactive agent directly without creating a Python file:
