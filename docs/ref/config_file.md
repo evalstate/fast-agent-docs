@@ -118,11 +118,9 @@ mcp:
 
 ```yaml
 otel:
-  enabled: true  # Enable or disable OpenTelemetry
+  enabled: false  # Enable or disable OpenTelemetry
   service_name: "fast-agent"  # Service name for tracing
-  service_instance_id: "instance1"  # Optional instance identifier
-  service_version: "1.0.0"  # Optional version identifier
-  otlp_endpoint: "http://localhost:4317"  # OTLP endpoint for tracing
+  otlp_endpoint: "http://localhost:4318/v1/traces"  # OTLP endpoint for tracing
   console_debug: false  # Log spans to console
   sample_rate: 1.0  # Sample rate (0.0-1.0)
 ```
