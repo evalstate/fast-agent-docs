@@ -11,9 +11,9 @@ description: Reference for setting up Open Telemetry with fast-agent, providing 
 
 ## Set up an Open Telemetry server
 
-The first step is to set up an Open Telemetry server. For this example, we will use [Jaeger](https://www.jaegertracing.io/) running locally with `docker-compose`. Create the following `docker-compose` file in a convenient directory:
+The first step is to set up an Open Telemetry server. For this example, we will use [Jaeger](https://www.jaegertracing.io/) running locally with `docker-compose.yaml`. Create the following `docker-compose` file in a convenient directory:
 
-```yaml title="docker-compose.yml"
+```yaml title="docker-compose.yaml"
 services:
   jaeger:
     image: jaegertracing/jaeger:latest
@@ -34,6 +34,7 @@ Next, update your `fastagent.config.yaml` to enable telemetry:
 ```yaml title="fastagent.config.yaml"
 otel:
   enabled: true
+  otlp_endpoint: "http://localhost:4318/v1/traces"  # This is the default value
 ```
 
 Then, run your agent as normal - telemetry is transmitted by default to `http://localhost:4318/v1/traces`. From the Jaeger UI use the "Services" drop down to select **fast-agent** and click "Find Traces" to view the output.
