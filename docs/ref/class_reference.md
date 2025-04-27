@@ -3,7 +3,7 @@ title: FastAgent Class Reference
 description: Detailed reference documentation for programmatic usage of the FastAgent class
 ---
 
-# FastAgent Class Reference
+# fast-agent Class Reference
 
 This document provides detailed reference information for programmatically using the `FastAgent` class, which is the core class for creating and running agent applications.
 
