@@ -319,36 +319,3 @@ Hello {{assistant_name}}, how are you?
 Great to meet you {{user_name}} how can I be of assistance?
 ```
 
-<!--
-## Structured Outputs
-
-## Multiturn Conversations
--->
-
-<!-- make this a table generated from the mime type logic? -->
-
-<!--
-
-from mcp_agent.mcp.prompt_message_multipart import PromptMessageMultipart
-
-# Create conversation history
-
-messages = [
-Prompt.user("What is the capital of France?"),
-Prompt.assistant("The capital of France is Paris."),
-Prompt.user("And what is its population?")
-]
-
-# Send all messages at once
-
-response = await agent.generate(messages, None)
-print(response.first_text())
-
-The generate() method provides more control over the conversation flow and returns a PromptMessageMultipart object with the full model
-response.
-
-```
-
-```
-
--->
