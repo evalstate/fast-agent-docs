@@ -174,3 +174,24 @@ openrouter:
 **Model Name Aliases:**
 
 OpenRouter does not use aliases in the same way as Anthropic or OpenAI. You must always use the `openrouter.provider/model-name` format.
+
+## TensorZero
+
+[TensorZero](https://tensorzero.com/) is an open-source framework for building production-grade LLM applications.
+It unifies an LLM gateway, observability, optimization, evaluations, and experimentation.
+
+At the moment, you must run the TensorZero Gateway as a separate service (e.g. using Docker).
+See the [TensorZero Quick Start](https://tensorzero.com/docs/quickstart) and the [TensorZero Gateway Deployment Guide](https://www.tensorzero.com/docs/gateway/deployment/) for more information on how to deploy the TensorZero Gateway.
+
+You can call a function defined in your TensorZero configuration (`tensorzero.toml`) with `fast-agent` by prefixing the function name with `tensorzero.` (e.g. `tensorzero.my_function_name`).
+
+**YAML Configuration:**
+
+```yaml
+tensorzero:
+  base_url: "http://localhost:3000" # Optional, only include to override
+```
+
+**Environment Variables:**
+
+None (model provider credentials should be provided to the TensorZero Gateway instead)

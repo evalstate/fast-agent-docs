@@ -74,6 +74,15 @@ openrouter:
   base_url: "https://openrouter.ai/api/v1"  # Optional, only include to override
 ```
 
+### TensorZero
+
+```yaml
+tensorzero:
+  base_url: "http://localhost:3000"  # Optional, only include to override
+```
+
+See the [TensorZero Quick Start](https://tensorzero.com/docs/quickstart) and the [TensorZero Gateway Deployment Guide](https://www.tensorzero.com/docs/gateway/deployment/) for more information on how to deploy the TensorZero Gateway.
+
 ## MCP Server Configuration
 
 MCP Servers are defined under the `mcp.servers` section:
