@@ -156,6 +156,7 @@ logger:
   show_chat: true  # Show chat messages on console
   show_tools: true  # Show MCP Server tool calls on console
   truncate_tools: true  # Truncate long tool calls in display
+  enable_markup: true # Disable if outputs conflict with rich library markup
 ```
 
 ## Example Full Configuration
