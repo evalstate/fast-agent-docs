@@ -239,6 +239,39 @@ agent["greeter"].send("Good Evening!")          # Dictionary access to agents is
 
 Read more about prompting agents [here](prompting.md)
 
+## Configuring Agent Request Parameters
+
+You can customize how an agent interacts with the LLM by passing `request_params=RequestParams(...)` when defining it.
+
+### Example
+
+```python
+from mcp_agent.models import RequestParams
+
+@fast.agent(
+  name="CustomAgent",                              # name of the agent
+  instruction="You have my custom configurations", # base instruction for the agent
+  request_params=RequestParams(
+    maxTokens=65536,
+    use_history=False,
+    max_iterations=20
+  )
+)
+```
+
+### Available RequestParams Fields
+
+| Field                 | Type     | Default | Description                                                                |
+| --------------------- | -------- | ------- | -------------------------------------------------------------------------- |
+| `maxTokens`           | `int`    | `2048`  | The maximum number of tokens to sample, as requested by the server         |
+| `model`               | `string` | `None`  | The model to use for the LLM generation                                    |
+| `use_history`         | `bool`   | `True`  | Include the message history in the generate request                        |
+| `max_iterations`      | `int`    | `10`    | The maximum number of iterations to run the LLM for                        |
+| `parallel_tool_calls` | `bool`   | `True`  | Whether to allow multiple tool calls per iteration. (multi‑step tool use)  |
+| `response_format`     | `Any`    | `None`  | Override response format for structured calls (advanced use)               |
+
+
+
 ### Defining Agents
 
 #### Basic Agent
