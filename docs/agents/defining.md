@@ -239,6 +239,41 @@ agent["greeter"].send("Good Evening!")          # Dictionary access to agents is
 
 Read more about prompting agents [here](prompting.md)
 
+## Configuring Agent Request Parameters
+
+You can customize how an agent interacts with the LLM by passing `request_params=RequestParams(...)` when defining it.
+
+### Example
+
+```python
+from mcp_agent.models import RequestParams
+
+@fast.agent(
+  name="CustomAgent",                              # name of the agent
+  instruction="You have my custom configurations", # base instruction for the agent
+  request_params=RequestParams(
+    maxTokens=8192,
+    use_history=False,
+    max_iterations=20
+  )
+)
+```
+
+### Available RequestParams Fields
+
+| Field                 | Type     | Default | Description                                                                |
+| --------------------- | -------- | ------- | -------------------------------------------------------------------------- |
+| `maxTokens`           | `int`    | `2048`  | The maximum number of tokens to sample, as requested by the server         |
+| `model`               | `string` | `None`  | The model to use for the LLM generation. Can only be set at Agent creation time                                    |
+| `use_history`         | `bool`   | `True`  | Agent/LLM maintains conversation history. Does not include applied Prompts                        |
+| `max_iterations`      | `int`    | `20`    | The maximum number of tool calls allowed in a conversation turn                        |
+| `parallel_tool_calls` | `bool`   | `True`  | Whether to allow simultaneous tool calls   |
+| `response_format`     | `Any`    | `None`  | Response format for structured calls (advanced use). Prefer to use `structured` with a Pydantic model instead                |
+| `template_vars` | `Dict[str,Any]` | `{}` | Dictionary of template values for dynamic templates. Currently only supported for TensorZero provider |
+| `temperature` | `float` | `None` | Temperature to use for the completion request |
+
+
+
 ### Defining Agents
 
 #### Basic Agent
