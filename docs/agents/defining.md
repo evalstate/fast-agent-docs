@@ -252,7 +252,7 @@ from mcp_agent.models import RequestParams
   name="CustomAgent",                              # name of the agent
   instruction="You have my custom configurations", # base instruction for the agent
   request_params=RequestParams(
-    maxTokens=65536,
+    maxTokens=8192,
     use_history=False,
     max_iterations=20
   )
@@ -264,11 +264,13 @@ from mcp_agent.models import RequestParams
 | Field                 | Type     | Default | Description                                                                |
 | --------------------- | -------- | ------- | -------------------------------------------------------------------------- |
 | `maxTokens`           | `int`    | `2048`  | The maximum number of tokens to sample, as requested by the server         |
-| `model`               | `string` | `None`  | The model to use for the LLM generation                                    |
-| `use_history`         | `bool`   | `True`  | Include the message history in the generate request                        |
-| `max_iterations`      | `int`    | `10`    | The maximum number of iterations to run the LLM for                        |
-| `parallel_tool_calls` | `bool`   | `True`  | Whether to allow multiple tool calls per iteration. (multi‑step tool use)  |
-| `response_format`     | `Any`    | `None`  | Override response format for structured calls (advanced use)               |
+| `model`               | `string` | `None`  | The model to use for the LLM generation. Can only be set at Agent creation time                                    |
+| `use_history`         | `bool`   | `True`  | Agent/LLM maintains conversation history. Does not include applied Prompts                        |
+| `max_iterations`      | `int`    | `20`    | The maximum number of tool calls allowed in a conversation turn                        |
+| `parallel_tool_calls` | `bool`   | `True`  | Whether to allow simultaneous tool calls   |
+| `response_format`     | `Any`    | `None`  | Response format for structured calls (advanced use). Prefer to use `structured` with a Pydantic model instead                |
+| `template_vars` | `Dict[str,Any]` | `{}` | Dictionary of template values for dynamic templates. Currently only supported for TensorZero provider |
+| `temperature` | `float` | `None` | Temperature to use for the completion request |
 
 
 
