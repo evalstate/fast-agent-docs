@@ -150,8 +150,8 @@ You can now continue the chat with `agent_two` (potentially using different Mode
 mcp:
     servers:
         agent_one:
-          transport: sse
-          url: http://localhost:8001
+          transport: http
+          url: http://localhost:8001/mcp
 ```
 
 `agent_two` then references the server in it's definition:
@@ -189,8 +189,8 @@ mcp:
             command: prompt-server
             args: ["history.json"]
         agent_one:
-          transport: sse
-          url: http://localhost:8001
+          transport: http
+          url: http://localhost:8001/mcp
 ```
 
 And then update `agent_two.py` to use the new server:
