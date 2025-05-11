@@ -101,7 +101,17 @@ mcp:
         ENV_VAR2: "value2"
       sampling:  # Optional sampling settings
         model: "haiku"  # Model to use for sampling requests
-      
+
+    # Example Stremable HTTP server
+    streambale_http__server:
+      transport: "http"
+      url: "http://localhost:8000/mcp"
+      read_transport_sse_timeout_seconds: 300  # Timeout for HTTP connections
+      headers:  # Optional HTTP headers
+        Authorization: "Bearer token"
+      auth:  # Optional authentication
+        api_key: "your_api_key"
+
     # Example SSE server
     sse_server:
       transport: "sse"
@@ -111,7 +121,8 @@ mcp:
         Authorization: "Bearer token"
       auth:  # Optional authentication
         api_key: "your_api_key"
-      
+
+
     # Server with roots
     file_server:
       transport: "stdio"

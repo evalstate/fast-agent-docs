@@ -30,22 +30,28 @@ This MCP Server can then be used with an agent as follows:
 @fast.agent(name="Search", servers=["server_one"])
 ```
 
-## Adding an SSE Server
+## Adding an SSE or HTTP Server
 
-To use SSE Servers, specify the `sse` transport and specify the endpoint URL and headers:
+To use remote MCP Servers, specify the either `http` or `sse` transport and the endpoint URL and headers:
 
 ```yaml title="fastagent.config.yaml"
 mcp:
 # name used in agent servers array
   server_two:
-    transport: "sse"
+    transport: "http"
     # url to connect
-    url: "http://localhost:8000/sse"
+    url: "http://localhost:8000/mcp"
     # timeout in seconds to use for sse sessions (optional)
     read_transport_sse_timeout_seconds: 300
     # request headers for connection
     headers: 
           Authorization: "Bearer <secret>"
+
+# name used in agent servers array
+  server_three:
+    transport: "sse"
+    # url to connect
+    url: "http://localhost:8001/sse"
 
 ```
 
@@ -56,8 +62,8 @@ mcp:
 ```yaml title="fastagent.config.yaml"
 mcp:
   server_three:
-    transport: "sse"
-    url: "http://localhost:8000/sse"
+    transport: "http"
+    url: "http://localhost:8000/mcp"
     roots:
        uri: "file://...." 
        name: Optional Name
@@ -77,8 +83,8 @@ Sampling is configured by specifying a sampling model for the MCP Server.
 ```yaml title="fastagent.config.yaml"
 mcp:
   server_four:
-    transport: "sse"
-    url: "http://localhost:8000/sse"
+    transport: "http"
+    url: "http://localhost:8000/mcp"
     sampling:
       model: "provider.model.<reasoning_effort>"        
 ```

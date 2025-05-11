@@ -94,6 +94,7 @@ nav:
       - Quickstart - State Transfer: mcp/state_transfer.md
       - mcp/resources.md
   - Reference:
+      - fast-agent go: ref/go_command.md
       - Config File: ref/config_file.md
       - Command Line: ref/cmd_switches.md
       - Class Reference: ref/class_reference.md

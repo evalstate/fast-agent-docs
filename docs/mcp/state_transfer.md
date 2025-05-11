@@ -106,7 +106,7 @@ From another command line, run the Model Context Protocol inspector to connect t
     npx @modelcontextprotocol/inspector
     ```
 
-Choose the SSE transport type, and the url `http://localhost:8001/sse`. After clicking the `connect` button, you can interact with the agent from the `tools` tab. Use the `agent_one_send` tool to send the agent a chat message and see it's response.
+Choose the "Streamable HTTP" transport type, and the url `http://localhost:8001/mcp`. After clicking the `connect` button, you can interact with the agent from the `tools` tab. Use the `agent_one_send` tool to send the agent a chat message and see it's response.
 
 ![Using the Inspector to Chat](./pics/inspector_chat.png)
 
