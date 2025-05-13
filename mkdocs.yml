@@ -99,3 +99,5 @@ nav:
       - Command Line: ref/cmd_switches.md
       - Class Reference: ref/class_reference.md
       - Open Telemetry: ref/open_telemetry.md
+  - Examples:
+      - Azure OpenAI: examples/azure-config.md

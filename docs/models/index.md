@@ -18,8 +18,8 @@ Model specifications in fast-agent follow this precedence order (highest to lowe
 
 Model strings follow this format: `provider.model_name.reasoning_effort`
 
-- **provider**: The LLM provider (e.g., `anthropic`, `openai`, `deepseek`, `generic`,`openrouter`, `tensorzero`)
-- **model_name**: The specific model to use in API calls
+- **provider**: The LLM provider (e.g., `anthropic`, `openai`, `azure`, `deepseek`, `generic`,`openrouter`, `tensorzero`)
+- **model_name**: The specific model to use in API calls (for Azure, this is your deployment name)
 - **reasoning_effort** (optional): Controls the reasoning effort for supported models
 
 Examples:
@@ -27,6 +27,7 @@ Examples:
 - `anthropic.claude-3-7-sonnet-latest`
 - `openai.gpt-4o`
 - `openai.o3-mini.high`
+- `azure.my-deployment`
 - `generic.llama3.2:latest`
 - `openrouter.google/gemini-2.5-pro-exp-03-25:free`
 - `tensorzero.my_tensorzero_function`
