@@ -246,7 +246,7 @@ You can customize how an agent interacts with the LLM by passing `request_params
 ### Example
 
 ```python
-from mcp_agent.models import RequestParams
+from mcp_agent.core.request_params import RequestParams
 
 @fast.agent(
   name="CustomAgent",                              # name of the agent
