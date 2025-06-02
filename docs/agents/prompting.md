@@ -166,7 +166,7 @@ Apply a Prompt from an MCP Server to the agent with:
 ```python
 response: str = await agent.apply_prompt(
     "setup_sizing",
-    arguments: {"units","metric"}
+    arguments={"units": "metric"}
 )
 ```
 
