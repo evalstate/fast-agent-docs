@@ -112,7 +112,7 @@ The `chain` workflow offers a declarative approach to calling Agents in sequence
 
 @fast.chain(
   "post_writer",
-   sequence=["url_fetcher","social_media"]
+  sequence=["url_fetcher","social_media"]
 )
 
 # we can them prompt it directly:
@@ -158,7 +158,7 @@ The Parallel Workflow sends the same message to multiple Agents simultaneously (
 
 @fast.chain(
   "post_writer",
-   sequence=["url_fetcher","social_media","translate"]
+  sequence=["url_fetcher","social_media","translate"]
 )
 ```
 
@@ -176,10 +176,10 @@ If the Generator has `use_history` off, the previous iteration is returned when 
 
 ```python
 @fast.evaluator_optimizer(
-  name="researcher"
-  generator="web_searcher"
-  evaluator="quality_assurance"
-  min_rating="EXCELLENT"
+  name="researcher",
+  generator="web_searcher",
+  evaluator="quality_assurance",
+  min_rating="EXCELLENT",
   max_refinements=3
 )
 
@@ -197,8 +197,8 @@ Routers use an LLM to assess a message, and route it to the most appropriate Age
 
 ```python
 @fast.router(
-  name="route"
-  agents["agent1","agent2","agent3"]
+  name="route",
+  agents=["agent1","agent2","agent3"]
 )
 ```
 
@@ -212,7 +212,7 @@ Given a complex task, the Orchestrator uses an LLM to generate a plan to divide 
 
 ```python
 @fast.orchestrator(
-  name="orchestrate"
+  name="orchestrate",
   agents=["task1","task2","task3"]
 )
 ```
@@ -297,7 +297,7 @@ from mcp_agent.core.request_params import RequestParams
   name="chain",                          # name of the chain
   sequence=["agent1", "agent2", ...],    # list of agents in execution order
   instruction="instruction",             # instruction to describe the chain for other workflows
-  cumulative=False                       # whether to accumulate messages through the chain
+  cumulative=False,                      # whether to accumulate messages through the chain
   continue_with_final=True,              # open chat with agent at end of chain after prompting
 )
 ```
@@ -333,7 +333,7 @@ from mcp_agent.core.request_params import RequestParams
   name="route",                          # name of the router
   agents=["agent1", "agent2", "agent3"], # list of agent names router can delegate to
   instruction="routing instruction",     # any extra routing instructions
-  servers=["filesystem"]                 # list of servers for the routing agent
+  servers=["filesystem"],                # list of servers for the routing agent
   model="o3-mini.high",                  # specify routing model
   use_history=False,                     # router maintains conversation history
   human_input=False,                     # whether router can request human input
