@@ -45,6 +45,41 @@ openai:
   reasoning_effort: "medium"  # Default reasoning effort: "low", "medium", or "high"
 ```
 
+### Azure OpenAI
+
+```yaml
+# Option 1: Using resource_name and api_key (standard method)
+azure:
+  api_key: "your_azure_openai_key"  # Required unless using DefaultAzureCredential
+  resource_name: "your-resource-name"  # Resource name in Azure
+  azure_deployment: "deployment-name"  # Required - deployment name from Azure
+  api_version: "2023-05-15"  # Optional API version
+  # Do NOT include base_url if you use resource_name
+
+# Option 2: Using base_url and api_key (custom endpoints or sovereign clouds)
+# azure:
+#   api_key: "your_azure_openai_key"
+#   base_url: "https://your-endpoint.openai.azure.com/"
+#   azure_deployment: "deployment-name"
+#   api_version: "2023-05-15"
+#   # Do NOT include resource_name if you use base_url
+
+# Option 3: Using DefaultAzureCredential (for managed identity, Azure CLI, etc.)
+# azure:
+#   use_default_azure_credential: true
+#   base_url: "https://your-endpoint.openai.azure.com/"
+#   azure_deployment: "deployment-name"
+#   api_version: "2023-05-15"
+#   # Do NOT include api_key or resource_name in this mode
+```
+
+Important configuration notes:
+- Use either `resource_name` or `base_url`, not both.
+- When using `DefaultAzureCredential`, do NOT include `api_key` or `resource_name` (the `azure-identity` package must be installed).
+- When using `base_url`, do NOT include `resource_name`.
+- When using `resource_name`, do NOT include `base_url`.
+- The model string format is `azure.deployment-name`
+
 ### DeepSeek
 
 ```yaml
@@ -77,6 +112,15 @@ openrouter:
   base_url: "https://openrouter.ai/api/v1"  # Optional, only include to override
 ```
 
+### TensorZero
+
+```yaml
+tensorzero:
+  base_url: "http://localhost:3000"  # Optional, only include to override
+```
+
+See the [TensorZero Quick Start](https://tensorzero.com/docs/quickstart) and the [TensorZero Gateway Deployment Guide](https://www.tensorzero.com/docs/gateway/deployment/) for more information on how to deploy the TensorZero Gateway.
+
 ## MCP Server Configuration
 
 MCP Servers are defined under the `mcp.servers` section:
@@ -95,7 +139,17 @@ mcp:
         ENV_VAR2: "value2"
       sampling:  # Optional sampling settings
         model: "haiku"  # Model to use for sampling requests
-      
+
+    # Example Stremable HTTP server
+    streambale_http__server:
+      transport: "http"
+      url: "http://localhost:8000/mcp"
+      read_transport_sse_timeout_seconds: 300  # Timeout for HTTP connections
+      headers:  # Optional HTTP headers
+        Authorization: "Bearer token"
+      auth:  # Optional authentication
+        api_key: "your_api_key"
+
     # Example SSE server
     sse_server:
       transport: "sse"
@@ -105,7 +159,8 @@ mcp:
         Authorization: "Bearer token"
       auth:  # Optional authentication
         api_key: "your_api_key"
-      
+
+
     # Server with roots
     file_server:
       transport: "stdio"
@@ -150,6 +205,7 @@ logger:
   show_chat: true  # Show chat messages on console
   show_tools: true  # Show MCP Server tool calls on console
   truncate_tools: true  # Truncate long tool calls in display
+  enable_markup: true # Disable if outputs conflict with rich library markup
 ```
 
 ## Example Full Configuration

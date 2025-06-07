@@ -51,10 +51,13 @@ Any **fast-agent** application can be deployed as an MCP (Message Control Protoc
 ### Starting an MCP Server
 
 ```bash
-# Start as an SSE server (HTTP)
+# Start as a Streamable HTTP server (http://localhost:8080/mcp)
+uv run agent.py --server --transport http --port 8080
+
+# Start as an SSE server (http://localhost:8080/sse)
 uv run agent.py --server --transport sse --port 8080
 
-# Start as a stdio server (for piping to other processes)
+# Start as a stdio server
 uv run agent.py --server --transport stdio
 ```
 

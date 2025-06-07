@@ -20,7 +20,7 @@ When running a **fast-agent** application (typically `uv run agent.py`), you hav
 | `--quiet` | Disable progress display, tool and message logging | `--quiet` |
 | `--version` | Show version and exit | `--version` |
 | `--server` | Run as an MCP server | `--server` |
-| `--transport {sse,stdio}` | Transport protocol when running as server | `--transport sse` |
+| `--transport {http,sse,stdio}` | Transport protocol when running as server | `--transport http` |
 | `--port PORT` | Port for SSE server (default: 8000) | `--port 8080` |
 | `--host HOST` | Host for SSE server (default: 0.0.0.0) | `--host localhost` |
 
@@ -69,35 +69,7 @@ This is particularly useful when:
 
 ## fast-agent go Command
 
-The `fast-agent go` command lets you run an interactive agent directly without creating a Python file:
-
-| Option | Description | Example |
-|--------|-------------|---------|
-| `--name NAME` | Name for the agent (default: "FastAgent CLI") | `--name "Research Assistant"` |
-| `-i, --instruction INSTRUCTION` | Instruction for the agent | `--instruction "You are a coding assistant"` |
-| `-c, --config-path PATH` | Path to config file | `--config-path ./config/fastagent.config.yaml` |
-| `--servers SERVERS` | Comma-separated list of server names | `--servers fetch,filesystem` |
-| `--model MODEL` | Override the default model | `--model sonnet` |
-| `--quiet` | Disable progress display and logging | `--quiet` |
-
-### Examples
-
-```bash
-# Basic usage
-fast-agent go
-
-# Specify a model and instructions
-fast-agent go --model haiku --instruction "You are a helpful AI assistant"
-
-# Use specific MCP servers
-fast-agent go --servers fetch,filesystem
-
-# Specify a custom configuration file
-fast-agent go --config-path ./my-config.yaml
-
-# Create a named agent with specific servers and model
-fast-agent go --name "Code Helper" --servers filesystem --model gpt-4o --instruction "You are a coding assistant specializing in Python"
-```
+The `fast-agent go` command lets you run an interactive agent directly without creating a Python file. Read the guide [here](go_command.md)
 
 ## fast-agent check Command
 
