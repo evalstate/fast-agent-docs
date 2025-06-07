@@ -19,6 +19,9 @@ fast-agent automatically searches for configuration files in the current working
 # Default model for all agents
 default_model: "haiku"  # Format: provider.model_name.reasoning_effort
 
+# Whether to automatically enable Sampling. Model seletion precedence is Agent > Default.
+auto_sampling: true
+
 # Execution engine (only asyncio is currently supported)
 execution_engine: "asyncio"
 ```
