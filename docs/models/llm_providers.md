@@ -119,7 +119,7 @@ azure:
 # Option 2: Custom endpoint with base_url
 azure:
   api_key: "your_azure_openai_key"
-  base_url: "https://your-resource-name.openai.azure.com/" # Full endpoint URL
+  base_url: "https://your-resource-name.openai.azure.com" # Full endpoint URL
   azure_deployment: "deployment-name"
   api_version: "2023-05-15" # Optional
   # Do NOT include resource_name if you use base_url
@@ -127,7 +127,7 @@ azure:
 # Option 3: Using DefaultAzureCredential (requires azure-identity package)
 azure:
   use_default_azure_credential: true
-  base_url: "https://your-resource-name.openai.azure.com/"
+  base_url: "https://your-resource-name.openai.azure.com"
   azure_deployment: "deployment-name"
   api_version: "2023-05-15" # Optional
   # Do NOT include api_key or resource_name when using DefaultAzureCredential
