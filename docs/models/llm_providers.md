@@ -71,7 +71,7 @@ openai:
 | `gpt-4o-mini` | `gpt-4o-mini` | `gpt-4.1-mini`| `gpt-4.1-mini`|
 | `o1`          | `o1`          | `gpt-4.1-nano`| `gpt-4.1-nano`|
 | `o1-mini`     | `o1-mini`     | `o1-preview`  | `o1-preview`  |
-| `o3-mini`     | `o3-mini`     |               |               |
+| `o3-mini`     | `o3-mini`     | `o3`          |               |
 
 ## Azure OpenAI
 
