@@ -81,14 +81,14 @@ Before deploying an LLM model in Azure, **always check the official Azure docume
 
 **Key Capabilities and Official Documentation:**
 
-- **General model list & region availability:**  
+- **General model list & region availability:**
   [Azure OpenAI Service models – Region availability (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models?utm_source=chatgpt.com)
-- **Vision (GPT-4 Turbo with Vision, GPT-4o, o1, etc.):**  
+- **Vision (GPT-4 Turbo with Vision, GPT-4o, o1, etc.):**
   [How-to: GPT with Vision (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/gpt-with-vision?utm_source=chatgpt.com)
-- **Audio / Whisper:**  
-  [The Whisper model from OpenAI (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/whisper-overview?utm_source=chatgpt.com)  
+- **Audio / Whisper:**
+  [The Whisper model from OpenAI (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/whisper-overview?utm_source=chatgpt.com)
   [Audio concepts in Azure OpenAI (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/audio?utm_source=chatgpt.com)
-- **PDF / Documents:**  
+- **PDF / Documents:**
   [Azure AI Foundry feature availability across clouds regions (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/ai-foundry/reference/region-support?utm_source=chatgpt.com)
 
 **Summary:**
@@ -196,7 +196,7 @@ _None mapped_
 ## Generic OpenAI / Ollama
 
 
-Models prefixed with `generic` will use a generic OpenAI endpoint, with the defaults configured to work with Ollama [OpenAI compatibility](https://github.com/ollama/ollama/blob/main/docs/openai.md). 
+Models prefixed with `generic` will use a generic OpenAI endpoint, with the defaults configured to work with Ollama [OpenAI compatibility](https://github.com/ollama/ollama/blob/main/docs/openai.md).
 
 This means that to run Llama 3.2 latest you can specify `generic.llama3.2:latest` for the model string, and no further configuration should be required.
 
@@ -270,3 +270,31 @@ tensorzero:
 **Environment Variables:**
 
 None (model provider credentials should be provided to the TensorZero Gateway instead)
+
+## Aliyun
+
+Tongyi Qianwen is a large-scale language model independently developed by Alibaba Cloud, featuring strong natural language understanding and generation capabilities. It can answer various questions, create written content, express opinions, and write code, playing a role in multiple fields.
+
+**YAML Configuration:**
+
+```yaml
+aliyun:
+  api_key: "your_aliyun_key"
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+```
+
+**Environment Variables:**
+
+- `ALIYUN_API_KEY`: Your Aliyun API key
+- `ALIYUN_BASE_URL`: Override the API endpoint
+
+**Model Name Aliases:**
+
+Check the [Aliyun Official Documentation](https://help.aliyun.com/zh/model-studio/models) for the latest model names and aliases.
+
+| Model Alias  | Maps to                    |
+| ------------ | -------------------------- |
+| `qwen-turbo` | `qwen-turbo-2025-02-11`    |
+| `qwen-plus`  | `qwq-plus-2025-03-05`      |
+| `qwen-max`   | `qwen-max-2024-09-19`      |
+| `qwen-long`  | *undocumented*             |
