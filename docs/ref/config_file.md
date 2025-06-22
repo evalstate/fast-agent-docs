@@ -261,3 +261,15 @@ LOGGER__LEVEL=debug
 ```
 
 Environment variables take precedence over values in the configuration files. For nested arrays or complex structures, use the YAML configuration file.
+
+The `fastagent.config.yaml` file supports referencing environment variables inline using the `${ENV_VAR}` syntax. When the configuration is loaded, any value specified as `${ENV_VAR}` will be automatically replaced with the value of the corresponding environment variable. This allows you to securely inject sensitive or environment-specific values into your configuration files without hardcoding them.
+
+For example:
+
+```yaml
+openai:
+  api_key: "${OPENAI_API_KEY}"
+```
+
+In this example, the `api_key` value will be set to the value of the `OPENAI_API_KEY` environment variable at runtime.
+
