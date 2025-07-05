@@ -91,4 +91,23 @@ mcp:
 
 Read more about The model string and settings [here](../models/index.md). Sampling requests support vision - try [`@llmindset/mcp-webcam`](https://github.com/evalstate/mcp-webcam) for an example.
 
+## Elicitations
+
+Elicitations are configured by specifying a strategy for the MCP Server. The handler can be overriden with a custom handler in the Agent definition.
+
+```yaml title="fastagent.config.yaml"
+mcp:
+  server_four:
+    transport: "http"
+    url: "http://localhost:8000/mcp"
+    elicitation:
+      mode: "forms"         
+```
+
+`mode` can be one of:
+
+- **`forms`** (default). Displays a form to respond to elicitations.
+- **`auto_cancel`** The elicitation capability is advertised to the Server, but all solicitations are automatically cancelled.
+- **`none`** No elicitation capability is advertised to the Server.
+
 <!-- update with mcp-advanced examples-->
