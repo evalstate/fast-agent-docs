@@ -287,6 +287,7 @@ from mcp_agent.core.request_params import RequestParams
   use_history=True,                      # agent maintains chat history
   request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
   human_input=True,                      # agent can request human input
+  elicitation_handler=ElicitationFnT     # custom elicitation handler (from mcp.client.session)
 )
 ```
 
@@ -354,3 +355,21 @@ from mcp_agent.core.request_params import RequestParams
   max_iterations=5,                      # maximum number of full plan attempts, or iterations
 )
 ```
+
+#### Custom
+
+```python
+@fast.custom(
+  cls=Custom                             # agent class
+  name="custom",                         # name of the custom agent
+  instruction="instruction",             # base instruction for the orchestrator
+  servers=["filesystem"],                # list of MCP Servers for the agent
+  model="o3-mini.high",                  # specify a model for the agent
+  use_history=True,                      # agent maintains chat history
+  request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
+  human_input=True,                      # agent can request human input
+  elicitation_handler=ElicitationFnT     # custom elicitation handler (from mcp.client.session)
+
+)
+```
+
