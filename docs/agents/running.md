@@ -46,7 +46,7 @@ The `--quiet` flag switches off the Progress, Chat and Tool displays.
 
 ## MCP Server Deployment
 
-Any **fast-agent** application can be deployed as an MCP (Message Control Protocol) server with a simple command-line switch.
+Any **fast-agent** application can be deployed as an MCP server with a simple command-line switch.
 
 ### Starting an MCP Server
 
