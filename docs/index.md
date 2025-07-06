@@ -25,7 +25,7 @@ hide:
 
     Out-of-the box examples of sophisticated Agents, Workflows and advanced MCP Usage.
 
--   :material-connection:{ .lg .middle } __New Quickstart Guide__
+-   :material-connection:{ .lg .middle } __Elicitation Quickstart Guide__
 
     ---
 

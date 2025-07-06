@@ -7,16 +7,17 @@ description: Guided demonstration of using MCP Elicitations
 
 In this quick start, we'll demonstrate **fast-agent**'s [MCP Elicitation](https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation) features.
 
-![Elicitation Form](./pics/2025-07-05-elicit1_tiny.png){: align=right }
+![Elicitation Form](./pics/elicitation_form.gif){: align=right style="width:250px;"  }
 
 Elicitations allow MCP Servers to request additional information from Users whilst they are running.
 
-The demo comprises an MCP Server that generates Elicitation Requests, and 3 `fast-agent` programs:
+The demo comprises three MCP Servers and three **`fast-agent`** programs:
 
- - An interactive demonstration showing different Forms, Fields and Validation.
+ - An interactive demonstration showing different types of Forms, Fields and Validation.
  - A demonstration of an Elicitation made during a Tool Call.
  - An example of using a custom Elicitation handler.
 
+This quick start gives provides you with a complete MCP Client and Server solution for developing and deploying Elicitations.  
 
 ## Setup **fast-agent**
 
@@ -63,15 +64,15 @@ Make sure you have the `uv` [package manager](https://docs.astral.sh/uv/) instal
 
 You are now ready to start the demos.
 
-## Interactive Forms
+## Elicitation Requests and Forms
 
-Start the interactive form demo with:
+The Interactive Forms demo showcases all of the Elicitation data types and validations. Start the interactive form demo with:
 
 ```bash
 uv run forms_demo.py
 ```
 
-This demo causes 4 Elicitation Forms to appear in turn. 
+This demonstration displays 4 different elicitation forms in sequence.
 
 Note that the forms:
 
@@ -80,34 +81,44 @@ Note that the forms:
  - Can be Cancelled with the Escape key
  - Uses multiline text input for long fields
  - Identify the Agent and MCP Server that produced the request.
+ 
+
+![Elicitation Form](./pics/elicitation_form_sm.png){: align=right style="width:350px;"  }
 
 The `Cancel All` option cancels the Elicitation Request, and automatically cancels future requests to avoid unwanted interruptions from poorly behaving Servers.
 
-For MCP Server developers, the form is fast to navigate to make iterative testing fast. The `elicitation_forms_server.py` file includes examples of all field types and validations: `Numbers`, `Booleans`, `Enums` and `Strings`.
 
+For MCP Server developers, the form is fast and easy to navigate to facilitating iterative development. 
+
+The `elicitation_forms_server.py` file includes examples of all field types and validations: `Numbers`, `Booleans`, `Enums` and `Strings`.
+
+It also supports the formats specified in the [schema](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/b98f9805e963af7f67f158bdfa760078be4675a3/schema/2025-06-18/schema.ts#L1335-L1342): Email, Uri, Date and Date/Time.
 
 <!-- 
 , rename `fastagent.secrets.yaml.example` to `fastagent.secrets.yaml` and enter the API Keys for the providers you wish to use.  -->
 
 <!-- The supplied `fastagent.config.yaml` file contains a default of `gpt-4o` - edit this if you wish.  -->
 
-
-![Testing the Agent](./pics/test_message.png)
-
 ## Tool Call
 
+The Tool Call demo demonstrates an Elicitation being conducted during an MCP Tool Call. This also showcases a couple of **`fast-agent`** features:
 
+- The `passthrough` model that supports testing without an LLM.
+- Calling a tool by sending a `***CALL_TOOL` message, that enables an Agent to directly call an MCP Server Tool with specific arguments.
+
+Run `uv run tool_call.py` to run the Agent and see the elicitation. You can use a real LLM with the `--model` switch.
 
 ## Custom Handler
 
-Run the Custom Handler demonstration with
+This example shows how to write and integrate a custom Elicitation handler. For this example, the agent uses a custom handler to generate a character for a game. To run:
 
 ```bash
 uv run game_character.py
 ```
 
-This agent uses a custom elicitation handler to generate a character for a game. The custom handler is in `game_character_handler.py` and is setup with the following code:
+![Custom Elicitation](./pics/elicitation_char3.gif)
 
+This agent uses a custom elicitation handler to generate a character for a game. The custom handler is in `game_character_handler.py` and is setup with the following code:
 
 ```python title="game_character.py" linenums="23" hl_lines="4-5"
 @fast.agent(
@@ -118,6 +129,4 @@ This agent uses a custom elicitation handler to generate a character for a game.
 )
 ```
 
-## Next Steps
-
-Try modifying the MCP Server to create new forms, or create a Custom Handler.
+For MCP Server Developers, Custom Handlers can be used to help complete automated test flows. For Production use, Custom Handlers can be used to send notifications or request input via remote  platforms such as web forms.
