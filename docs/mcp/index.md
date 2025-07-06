@@ -110,4 +110,3 @@ mcp:
 - **`auto_cancel`** The elicitation capability is advertised to the Server, but all solicitations are automatically cancelled.
 - **`none`** No elicitation capability is advertised to the Server.
 
-<!-- update with mcp-advanced examples-->

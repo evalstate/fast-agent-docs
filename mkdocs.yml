@@ -91,6 +91,7 @@ nav:
   - MCP:
       - Configuring Servers: mcp/index.md
       - mcp/types.md
+      - Quickstart - Elicitations: mcp/elicitations.md
       - Quickstart - State Transfer: mcp/state_transfer.md
       - mcp/resources.md
   - Reference:

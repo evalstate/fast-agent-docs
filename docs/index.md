@@ -25,12 +25,12 @@ hide:
 
     Out-of-the box examples of sophisticated Agents, Workflows and advanced MCP Usage.
 
--   :material-connection:{ .lg .middle } __New Quickstart Guide__
+-   :material-connection:{ .lg .middle } __Elicitation Quickstart Guide__
 
     ---
 
-    Learn how to use MCP Prompts to transfer state, save, and load conversations. 
-    [:octicons-arrow-right-24: Try now](./mcp/state_transfer.md)
+    Get started with MCP Elicitations for User Interaction. 
+    [:octicons-arrow-right-24: Try now](./mcp/elicitations.md)
 
 -   :material-beaker-check-outline:{ .lg .middle } __Comprehensive Test Suite__
 
