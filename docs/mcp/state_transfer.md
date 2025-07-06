@@ -58,7 +58,7 @@ The quick start also uses the MCP Inspector - check [here](https://modelcontextp
 
 Change to the state-transfer directory (`cd state-transfer`), rename `fastagent.secrets.yaml.example` to `fastagent.secrets.yaml` and enter the API Keys for the providers you wish to use. 
 
-The supplied `fastagent.config.yaml` file contains a default of `gpt-4o` - edit this if you wish. 
+The supplied `fastagent.config.yaml` file contains a default of `gpt-4.1` - edit this if you wish. 
 
 Finally, run `uv run agent_one.py` and send a test message to make sure that everything working. Enter `stop` to return to the command line.
 
