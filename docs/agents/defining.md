@@ -287,7 +287,8 @@ from mcp_agent.core.request_params import RequestParams
   use_history=True,                      # agent maintains chat history
   request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
   human_input=True,                      # agent can request human input
-  elicitation_handler=ElicitationFnT     # custom elicitation handler (from mcp.client.session)
+  elicitation_handler=ElicitationFnT,    # custom elicitation handler (from mcp.client.session)
+  api_key="programmatic-api-key",        # specify the API KEY programmatically, it will override which provided in config file or env var
 )
 ```
 
@@ -338,6 +339,7 @@ from mcp_agent.core.request_params import RequestParams
   model="o3-mini.high",                  # specify routing model
   use_history=False,                     # router maintains conversation history
   human_input=False,                     # whether router can request human input
+  api_key="programmatic-api-key",        # specify the API KEY programmatically, it will override which provided in config file or env var
 )
 ```
 
@@ -353,6 +355,7 @@ from mcp_agent.core.request_params import RequestParams
   human_input=False,                     # whether orchestrator can request human input
   plan_type="full",                      # planning approach: "full" or "iterative"
   max_iterations=5,                      # maximum number of full plan attempts, or iterations
+  api_key="programmatic-api-key",        # specify the API KEY programmatically, it will override which provided in config file or env var
 )
 ```
 
@@ -368,8 +371,8 @@ from mcp_agent.core.request_params import RequestParams
   use_history=True,                      # agent maintains chat history
   request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
   human_input=True,                      # agent can request human input
-  elicitation_handler=ElicitationFnT     # custom elicitation handler (from mcp.client.session)
-
+  elicitation_handler=ElicitationFnT,    # custom elicitation handler (from mcp.client.session)
+  api_key="programmatic-api-key",        # specify the API KEY programmatically, it will override which provided in config file or env var
 )
 ```
 
