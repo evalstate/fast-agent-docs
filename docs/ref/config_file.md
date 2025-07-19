@@ -121,6 +121,27 @@ tensorzero:
 
 See the [TensorZero Quick Start](https://tensorzero.com/docs/quickstart) and the [TensorZero Gateway Deployment Guide](https://www.tensorzero.com/docs/gateway/deployment/) for more information on how to deploy the TensorZero Gateway.
 
+### AWS Bedrock
+
+```yaml
+bedrock:
+  region: "us-east-1"  # Required - AWS region where Bedrock is available
+  profile: "default"   # Optional - AWS profile to use (defaults to "default")
+```
+
+AWS Bedrock uses standard AWS authentication through the boto3 credential provider chain. You can configure credentials using:
+
+- **AWS CLI**: Run `aws configure` to set up credentials (AWS SSO recommended for local development)
+- **Environment variables**: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` (for temporary credentials)
+- **IAM roles**: Use IAM roles when running on EC2 or other AWS services
+- **AWS profiles**: Use named profiles with the `profile` setting or `AWS_PROFILE` environment variable
+
+Additional environment variables:
+- `AWS_REGION` or `AWS_DEFAULT_REGION`: Override the region setting
+- `AWS_PROFILE`: Override the profile setting
+
+The model string format is `bedrock.model-id` (e.g., `bedrock.amazon.nova-lite-v1:0`)
+
 ## MCP Server Configuration
 
 MCP Servers are defined under the `mcp.servers` section:

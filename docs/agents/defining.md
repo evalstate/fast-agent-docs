@@ -283,11 +283,15 @@ from mcp_agent.core.request_params import RequestParams
   name="agent",                          # name of the agent
   instruction="You are a helpful Agent", # base instruction for the agent
   servers=["filesystem"],                # list of MCP Servers for the agent
+  #tools={"filesystem": ["tool_1", "tool_2"]  # Filter the tools available to the agent. Defaults to all
+  #resources={"filesystem: ["resource_1", "resource_2"]} # Filter the resources available to the agent. Defaults to all
+  #prompts={"filesystem": ["prompt_1", "prompt_2"]}  # Filter the prompts available to the agent. Defaults to all.
   model="o3-mini.high",                  # specify a model for the agent
   use_history=True,                      # agent maintains chat history
   request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
   human_input=True,                      # agent can request human input
-  elicitation_handler=ElicitationFnT     # custom elicitation handler (from mcp.client.session)
+  elicitation_handler=ElicitationFnT,    # custom elicitation handler (from mcp.client.session)
+  api_key="programmatic-api-key",        # specify the API KEY programmatically, it will override which provided in config file or env var
 )
 ```
 
@@ -335,9 +339,13 @@ from mcp_agent.core.request_params import RequestParams
   agents=["agent1", "agent2", "agent3"], # list of agent names router can delegate to
   instruction="routing instruction",     # any extra routing instructions
   servers=["filesystem"],                # list of servers for the routing agent
+  #tools={"filesystem": ["tool_1", "tool_2"]  # Filter the tools available to the agent. Defaults to all
+  #resources={"filesystem: ["resource_1", "resource_2"]} # Filter the resources available to the agent. Defaults to all
+  #prompts={"filesystem": ["prompt_1", "prompt_2"]}  # Filter the prompts available to the agent. Defaults to all
   model="o3-mini.high",                  # specify routing model
   use_history=False,                     # router maintains conversation history
   human_input=False,                     # whether router can request human input
+  api_key="programmatic-api-key",        # specify the API KEY programmatically, it will override which provided in config file or env var
 )
 ```
 
@@ -353,6 +361,7 @@ from mcp_agent.core.request_params import RequestParams
   human_input=False,                     # whether orchestrator can request human input
   plan_type="full",                      # planning approach: "full" or "iterative"
   max_iterations=5,                      # maximum number of full plan attempts, or iterations
+  api_key="programmatic-api-key",        # specify the API KEY programmatically, it will override which provided in config file or env var
 )
 ```
 
@@ -364,12 +373,16 @@ from mcp_agent.core.request_params import RequestParams
   name="custom",                         # name of the custom agent
   instruction="instruction",             # base instruction for the orchestrator
   servers=["filesystem"],                # list of MCP Servers for the agent
+  MCP Servers for the agent
+  #tools={"filesystem": ["tool_1", "tool_2"]  # Filter the tools available to the agent. Defaults to all
+  #resources={"filesystem: ["resource_1", "resource_2"]} # Filter the resources available to the agent. Defaults to all
+  #prompts={"filesystem": ["prompt_1", "prompt_2"]}  # Filter the prompts available to the agent. Defaults to all
   model="o3-mini.high",                  # specify a model for the agent
   use_history=True,                      # agent maintains chat history
   request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
   human_input=True,                      # agent can request human input
-  elicitation_handler=ElicitationFnT     # custom elicitation handler (from mcp.client.session)
-
+  elicitation_handler=ElicitationFnT,    # custom elicitation handler (from mcp.client.session)
+  api_key="programmatic-api-key",        # specify the API KEY programmatically, it will override which provided in config file or env var
 )
 ```
 
