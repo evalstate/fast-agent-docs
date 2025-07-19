@@ -206,6 +206,7 @@ logger:
   show_tools: true  # Show MCP Server tool calls on console
   truncate_tools: true  # Truncate long tool calls in display
   enable_markup: true # Disable if outputs conflict with rich library markup
+  use_legacy_display: false # enable the < 0.2.43 display
 ```
 
 ## Example Full Configuration
