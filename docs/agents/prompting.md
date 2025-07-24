@@ -67,9 +67,9 @@ print(response.last_text())  # Main text response
 
 The key difference between `send()` and `generate()` is that `generate()` returns a `PromptMessageMultipart` object, giving you access to the complete response structure:
 
-- `last_text()`: Gets the main text response
+- `last_text()`: Gets the last text response - usually the Assistant message without Tool Call/Response information.
 - `first_text()`: Gets the first text content if multiple text blocks exist
-- `all_text()`: Combines all text content in the response
+- `all_text()`: Combines all text content in the response - including Tall Call/Response information.
 - `content`: Direct access to the full list of content parts, including Images and EmbeddedResources
 
 This is particularly useful when working with multimodal responses or tool outputs:

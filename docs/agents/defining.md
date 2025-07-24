@@ -49,6 +49,17 @@ The Agent can then be run with `uv run sizer.py`.
 
 Specify a model with the `--model` switch - for example `uv run sizer.py --model sonnet`.
 
+You can also pass a `Path` for the instruction - e.g. 
+
+```python
+from pathlib import Path
+
+@fast.agent(
+  instruction=Path("./sizing_prompt.md")
+)
+
+```
+
 ## Workflows and MCP Servers
 
 _To generate examples use `fast-agent quickstart workflow`. This example can be run with `uv run workflow/chaining.py`. fast-agent looks for configuration files in the current directory before checking parent directories recursively._
