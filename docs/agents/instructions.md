@@ -6,8 +6,7 @@ Agents can have their System Instructions set in a number of flexible ways to ma
 
 When defining an Agent, you can load the instruction as either a `String`, `Path` or `AnyUrl`.
 
-`String` and `Path` also support embedding the current date or Urls. 
-
+Instructions support embedding the current date, as well as content from other URLs. This is really helpful if you want to refer to files on GitHub, or assemble useful prompts/content in Gists etc.
 
 ```python title="Simple String"
 @fast.agent(name="example",
