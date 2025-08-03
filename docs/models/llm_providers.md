@@ -36,10 +36,10 @@ anthropic:
 
 | Model Alias | Maps to                    | Model Alias | Maps to                    |
 | ----------- | -------------------------- | ----------- | -------------------------- |
-| `claude`    | `claude-3-7-sonnet-latest` | `haiku`     | `claude-3-5-haiku-latest`  |
-| `sonnet`    | `claude-3-7-sonnet-latest` | `haiku3`    | `claude-3-haiku-20240307`  |
+| `claude`    | `claude-sonnet-4-0` | `haiku`     | `claude-3-5-haiku-latest`  |
+| `sonnet`    | `claude-sonnet-4-0` | `haiku3`    | `claude-3-haiku-20240307`  |
 | `sonnet35`  | `claude-3-5-sonnet-latest` | `haiku35`   | `claude-3-5-haiku-latest`  |
-| `sonnet37`  | `claude-3-7-sonnet-latest` | `opus`      | `claude-3-opus-latest`     |
+| `sonnet37`  | `claude-3-7-sonnet-latest` | `opus`      | `claude-opus-4-0`     |
 | `opus3`     |     `claude-3-opus-latest` |      |     |
 
 ## OpenAI
@@ -148,6 +148,31 @@ azure:
 
 Use `azure.deployment-name` as the model string, where `deployment-name` is the name of your Azure OpenAI deployment.
 
+
+## Groq
+
+Groq is supported for Structured Outputs and Tool Calling, and has been tested with `moonshotai/kimi-k2-instruct`, `qwen/qwen3-32b` and `deepseek-r1-distill-llama-70b`.
+
+**YAML Configuration:**
+
+```yaml
+groq:
+  api_key: "your_groq_api_key"
+  base_url: "https://api.groq.com/openai/v1"
+```
+
+**Environment Variables:**
+
+- `GROQ_API_KEY`: Your Groq API key
+- `GROQ_BASE_URL`: Override the API endpoint
+
+**Model Name Aliases:**
+
+| Model Alias | Maps to                    |
+| ----------- | -------------------------- |
+| `kimi`  | `moonshotai/kimi-k2-instruct` |
+
+
 ## DeepSeek
 
 DeepSeek v3 is supported for Text and Tool calling.
@@ -175,7 +200,7 @@ deepseek:
 
 ## Google
 
-Google is currently supported through the OpenAI compatibility endpoint, with first-party support planned soon.
+Google is natively supported in `fast-agent` using the Google genai libraries.
 
 **YAML Configuration:**
 
@@ -191,7 +216,33 @@ google:
 
 **Model Name Aliases:**
 
-_None mapped_
+| Model Alias | Maps to                    |
+| ----------- | -------------------------- |
+| `gemini2`  | `gemini-2.0-flash` |
+| `gemini25` | `gemini-2.5-flash-preview-05-20` |
+| `gemini25pro` | `gemini-2.5-pro-preview-05-06` |
+
+### OpenAI Mode
+
+You can also access Google via the OpenAI Provider. Use `googleoai` in the YAML file, or `GOOGLEOAI_API_KEY` for API KEY access.
+
+## XAI Grok
+
+XAI Grok 3 and Grok 4 are available through the XAI Provider.
+
+**YAML Configuration:**
+
+```yaml
+xai:
+  api_key: "your_xai_key"
+  base_url: "https://api.x.ai/v1"
+```
+
+**Environment Variables:**
+
+- `XAI_API_KEY`: Your Grok API key
+- `XAI_BASE_URL`: Override the API endpoint
+
 
 ## Generic OpenAI / Ollama
 
