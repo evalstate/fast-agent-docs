@@ -171,6 +171,8 @@ groq:
 | Model Alias | Maps to                    |
 | ----------- | -------------------------- |
 | `kimi`  | `moonshotai/kimi-k2-instruct` |
+| `gpt-oss`  | `openai/gpt-oss-120b` |
+| `gpt-oss-20b`  | `openai/gpt-oss-20b` |
 
 
 ## DeepSeek
