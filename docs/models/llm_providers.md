@@ -301,17 +301,52 @@ openrouter:
 
 OpenRouter does not use aliases in the same way as Anthropic or OpenAI. You must always use the `openrouter.provider/model-name` format.
 
-## TensorZero
+## TensorZero Integration
 
-[TensorZero](https://tensorzero.com/) is an open-source framework for building production-grade LLM applications.
-It unifies an LLM gateway, observability, optimization, evaluations, and experimentation.
+[TensorZero](https://tensorzero.com/) is an open-source framework for building production-grade LLM applications. It unifies an LLM gateway, observability, optimization, evaluations, and experimentation into a single, cohesive system.
 
-At the moment, you must run the TensorZero Gateway as a separate service (e.g. using Docker).
-See the [TensorZero Quick Start](https://tensorzero.com/docs/quickstart) and the [TensorZero Gateway Deployment Guide](https://www.tensorzero.com/docs/gateway/deployment/) for more information on how to deploy the TensorZero Gateway.
+**Why Choose This Integration?**
 
-You can call a function defined in your TensorZero configuration (`tensorzero.toml`) with `fast-agent` by prefixing the function name with `tensorzero.` (e.g. `tensorzero.my_function_name`).
+While `fast-agent` can connect directly to many LLM providers, integrating with TensorZero offers powerful advantages for building robust, scalable, and maintainable agentic systems:
 
-**YAML Configuration:**
+  * **Decouple Your Agent from Models:** Define task-specific "functions" (e.g., `summarizer`, `code_generator`) in TensorZero. Your `fast-agent` code calls these simple functions, while TensorZero handles the complexity of which model or provider to use. You can swap `GPT-4o` for `Claude 3.5 Sonnet` on the backend without changing a single line of your agent's code.
+  * **Effortless Fallbacks & Retries:** Configure sophisticated failover strategies. If your primary model fails or is too slow, TensorZero can automatically retry with a different model or provider, making your agent far more resilient.
+  * **Advanced Prompt Management:** Keep your complex system prompts and configurations in TensorZero's templates, not hardcoded in your Python strings. This cleans up your agent logic and allows for easier experimentation.
+  * **Unified Observability:** All inference calls from your agents are logged, cached, and analyzed in one place, giving you a powerful, centralized view of your system's performance and costs.
+
+**Getting Started: The `quickstart` Command**
+
+The fastest way to get started is with the built-in, self-contained example. From your terminal, run:
+
+```bash
+fast-agent quickstart tensorzero
+```
+
+This command will create a new `tensorzero/` directory containing a fully dockerized project that includes:
+
+1.  A pre-configured **TensorZero Gateway**.
+2.  A custom **MCP Server** for your agent to use.
+3.  Support for multimodal inputs using a **MiniIO** service.
+4.  An interactive **`fast-agent`** that is ready to run by invoking `make agent`.
+
+Just follow the "Next Steps" printed in your terminal to launch the agent.
+
+**How it Works**
+
+The `fast-agent` implementation uses TensorZero's OpenAI-compatible inference API. To call a "function" defined in your TensorZero configuration (e.g., in `tensorzero.toml`), simply specify it as the model name, prefixed with `tensorzero.`:
+
+```bash
+# Example from the quickstart Makefile
+uv run agent.py --model=tensorzero.test_chat
+```
+
+By leveraging the common OpenAI interface, the integration remains simple and benefits from the extensive work done to support OpenAI-based models and features within both `fast-agent` and TensorZero.
+
+TensorZero is an [Apache 2.0 licensed project](https://github.com/sproutfi/tensorzero?tab=License-1-ov-file) and you can find more details in the [official documentation](https://www.tensorzero.com/docs).
+
+**YAML Configuration**
+
+By default, the TenzorZero Gateway runs on `http://localhost:3000`. You can override this by specifying the `base_url` in your configuration.
 
 ```yaml
 tensorzero:
