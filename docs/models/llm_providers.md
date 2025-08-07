@@ -39,16 +39,23 @@ anthropic:
 | `claude`    | `claude-sonnet-4-0` | `haiku`     | `claude-3-5-haiku-latest`  |
 | `sonnet`    | `claude-sonnet-4-0` | `haiku3`    | `claude-3-haiku-20240307`  |
 | `sonnet35`  | `claude-3-5-sonnet-latest` | `haiku35`   | `claude-3-5-haiku-latest`  |
-| `sonnet37`  | `claude-3-7-sonnet-latest` | `opus`      | `claude-opus-4-0`     |
+| `sonnet37`  | `claude-3-7-sonnet-latest` | `opus`      | `claude-opus-4-1`     |
 | `opus3`     |     `claude-3-opus-latest` |      |     |
 
 ## OpenAI
 
-**fast-agent** supports OpenAI `gpt-4.1`, `gpt-4.1-mini`, `o1-preview`, `o1` and `o3-mini` models. Arbitrary model names are supported with `openai.<model_name>`. Supported modalities are model-dependent, check the [OpenAI Models Page](https://platform.openai.com/docs/models) for the latest information.
+**fast-agent** supports OpenAI `gpt-5` series, `gpt-4.1` series, `o1-preview`, `o1` and `o3-mini` models. Arbitrary model names are supported with `openai.<model_name>`. Supported modalities are model-dependent, check the [OpenAI Models Page](https://platform.openai.com/docs/models) for the latest information.
+
+For reasoning models, you can specify `low`, `medium`, or `high` effort as follows:
+
+```bash
+fast-agent --model o3-mini.medium
+fast-agent --model gpt-5.high
+```
+
+`gpt-5` also supports a `minimal` reasoning effort.
 
 Structured outputs use the OpenAI API Structured Outputs feature.
-
-Future versions of **fast-agent** will have enhanced model capability handling.
 
 **YAML Configuration:**
 
@@ -72,6 +79,8 @@ openai:
 | `o1`          | `o1`          | `gpt-4.1-nano`| `gpt-4.1-nano`|
 | `o1-mini`     | `o1-mini`     | `o1-preview`  | `o1-preview`  |
 | `o3-mini`     | `o3-mini`     | `o3`          |               |
+| `gpt-5`     |  `gpt-5`     | `gpt-5-mini`          | `gpt-5-mini`              |
+| `gpt-5-nano` | `gpt-5-nano` |   |   |
 
 ## Azure OpenAI
 
