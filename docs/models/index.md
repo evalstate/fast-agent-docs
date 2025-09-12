@@ -36,6 +36,8 @@ Examples:
 
 For models that support it (`o1`, `o1-preview` and `o3-mini`), you can specify a reasoning effort of **`high`**, **`medium`** or **`low`** - for example `openai.o3-mini.high`. **`medium`** is the default if not specified.
 
+`gpt-5` additionally supports a `minimal` reasoning effort.
+
 #### Aliases
 
 For convenience, popular models have an alias set such as `gpt-4o` or `sonnet`. These are documented on the [LLM Providers](llm_providers.md) page.
