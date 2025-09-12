@@ -158,7 +158,7 @@ Here's an example of integrating FastAgent with FastAPI:
 import asyncio
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
-from mcp_agent.core.fastagent import FastAgent
+from fast_agent.core.fastagent import FastAgent
 
 # Create the FastAPI app
 app = FastAPI()
@@ -211,7 +211,7 @@ Here's an example of embedding FastAgent in a custom command-line tool:
 import asyncio
 import argparse
 import sys
-from mcp_agent.core.fastagent import FastAgent
+from fast_agent.core.fastagent import FastAgent
 
 # Parse our own arguments first
 parser = argparse.ArgumentParser(description="Custom AI Tool")

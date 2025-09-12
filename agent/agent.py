@@ -1,5 +1,5 @@
 import asyncio
-from mcp_agent.core.fastagent import FastAgent
+from fast_agent.core.fastagent import FastAgent
 import subprocess
 
 # Create the application

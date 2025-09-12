@@ -17,7 +17,7 @@ This returns the text of the agent's response as a string, making it ideal for s
 You can attach files by using `Prompt.user()` method to construct your message:
 
 ```python
-from mcp_agent.core.prompt import Prompt
+from fast_agent.core.prompt import Prompt
 from pathlib import Path
 
 plans: str = await agent.send(
@@ -55,8 +55,8 @@ response: str  = await agent.send(
 The `generate()` method allows you to access multimodal content from an agent, or its Tool Calls as well as send conversational pairs.
 
 ```python
-from mcp_agent.core.prompt import Prompt
-from mcp_agent.mcp.prompt_message_multipart import PromptMessageMultipart
+from fast_agent.core.prompt import Prompt
+from fast_agent.mcp.prompt_message_multipart import PromptMessageMultipart
 
 message = Prompt.user("Describe an image of a sunset")
 
@@ -218,7 +218,7 @@ response: str = agent.with_resource(
 Long prompts can be stored in text files, and loaded with the `load_prompt` utility:
 
 ```python
-from mcp_agent.mcp.prompts import load_prompt
+from fast_agent.mcp.prompts import load_prompt
 from mcp.types import PromptMessage
 
 prompt: List[PromptMessage] = load_prompt(Path("two_cities.txt"))
@@ -259,7 +259,7 @@ units: M
 Multiple messages (conversations) can be applied with the `generate()` method:
 
 ```python
-from mcp_agent.mcp.prompts import load_prompt
+from fast_agent.mcp.prompts import load_prompt
 from mcp.types import PromptMessage
 
 prompt: List[PromptMessage] = load_prompt(Path("sizing_conversation.txt"))
@@ -283,8 +283,8 @@ source code was attached to achieve those plans. Can I help further?
 It is usually better (but not necessary) to use `load_prompt_multipart`:
 
 ```python
-from mcp_agent.mcp.prompts import load_prompt_multipart
-from mcp_agent.mcp.PromptMessageMultipart
+from fast_agent.mcp.prompts import load_prompt_multipart
+from fast_agent.mcp.PromptMessageMultipart
 
 prompt: List[PromptMessageMultipart] = load_prompt_multipart(Path("prompt_secret_plans.txt"))
 result: PromptMessageMultipart = await agent.generate(prompt)

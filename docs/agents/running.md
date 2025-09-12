@@ -8,7 +8,7 @@ Run **fast-agent** programs interactively for development, debugging, or direct 
 
 ```python title="agent.py"
 import asyncio
-from mcp_agent.core.fastagent import FastAgent
+from fast_agent.core.fastagent import FastAgent
 
 fast = FastAgent("My Interactive Agent")
 
@@ -71,7 +71,7 @@ The MCP Server can also be started programatically.
 
 ```python
 import asyncio
-from mcp_agent.core.fastagent import FastAgent
+from fast_agent.core.fastagent import FastAgent
 
 fast = FastAgent("Server Agent")
 
@@ -97,7 +97,7 @@ Embed  **fast-agent** into existing Python applications to add MCP agent capabil
 
 ```python
 import asyncio
-from mcp_agent.core.fastagent import FastAgent
+from fast_agent.core.fastagent import FastAgent
 
 fast = FastAgent("Embedded Agent")
 
