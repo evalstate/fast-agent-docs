@@ -61,6 +61,9 @@ markdown_extensions:
 plugins:
   - social
   - search
+  - mkdocs-video:
+      is_video: True
+      video_loop: True
   - llmstxt:
       files:
         - output: llms.txt
@@ -95,6 +98,7 @@ nav:
       - Quickstart - Elicitations: mcp/elicitations.md
       - Quickstart - State Transfer: mcp/state_transfer.md
       - mcp/resources.md
+      - mcp/mcp-ui.md
   - Reference:
       - fast-agent go: ref/go_command.md
       - Config File: ref/config_file.md

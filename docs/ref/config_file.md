@@ -17,7 +17,7 @@ fast-agent automatically searches for configuration files in the current working
 
 ```yaml
 # Default model for all agents
-default_model: "haiku"  # Format: provider.model_name.reasoning_effort
+default_model: "gpt-5-mini"  # Format: provider.model_name.reasoning_effort
 
 # Whether to automatically enable Sampling. Model seletion precedence is Agent > Default.
 auto_sampling: true
@@ -159,7 +159,7 @@ mcp:
         ENV_VAR1: "value1"
         ENV_VAR2: "value2"
       sampling:  # Optional sampling settings
-        model: "haiku"  # Model to use for sampling requests
+        model: "gpt-5-mini"  # Model to use for sampling requests
 
     # Example Stremable HTTP server
     streambale_http__server:
