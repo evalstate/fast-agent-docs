@@ -152,56 +152,54 @@ Start an interactive prompt session with the specified agent.
 
 ## Example: Integrating with FastAPI
 
-Here's an example of integrating FastAgent with FastAPI:
+See [here](https://github.com/evalstate/fast-agent/tree/main/examples/fastapi) for more examples of using FastAPI with **`fast-agent`**. 
 
-```python
-import asyncio
-from fastapi import FastAPI, Request
-from fastapi.responses import StreamingResponse
-from mcp_agent.core.fastagent import FastAgent
+```python title="fastapi-simple.py"
+from contextlib import asynccontextmanager
 
-# Create the FastAPI app
-app = FastAPI()
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 
-# Create the FastAgent instance with parse_cli_args=False to avoid conflicts
-fast = FastAgent("API Agent", parse_cli_args=False)
+from fast_agent.core.fastagent import FastAgent
 
-@fast.agent(instruction="You are a helpful API assistant")
-async def setup_agent():
-    # This function is needed for the decorator but not used directly
+# Create FastAgent without parsing CLI args (plays nice with uvicorn)
+fast = FastAgent("fast-agent demo", parse_cli_args=False, quiet=True)
+
+
+# Register a simple default agent via decorator
+@fast.agent(name="helper", instruction="You are a helpful AI Agent.", default=True)
+async def decorator():
     pass
 
-# Shared initialization task
-agent_app = None
 
-@app.on_event("startup")
-async def startup_event():
-    global agent_app
-    async with fast.run() as agent:
-        agent_app = agent
-        # Keep the context manager open for the lifetime of the application
-        while True:
-            await asyncio.sleep(3600)  # Keep alive
+# Keep FastAgent running for the app lifetime
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with fast.run() as agents:
+        app.state.agents = agents
+        yield
 
-# API endpoint for querying the agent
-@app.post("/ask")
-async def ask(request: Request):
-    data = await request.json()
-    question = data.get("question", "")
-    
-    if not agent_app:
-        return {"error": "Agent not initialized"}
-    
-    response = await agent_app.send(question)
-    return {"response": response}
 
-# To run: uvicorn your_module:app --host 0.0.0.0 --port 8000
+app = FastAPI(lifespan=lifespan)
+
+
+class AskRequest(BaseModel):
+    message: str
+
+
+class AskResponse(BaseModel):
+    response: str
+
+
+@app.post("/ask", response_model=AskResponse)
+async def ask(req: AskRequest) -> AskResponse:
+    try:
+        result = await app.state.agents.send(req.message)
+        return AskResponse(response=result)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 ```
 
-This example demonstrates how to:
-1. Create a FastAgent instance with `parse_cli_args=False` to avoid conflicts with FastAPI
-2. Initialize the agent during application startup
-3. Use the agent to respond to API requests
 
 ## Example: Embedding in a Command-Line Tool
 
@@ -211,7 +209,7 @@ Here's an example of embedding FastAgent in a custom command-line tool:
 import asyncio
 import argparse
 import sys
-from mcp_agent.core.fastagent import FastAgent
+from fast_agent.core.fastagent import FastAgent
 
 # Parse our own arguments first
 parser = argparse.ArgumentParser(description="Custom AI Tool")

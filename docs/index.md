@@ -70,7 +70,7 @@ hide:
 
 Prebuilt agents and examples implementing the patterns in Anthropic's [building effective agents](https://www.anthropic.com/engineering/building-effective-agents) paper get you building valuable applications quickly. Seamlessly use MCP Servers with your agents, or host your agents as MCP Servers.
 
-* `uv pip install fast-agent-mcp` - Install fast-agent.
+* `uv tool install fast-agent-mcp` - Install fast-agent.
 * `fast-agent go` - Start an interactive session...
 * `fast-agent go --url https://hf.co/mcp` - ...with a remote MCP.
 * `fast-agent setup` - Create Agent and Configuration files.

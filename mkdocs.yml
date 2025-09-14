@@ -83,6 +83,8 @@ copyright: © 2025 llmindset.co.uk
 
 nav:
   - fast-agent: index.md
+#  - Getting Started:
+#    - Installation: getting_started/installation.md
   - Agents:
       - agents/defining.md
       - agents/running.md

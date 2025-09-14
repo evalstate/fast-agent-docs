@@ -61,7 +61,7 @@ Here's a simple agent implementation using Azure OpenAI:
 
 ```python
 import asyncio
-from mcp_agent.core.fastagent import FastAgent
+from fast_agent.core.fastagent import FastAgent
 
 # Create the application
 fast = FastAgent("Azure OpenAI Example")

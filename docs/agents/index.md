@@ -5,7 +5,7 @@
 You can include files in a conversation using Paths:
 
 ```python
-from mcp_agent.core.prompt import Prompt
+from fast_agent.core.prompt import Prompt
 from pathlib import Path
 
 plans = agent.send(
