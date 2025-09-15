@@ -1,8 +1,3 @@
----
-title: `fast-agent` MCP Server OAuth Support
----
-
-
 Adds OAuth v2.1 to HTTP/SSE MCP servers (STDIO excluded).
 
 - Uses PKCE and prints a clickable authorization link (no auto‑open).
