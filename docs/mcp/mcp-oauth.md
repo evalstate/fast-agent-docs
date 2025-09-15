@@ -8,6 +8,11 @@ Adds OAuth v2.1 to HTTP/SSE MCP servers (STDIO excluded).
 - **`fast-agent`** 0.3.5 or above
 - OS Keyring support for persistence (e.g. WinVaultKeyring, macOS Keyring, SercretService Keyring)
 
+
+```bash title="Install keyring on Ubuntu"
+sudo apt-get install gnome-keyring seahorse
+```
+
 ## Identity Model
 
 - Tokens are keyed by the resource server’s base URL, not by server name.
