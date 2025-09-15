@@ -233,8 +233,7 @@ logger:
 ## Example Full Configuration
 
 ```yaml
-default_model: "haiku"
-execution_engine: "asyncio"
+default_model: "gpt-5-mini.low"
 
 # Model provider settings
 anthropic:
