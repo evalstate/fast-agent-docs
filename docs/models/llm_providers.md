@@ -239,7 +239,7 @@ You can also access Google via the OpenAI Provider. Use `googleoai` in the YAML 
 
 ## XAI Grok
 
-XAI Grok 3 and Grok 4 are available through the XAI Provider.
+XAI Grok 3, Grok 4 and Grok 4 Fast are available through the XAI Provider.
 
 **YAML Configuration:**
 
@@ -253,6 +253,18 @@ xai:
 
 - `XAI_API_KEY`: Your Grok API key
 - `XAI_BASE_URL`: Override the API endpoint
+
+**Model Name Aliases:**
+
+| Model Alias | Maps to (xai.)             |
+| ----------- | -------------------------- |
+| `grok-3`  | `grok-3` |
+| `grok-3-fast`  | `grok-3-fast` |
+| `grok-3-mini`  | `grok-3-mini` |
+| `grok-3-mini-fast`  | `grok-3-mini-fast` |
+| `grok-4` | `grok-4` |
+| `grok-4-fast` | `grok-4-fast-non-reasoning` |
+| `grok-4-fast-reasoning` | `grok-4-fast-reasoning` |
 
 
 ## Generic OpenAI / Ollama
