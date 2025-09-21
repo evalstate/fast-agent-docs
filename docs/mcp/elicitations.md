@@ -9,11 +9,11 @@ In this quick start, we'll demonstrate **fast-agent**'s [MCP Elicitation](https:
 
 ![Elicitation Form](./pics/elicitation_form.gif){: align=right style="width:250px;"  }
 
-Elicitations allow MCP Servers to request additional information from Users whilst they are running.
+Elicitations allow MCP Servers to request additional input directly from Users.
 
-The demo comprises three MCP Servers and three **fast-agent** programs:
+This demo comprises three MCP Servers and three **fast-agent** programs:
 
- - An interactive demonstration showing different types of Forms, Fields and Validation.
+ - An interactive demonstration showing all types of Forms, Fields and Validation in the specification.
  - A demonstration of an Elicitation made during a Tool Call.
  - An example of using a custom Elicitation handler.
 
