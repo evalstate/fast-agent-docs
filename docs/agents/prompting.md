@@ -55,17 +55,16 @@ response: str  = await agent.send(
 The `generate()` method allows you to access multimodal content from an agent, or its Tool Calls as well as send conversational pairs.
 
 ```python
-from fast_agent.core.prompt import Prompt
-from fast_agent.mcp.prompt_message_multipart import PromptMessageMultipart
+from fast_agent import FastAgent, Prompt, PromptMessageExtended
 
 message = Prompt.user("Describe an image of a sunset")
 
-response: PromptMessageMultipart = await agent.generate([message])
+response: PromptMessageExtended = await agent.generate([message])
 
 print(response.last_text())  # Main text response
 ```
 
-The key difference between `send()` and `generate()` is that `generate()` returns a `PromptMessageMultipart` object, giving you access to the complete response structure:
+The key difference between `send()` and `generate()` is that `generate()` returns a `PromptMessageExtended` object, giving you access to the complete response structure:
 
 - `last_text()`: Gets the last text response - usually the Assistant message without Tool Call/Response information.
 - `first_text()`: Gets the first text content if multiple text blocks exist
@@ -133,7 +132,7 @@ if result:
 
 The `structured()` method returns a tuple containing:
 1. The parsed Pydantic model instance (or `None` if parsing failed)
-2. The full `PromptMessageMultipart` response
+2. The full `PromptMessageExtended` response
 
 This approach is ideal for:
 - Extracting specific data points in a consistent format
@@ -263,7 +262,7 @@ from fast_agent.mcp.prompts import load_prompt
 from mcp.types import PromptMessage
 
 prompt: List[PromptMessage] = load_prompt(Path("sizing_conversation.txt"))
-result: PromptMessageMultipart = await agent.generate(prompt)
+result: PromptMessageExtended = await agent.generate(prompt)
 ```
 
 Conversation files can also be used to include resources:
@@ -280,14 +279,12 @@ Thank you for those documents, the PDF contains secret plans, and some
 source code was attached to achieve those plans. Can I help further?
 ```
 
-It is usually better (but not necessary) to use `load_prompt_multipart`:
-
 ```python
-from fast_agent.mcp.prompts import load_prompt_multipart
-from fast_agent.mcp.PromptMessageMultipart
+from fast_agent.mcp.prompts import load_prompt
+from fast_agent import PromptMessageExtended
 
-prompt: List[PromptMessageMultipart] = load_prompt_multipart(Path("prompt_secret_plans.txt"))
-result: PromptMessageMultipart = await agent.generate(prompt)
+prompt: List[PromptMessageExtended] = load_prompt(Path("prompt_secret_plans.txt"))
+result: PromptMessageExtended = await agent.generate(prompt)
 ```
 
 !!! Note "File Format / MCP Serialization"

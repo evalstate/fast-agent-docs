@@ -41,7 +41,7 @@ JSON contents can be converted to structured outputs:
 
 ...
 
-playback_messages: List[PromptMessageMultipart] = load_message_multipart(Path("playback.txt"))
+playback_messages: List[PromptMessageExtended] = load_message_multipart(Path("playback.txt"))
 # Set up the Conversation
 assert ("HISTORY LOADED") == agent.playback.generate(playback_messages)
 

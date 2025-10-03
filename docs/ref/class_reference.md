@@ -107,7 +107,7 @@ response = await agent["agent_name"].send("Hello")
 
 ```python
 await agent.send(
-    message: Union[str, PromptMessage, PromptMessageMultipart],
+    message: Union[str, PromptMessage, PromptMessageExtended],
     agent_name: Optional[str] = None
 ) -> str
 ```
@@ -130,7 +130,7 @@ Apply a prompt template to an agent (default agent if not specified).
 
 ```python
 await agent.with_resource(
-    prompt_content: Union[str, PromptMessage, PromptMessageMultipart],
+    prompt_content: Union[str, PromptMessage, PromptMessageExtended],
     resource_uri: str,
     server_name: str | None = None,
     agent_name: str | None = None

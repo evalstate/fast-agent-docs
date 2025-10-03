@@ -4,7 +4,7 @@
 
 FastAgent is built to seamlessly integrate with the MCP SDK type system:
 
-Conversations with assistants are based on `PromptMessageMultipart` - an extension the the mcp `PromptMessage` type, with support for multiple content sections. This type is expected to become native in a future version of MCP: https://github.com/modelcontextprotocol/specification/pull/198
+Conversations with assistants are based on `PromptMessageExtended` - an extension the the mcp `PromptMessage` type, with support for multiple content sections. This type is expected to become native in a future version of MCP: https://github.com/modelcontextprotocol/specification/pull/198
 
 ## Message History Transfer
 
@@ -18,7 +18,7 @@ async def main() -> None:
     async with fast.run() as agent:
         # Start an interactive session with "haiku"
         await agent.prompt(agent_name="haiku")
-        # Transfer the message history top "openai" (using PromptMessageMultipart)
+        # Transfer the message history top "openai" (using PromptMessageExtended)
         await agent.openai.generate(agent.haiku.message_history)
         # Continue the conversation
         await agent.prompt(agent_name="openai")
