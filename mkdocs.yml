@@ -96,6 +96,7 @@ nav:
       - Internal Models: models/internal_models.md
   - MCP:
       - Configuring Servers: mcp/index.md
+      - Inspecting Servers: mcp/mcp_display.md
       - mcp/types.md
       - Quickstart - Elicitations: mcp/elicitations.md
       - Quickstart - State Transfer: mcp/state_transfer.md
