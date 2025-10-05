@@ -98,7 +98,7 @@ It also supports the formats specified in the [schema](https://github.com/modelc
 
 The Tool Call demo demonstrates an Elicitation being conducted during an MCP Tool Call. This also showcases a couple of **fast-agent** features:
 
-- The `passthrough` model supports testing without an LLM. You can read more about Internal Models [here](/models/internal_models/).
+- The `passthrough` model supports testing without an LLM. You can read more about Internal Models [here](../models/internal_models.md).
 - Calling a tool by sending a `***CALL_TOOL` message, that enables an Agent to directly call an MCP Server Tool with specific arguments.
 
 Run `uv run tool_call.py` to run the Agent and see the elicitation. You can use a real LLM with the `--model` switch.
@@ -128,7 +128,7 @@ For MCP Server Developers, Custom Handlers can be used to help complete automate
 
 ## Configuration
 
-Note that Elicitations are now _enabled by default_ in **fast-agent**, and can be [configured with](/mcp/#elicitations) the `fastagent.config.yaml` file. 
+Note that Elicitations are now _enabled by default_ in **fast-agent**, and can be [configured with](index.md#elicitations) the `fastagent.config.yaml` file. 
 
 You can configure the Elicitation mode to `forms` (the default),`auto-cancel` or `none`. 
 
