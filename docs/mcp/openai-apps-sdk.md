@@ -4,9 +4,9 @@ title: OpenAI Apps SDK
 
 ## Overview
 
-`**fast-agent**` automatically detects [OpenAI Apps SDK (Skybridge)](https://developers.openai.com/apps-sdk) integrations exposed by MCP servers. Detection runs during tool/resource discovery: the aggregator looks for tools that publish an `openai/outputTemplate` `_meta` entry and the corresponding `ui://…` resources with the `text/html+skybridge` MIME type. When a match is found, Fast Agent records a structured `SkybridgeServerConfig` that powers UI summaries and tool call displays.
+**`fast-agent`** automatically detects [OpenAI Apps SDK (Skybridge)](https://developers.openai.com/apps-sdk) integrations exposed by MCP servers. Detection runs during tool/resource discovery: the aggregator looks for tools that publish an `openai/outputTemplate` `_meta` entry and the corresponding `ui://…` resources with the `text/html+skybridge` MIME type. 
 
-## What fast-agent checks
+## What `fast-agent` checks
 
 - **Template metadata** – verifies that tool `_meta["openai/outputTemplate"]` values are valid URIs. Invalid entries raise warnings so they are easy to spot.
 - **Resource availability** – ensures the referenced `ui://` resource exists. Missing resources generate warnings and keep the tool flagged as invalid.
@@ -23,13 +23,13 @@ Right after discovery, the console displays a concise Skybridge summary:
 - Surfaces aggregated warnings (such as invalid MIME types or missing references).
 - Provides quick feedback about potential configuration issues before any tool runs.
 
-TODO: Add annotated screenshot of the Skybridge summary output.
+![](./pics/skybridge_summary.png)
 
 ## Tool Call Display
 
 When a Skybridge-enabled tool returns structured content, the tool result view adds a magenta separator that references the linked `ui://` resource. This makes it clear to developers which HTML payload is expected to render in the OpenAI Apps SDK client.
 
-TODO: Capture tool result display highlighting the Skybridge separator.
+![](./pics/skybridge_tool.png)
 
 ## Accessing Skybridge Configurations Programmatically
 
