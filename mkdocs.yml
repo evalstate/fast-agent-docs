@@ -97,12 +97,13 @@ nav:
   - MCP:
       - Configuring Servers: mcp/index.md
       - Inspecting Servers: mcp/mcp_display.md
-      - mcp/types.md
       - Quickstart - Elicitations: mcp/elicitations.md
       - Quickstart - State Transfer: mcp/state_transfer.md
-      - mcp/resources.md
+      - mcp/openai-apps-sdk.md
       - mcp/mcp-ui.md
       - MCP Server OAuth: mcp/mcp-oauth.md 
+      - mcp/types.md
+      - mcp/resources.md
   - Reference:
       - fast-agent go: ref/go_command.md
       - Config File: ref/config_file.md
