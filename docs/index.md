@@ -35,7 +35,7 @@ hide:
 
     ---
 
-    Extensive validated [model support](./models/llm_providers/), validated for Structured Outputs, Tool Calling and Multimodal capabilities   
+    Extensive validated [model support](./models/llm_providers/) for Structured Outputs, Tool Calling and Multimodal capabilities   
 
 
 -   :material-check-all:{ .lg .middle } __MCP Feature Support__
