@@ -13,17 +13,16 @@ hide:
 
     ---
 
-    Install [`fast-agent-mcp`](https://pypi.org/project/fast-agent-mcp/) with [`uv`](https://docs.astral.sh/uv/) and get up
-    and running in minutes
+    Simple installation and setup with [`uv`](https://docs.astral.sh/uv/) to be up and running in minutes. Out-of-the box examples of Agents, Workflows and MCP Usage. 
 
     <!-- [:octicons-arrow-right-24: Get started](#get-started) -->
 
 
--   :material-battery-charging:{ .lg .middle } __Batteries Included__
+-   :material-battery-charging:{ .lg .middle } __Agent Skills__
 
     ---
 
-    Out-of-the box examples of sophisticated Agents, Workflows and advanced MCP Usage.
+    Support for [Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) to define context efficient behaviour for your Agents. Read the documentation [here](./agents/skills.md).
 
 -   :material-connection:{ .lg .middle } __New - Elicitation Quickstart Guide__
 
@@ -36,14 +35,14 @@ hide:
 
     ---
 
-    Comprehensive test automation, accelerating delivery and assuring quality
+    Extensive validated [model support](./models/llm_providers/), validated for Structured Outputs, Tool Calling and Multimodal capabilities   
 
 
 -   :material-check-all:{ .lg .middle } __MCP Feature Support__
 
     ---
 
-    First MCP Host to support Tools, Prompts, Resources, Sampling and Roots
+    Full MCP feature support including Elication and Sampling and advanced transport diagnostics
 
     [:octicons-arrow-right-24: Reference](mcp/index.md)
 

@@ -33,9 +33,17 @@ fast-agent go [OPTIONS]
 
 ### Examples
 
+Note - you may omit `go` when supplying command line options.
+
 ```bash
 # Basic usage with interactive mode
 fast-agent go --model=haiku
+
+# Basic usage with interactive mode (go omitted)
+fast-agent --model haiku
+
+# Send commands to different LLMs in Parallel
+fast-agent --model kimi,gpt-5-mini.low
 
 # Specifying servers from configuration
 fast-agent go --servers=fetch,filesystem --model=haiku
@@ -46,11 +54,24 @@ fast-agent go --url=http://localhost:8001/mcp,http://api.example.com/sse
 # Connecting to an authenticated API endpoint
 fast-agent go --url=https://api.example.com/mcp --auth=YOUR_API_TOKEN
 
+# Run an NPX package directly
+fast-agent --npx @modelcontextprotocol/server-everything 
+
 # Non-interactive mode with a single message
 fast-agent go --message="What is the weather today?" --model=haiku
 
 # Using a prompt file
 fast-agent go --prompt-file=my-prompt.txt --model=haiku
+
+# Specify a system prompt file
+fast-agent go -i my_system_prompt.md
+
+# Specify a skills directory
+fast-agent --skills ~/my-skills/
+
+# Provider LLM shell access (use at your own risk)
+fast-agent -x
+
 ```
 
 ### URL Connection Details

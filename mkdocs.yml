@@ -90,6 +90,7 @@ nav:
       - agents/running.md
       - agents/prompting.md
       - agents/instructions.md
+      - agents/skills.md
   - Models:
       - Model Features: models/index.md
       - LLM Providers: models/llm_providers.md
