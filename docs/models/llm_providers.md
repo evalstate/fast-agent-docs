@@ -89,7 +89,7 @@ openai:
 Use models via [Hugging Face Inference Providers](https://huggingface.co/docs/inference-providers/en/index).
 
 ```yaml
-huggingface:
+hf:
   api_key: "${HF_TOKEN}"
   base_url: "https://router.huggingface.co/v1" # Default
   default_provider: # Optional: groq, fireworks-ai, cerebras, etc.
@@ -154,14 +154,14 @@ fast-agent --model kimi:together # provider can be specified with alias
 mcp:
   servers:
     huggingface:
-      url: "https://huggingface.co/mcp?login"
+      url: "https://huggingface.co/mcp"
       # HF_TOKEN automatically applied!
 ```
 
 ```bash
 # Command line - HF_TOKEN automatically applied
-fast-agent go --url https://hf.co/mcp
-fast-agent go --url https://my-space.hf.space/mcp
+fast-agent --model kimi --url https://hf.co/mcp
+fast-agent --url https://my-space.hf.space/mcp
 ```
 
 ## Azure OpenAI
