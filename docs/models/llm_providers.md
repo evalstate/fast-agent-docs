@@ -120,15 +120,16 @@ fast-agent --model hf.deepseek-ai/deepseek-v3.1:fireworks-ai
 
 Aliased models are verified and tested to work with Structured Outputs and Tool Use. Functionality may vary between providers, or be clamped in some situations.
 
-| Alias         | Maps to                               |
-| ------------- | ------------------------------------- |
-| `kimi`        | `hf.moonshotai/Kimi-K2-Instruct-0905` |
-| `gpt-oss`     | `hf.openai/gpt-oss-120b`              |
-| `gpt-oss-20b` | `hf.openai/gpt-oss-20b`               |
-| `glm`         | `hf.zai-org/GLM-4.6`                  |
-| `qwen3`       | `hf.Qwen/Qwen3-Next-80B-A3B-Instruct` |
-| `deepseek31`  | `hf.deepseek-ai/DeepSeek-V3.1`        |
-| `minimax`     | `hf.MiniMaxAI/MiniMax-M2`             |
+| Alias         | Maps to                                   |
+| ------------- | ----------------------------------------- |
+| `kimithink`   | `hf.moonshotai/Kimi-K2-Thinking:together` |
+| `kimi`        | `hf.moonshotai/Kimi-K2-Instruct-0905`     |
+| `gpt-oss`     | `hf.openai/gpt-oss-120b`                  |
+| `gpt-oss-20b` | `hf.openai/gpt-oss-20b`                   |
+| `glm`         | `hf.zai-org/GLM-4.6`                      |
+| `qwen3`       | `hf.Qwen/Qwen3-Next-80B-A3B-Instruct`     |
+| `deepseek31`  | `hf.deepseek-ai/DeepSeek-V3.1`            |
+| `minimax`     | `hf.MiniMaxAI/MiniMax-M2`                 |
 
 **Using Aliases:**
 
