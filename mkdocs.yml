@@ -95,6 +95,8 @@ nav:
       - Model Features: models/index.md
       - LLM Providers: models/llm_providers.md
       - Internal Models: models/internal_models.md
+  - ACP:
+      - Using as an Agent: acp/index.md
   - MCP:
       - Configuring Servers: mcp/index.md
       - Deploying as an MCP Server: mcp/mcp-server.md
