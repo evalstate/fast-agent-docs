@@ -14,8 +14,8 @@ The following variables are available in System Prompt templates:
 | <nobr>`{{serverInstructions}}`</nobr> | MCP server instructions with available tools |  Warning displayed in `/mcp` if Instructions are present and template variable missing |
 | <nobr>`{{agentSkills}}`</nobr> | Agent skill manifests with descriptions |  |
 | <nobr>`{{workspaceRoot}}`</nobr> | Current working directory / workspace root | Set by Client in ACP Mode |
-| <nobr>`{{hostPlatform}}`</nobr> | Host platform information | `Linux-6.6.87.2-microsoft-standard-WSL2` |
-| <nobr>`{{pythonVer}}`</nobr> | Python version | `3.11.0` |
+| <nobr>`{{hostPlatform}}`</nobr> | Host platform information |  |
+| <nobr>`{{pythonVer}}`</nobr> | Python version |  |
 | <nobr>`{{env}}`</nobr> | Formatted environment block with all environment details |  |
 | <nobr>`{{currentDate}}`</nobr> | Current date in long format |  |
 
@@ -34,7 +34,7 @@ system` Slash Command in ACP Mode.
 
 The default System Prompt used with `fast-agent go` or `fast-agent-acp` is:
 
-```markdown
+```markdown title="Default System Prompt"
 You are a helpful AI Agent.
 
 {{serverInstructions}}
