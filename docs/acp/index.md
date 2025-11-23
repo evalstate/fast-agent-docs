@@ -1,11 +1,27 @@
 # Agent Client Protocol
 
-**`fast-agent`** has comprehensive support for Zed Industries [Agent Client Protocol](https://zed.dev/acp). Why use **`fast-agent`**?:
+**`fast-agent`** has comprehensive support for Zed Industries [Agent Client Protocol](https://zed.dev/acp). 
+
+Why use **`fast-agent`**?:
 
 - Robust, native LLM Provider infrastructure, with Streaming and Structured outputs.
 - Comprehensive MCP and Agent Skills support, including Tool Progress Notifications and Sampling.
 - Build custom, multi-agent experiences in a few lines of code.
-- Each Agent or Workflow appears as a "Mode" and transmits workflow events to the your ACP Client.
+
+## Features
+
+| Feature | Support | Notes |
+|---------|---------|-------|
+| Modes   | ✅ | Each defined Agent appears as a Modes |
+| Tool / Workflow Progress | ✅ | MCP Tool Progress and Agent Workflow Progress updates |
+| Agent Plan | ✅ | Iterative Planner reports progress using [Agent Plan](https://agentclientprotocol.com/protocol/agent-plan) |
+| Cancellation | ✅  | LLM Streaming Cancellation |
+| Multimodal | ✅ | Support for Images  | 
+| Slash Commands | ✅ | Save, Load, Status and Clear/Clear Last message |
+| File System / Terminal | ✅ | Start with `-x` option to enable access to Client terminal |
+| MCP Servers | ⚠️ | Add via command line switches or configuration file |
+| Sessions | ⚠️ | Use `save` and `load` slash commands. Plan to implement with [Session List](https://agentclientprotocol.com/rfds/session-list) |
+
 
 ## Getting Started
 
@@ -16,19 +32,19 @@ To try it out straight away with your Client, set an API Key environment variabl
 
 export HF_TOKEN=hf_.......
 
-`uvx fast-agent-mcp@latest serve --transport acp --model <your_model>` 
+`uvx fast-agent-mcp@latest serve acp --model <your_model> [e.g. kimi]` 
 
 **Open AI**
 
 export OPENAI_API_KEY=......
 
-`uvx fast-agent-mcp@latest serve --transport acp --model <your_model>` 
+`uvx fast-agent-mcp@latest serve acp --model <your_model> [e.g. gpt-5-mini.low]` 
 
 **Anthropic**
 
 export ANTHROPIC_API_KEY=......
 
-`uvx fast-agent-mcp@latest serve --transport acp --model <your_model>` 
+`uvx fast-agent-mcp@latest serve acp --model <your_model> e.g. [sonnet]` 
 
 Tip: Use `uvx fast-agent-mcp check` to help diagnose issues.
 
@@ -38,8 +54,16 @@ Note: OAuth keys are stored in your keyring, so `check` may prompt to read the c
 
 `uv tool install -U fast-agent-mcp`
 
+The ACP Server can then be started with the `fast-agent-acp` command. Custom agents can be started with `uv <agent.py> --transport acp`.
+
+For example:
+
+`fast-agent-acp -x --model kimi --url https://huggingface.co/mcp --auth ${HF_TOKEN}` 
+
+Starts an ACP Agent, with shell access and access to the Hugging Face MCP Server.
+
 Documentation in Progress.
 
 ## Shell and File Access
 
-**`fast-agent`** adds the shell tool, read and write tools from the Client to allow "follow-along" functionality.
+**`fast-agent`** adds the read and write tools from the Client to enable "follow-along" functionality.

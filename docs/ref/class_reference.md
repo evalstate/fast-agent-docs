@@ -83,7 +83,8 @@ Starts the application as an MCP server.
 await fast.main()
 ```
 
-Helper method for checking if server mode was requested. Returns `True` if the `--server` flag is set, `False` otherwise.
+Helper method for checking if server mode was requested. Returns `True` if server mode was triggered via `--transport` (or the legacy `--server` flag).
+`--transport` also implies server mode for direct CLI runs; `--server` remains as a deprecated alias.
 
 ## AgentApp Class
 
@@ -242,4 +243,4 @@ if __name__ == "__main__":
 This example shows how to:
 1. Parse your application's own arguments using `argparse`
 2. Create a FastAgent instance with `parse_cli_args=False`
-3. Use your own command-line arguments in combination with FastAgent
+3. Use your own command-line arguments in combination with **`fast-agent`**

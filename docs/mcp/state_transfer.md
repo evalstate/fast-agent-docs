@@ -72,13 +72,13 @@ To start `"agent_one"` as an MCP Server, run the following command:
 
     ```bash
     # start agent_one as an MCP Server:
-    uv run agent_one.py --server --port 8001
+    uv run agent_one.py --transport http --port 8001
     ```
 === "Windows"
 
     ```pwsh
     # start agent_one as an MCP Server:
-    uv run agent_one.py --server --port 8001
+    uv run agent_one.py --transport http --port 8001
     ```
 
 The agent is now available as an MCP Server. 

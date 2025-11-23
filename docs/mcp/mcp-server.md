@@ -55,7 +55,7 @@ This starts a Streamable HTTP MCP Server on port 8000, providing agent access to
 If you already have an agent module or workflow (e.g. the generated agent.py), you can start it as a server directly:
 
 ```bash
-uv run agent.py --server [OPTIONS]
+uv run agent.py --transport http [OPTIONS]
 ```
 
 The embedded CLI parser supports the same server flags as the serve command:
@@ -69,11 +69,12 @@ Example:
 
 ```bash
 uv run agent.py \
---server \
 --transport http \
 --port 8723 \
 --instance-scope request
 ```
+
+`--transport` now enables server mode automatically. The legacy `--server` flag is still accepted as an alias but is deprecated.
 
 Both approaches initialise FastAgent with the same config and skill loading pipeline;
 choose whichever fits your workflow (one-off CLI invocation vs. packaging an agent as

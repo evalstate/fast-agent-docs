@@ -52,13 +52,13 @@ Any **fast-agent** application can be deployed as an MCP server with a simple co
 
 ```bash
 # Start as a Streamable HTTP server (http://localhost:8080/mcp)
-uv run agent.py --server --transport http --port 8080
+uv run agent.py --transport http --port 8080
 
 # Start as an SSE server (http://localhost:8080/sse)
-uv run agent.py --server --transport sse --port 8080
+uv run agent.py --transport sse --port 8080
 
 # Start as a stdio server
-uv run agent.py --server --transport stdio
+uv run agent.py --transport stdio
 ```
 
 Each agent exposes an MCP Tool for sending messages to the agent, and a Prompt that returns the conversation history. 
@@ -89,6 +89,8 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+`--transport` now implies server mode when running a Python module directly. The legacy `--server` flag remains as an alias but is deprecated.
 
 
 ## Python Program Integration
