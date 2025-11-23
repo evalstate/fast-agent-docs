@@ -32,23 +32,46 @@ To try it out straight away with your Client, set an API Key environment variabl
 
 export HF_TOKEN=hf_.......
 
-`uvx fast-agent-mcp@latest serve acp --model <your_model> [e.g. kimi]` 
+`uvx fast-agent-acp@latest --model <your_model> [e.g. kimi]` 
 
 **Open AI**
 
 export OPENAI_API_KEY=......
 
-`uvx fast-agent-mcp@latest serve acp --model <your_model> [e.g. gpt-5-mini.low]` 
+`uvx fast-agent-acp@latest  --model <your_model> [e.g. gpt-5-mini.low]` 
 
 **Anthropic**
 
 export ANTHROPIC_API_KEY=......
 
-`uvx fast-agent-mcp@latest serve acp --model <your_model> e.g. [sonnet]` 
+`uvx fast-agent-acp@latest --model <your_model> e.g. [sonnet]` 
 
-Tip: Use `uvx fast-agent-mcp check` to help diagnose issues.
+Tip: Use `uvx fast-agent-acp check` to help diagnose issues.
+
+The [default system prompt](../agents/instructions.md) will read `AGENTS.md` if present. Use `/status system` to check.
 
 Note: OAuth keys are stored in your keyring, so `check` may prompt to read the credential store.
+
+An example Zed configuration is:
+
+```json
+...
+"agent_servers": {
+    "fast-agent-uvx": {
+        "command": "uvx",
+        "args": [
+        "fast-agent-acp@latest",
+        "--model",
+        "kimi",
+        "-x",
+        "--url",
+        "https://huggingface.co/mcp"
+        ],
+        "env": { "HF_TOKEN": "hf_xxxxxxxxxxx" }
+    }
+}
+
+```
 
 ### Installing 
 
