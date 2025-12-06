@@ -13,7 +13,11 @@ In your `fastagent.config.yaml`:
 <provider>:
   api_key: "your_api_key" # Override with API_KEY env var
   base_url: "https://api.example.com" # Base URL for API calls
+  default_headers: # Optional - custom headers for all API requests
+    X-Custom-Header: "value"
 ```
+
+The `default_headers` option is available for all OpenAI-compatible providers.
 
 ## Anthropic
 
