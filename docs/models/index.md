@@ -13,6 +13,8 @@ Model specifications in fast-agent follow this precedence order (highest to lowe
 1. Explicitly set in agent decorators
 1. Command line arguments with `--model` flag
 1. Default model in `fastagent.config.yaml`
+1. `FAST_AGENT_MODEL` environment variable
+1. System default (`gpt-5-mini.low`)
 
 ### Format
 

@@ -90,3 +90,11 @@ Documentation in Progress.
 ## Shell and File Access
 
 **`fast-agent`** adds the read and write tools from the Client to enable "follow-along" functionality.
+
+## Permissions
+
+Tool calls in ACP mode prompt for permission by default. You will see options for Allow Once / Always Allow / Reject Once / Never Allow.
+
+- Disable prompts entirely with `fast-agent-acp --no-permissions` (all tools are allowed).
+- Persistent “Always” decisions are stored in `.fast-agent/auths.md` in the working directory so you can audit or edit them later. The file is only created when you choose an “Always” option.
+- “Once” decisions are remembered only for the current session and are not written to disk. Removing `.fast-agent/auths.md` clears any saved Always rules.
