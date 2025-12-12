@@ -97,6 +97,7 @@ nav:
       - Internal Models: models/internal_models.md
   - ACP:
       - Using as an Agent: acp/index.md
+      - Customizing Agents: acp/customizing_agents.md
   - MCP:
       - Configuring Servers: mcp/index.md
       - Deploying as an MCP Server: mcp/mcp-server.md

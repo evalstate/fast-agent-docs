@@ -25,6 +25,10 @@ Why use **`fast-agent`**?:
 
 ## Getting Started
 
+## Customizing Agents
+
+See [Customizing Agents](customizing_agents.md) for ACP-aware agents, slash commands, and controlling the ACP Mode display name/description.
+
 ### No Install Quick Start:
 To try it out straight away with your Client, set an API Key environment variable and add:
 
