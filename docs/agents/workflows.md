@@ -178,10 +178,6 @@ Common usage patterns may combine:
 - Orchestrator-workers: break a task into scoped subtasks (often via a simple JSON plan), then coordinate execution.
 
 ```python
-from fast_agent import FastAgent
-
-fast = FastAgent("Agents As Tools demo")
-
 @fast.agent(
     name="NY-Project-Manager",
     instruction="Return NY time + timezone, plus a one-line project status.",
