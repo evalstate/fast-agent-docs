@@ -38,13 +38,7 @@ anthropic:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    | Model Alias | Maps to                    |
-| ----------- | -------------------------- | ----------- | -------------------------- |
-| `claude`    | `claude-sonnet-4-0` | `haiku`     | `claude-3-5-haiku-latest`  |
-| `sonnet`    | `claude-sonnet-4-0` | `haiku3`    | `claude-3-haiku-20240307`  |
-| `sonnet35`  | `claude-3-5-sonnet-latest` | `haiku35`   | `claude-3-5-haiku-latest`  |
-| `sonnet37`  | `claude-3-7-sonnet-latest` | `opus`      | `claude-opus-4-1`     |
-| `opus3`     |     `claude-3-opus-latest` |      |     |
+--8<-- "_generated/model_aliases_anthropic.md"
 
 ## OpenAI
 
@@ -76,15 +70,7 @@ openai:
 
 **Model Name Aliases:**
 
-| Model Alias   | Maps to       | Model Alias   | Maps to       |
-| ------------- | ------------- | ------------- | ------------- |
-| `gpt-4o`      | `gpt-4o`      | `gpt-4.1`     | `gpt-4.1`     |
-| `gpt-4o-mini` | `gpt-4o-mini` | `gpt-4.1-mini`| `gpt-4.1-mini`|
-| `o1`          | `o1`          | `gpt-4.1-nano`| `gpt-4.1-nano`|
-| `o1-mini`     | `o1-mini`     | `o1-preview`  | `o1-preview`  |
-| `o3-mini`     | `o3-mini`     | `o3`          |               |
-| `gpt-5`     |  `gpt-5`     | `gpt-5-mini`          | `gpt-5-mini`              |
-| `gpt-5-nano` | `gpt-5-nano` |   |   |
+--8<-- "_generated/model_aliases_openai.md"
 
 
 
@@ -264,9 +250,7 @@ groq:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    |
-| ----------- | -------------------------- |
-| `kimigroq`  | `moonshotai/kimi-k2-instruct` |
+--8<-- "_generated/model_aliases_groq.md"
 
 
 ## DeepSeek
@@ -288,10 +272,7 @@ deepseek:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    |
-| ----------- | -------------------------- |
-| `deepseek`  | `deepseek-chat` |
-| `deepseek3` | `deepseek-chat` |
+--8<-- "_generated/model_aliases_deepseek.md"
 
 
 ## Google
@@ -312,11 +293,7 @@ google:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    |
-| ----------- | -------------------------- |
-| `gemini2`  | `gemini-2.0-flash` |
-| `gemini25` | `gemini-2.5-flash-preview-05-20` |
-| `gemini25pro` | `gemini-2.5-pro-preview-05-06` |
+--8<-- "_generated/model_aliases_google.md"
 
 ### OpenAI Mode
 
@@ -341,15 +318,7 @@ xai:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to (xai.)             |
-| ----------- | -------------------------- |
-| `grok-3`  | `grok-3` |
-| `grok-3-fast`  | `grok-3-fast` |
-| `grok-3-mini`  | `grok-3-mini` |
-| `grok-3-mini-fast`  | `grok-3-mini-fast` |
-| `grok-4` | `grok-4` |
-| `grok-4-fast` | `grok-4-fast-non-reasoning` |
-| `grok-4-fast-reasoning` | `grok-4-fast-reasoning` |
+--8<-- "_generated/model_aliases_xai.md"
 
 
 ## Generic OpenAI / Ollama
