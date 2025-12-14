@@ -311,7 +311,7 @@ async def main() -> None:
   instruction="instruction",
   agents=["agent1", "agent2"],  # exposed as tools: agent__agent1, agent__agent2
   history_mode="fork",          # scratch|fork|fork_and_merge
-  max_parallel=8,
+  max_parallel=128, # OpenAI limitation
   child_timeout_sec=600,
   max_display_instances=20,
 )
