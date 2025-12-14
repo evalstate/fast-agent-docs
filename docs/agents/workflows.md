@@ -163,6 +163,38 @@ async def main():
     await agent.reliable_classifier.send("Classify: ...")
 ```
 
+### Agents As Tools
+
+Agents As Tools lets a parent agent call other agents as if they were tools. Define child agents as normal, then define a parent `@fast.agent(...)` with `agents=[...]`. The parent will see synthetic tools named `agent__<child-name>` (alongside any MCP tools you configure). Use tool-friendly agent names (letters/numbers/`_`/`-`) since tool names are derived from agent names.
+
+This is useful for delegating specific sub-tasks (e.g. summarization, translation, retrieval) to specialist agents while keeping a single top-level agent entrypoint.
+
+```python
+from fast_agent import FastAgent
+
+fast = FastAgent("Agents As Tools demo")
+
+@fast.agent(
+  name="ny_project_manager",
+  instruction="Return a short status update for New York.",
+)
+@fast.agent(
+  name="london_project_manager",
+  instruction="Return a short status update for London.",
+)
+@fast.agent(
+  name="pmo_orchestrator",
+  instruction="Get reports from each PM. Call one tool per topic.",
+  agents=["ny_project_manager", "london_project_manager"],
+  # Optional controls:
+  # history_mode="fork_and_merge", child_timeout_sec=600, max_parallel=8, max_display_instances=10
+  default=True,
+)
+async def main():
+  async with fast.run() as agent:
+    await agent("Get PMO report")
+```
+
 ## Workflow Reference
 
 ### Chain
@@ -256,5 +288,19 @@ async def main():
   match_strategy="exact",  # exact|normalized|structured
   red_flag_max_length=256,
   instruction="instruction",
+)
+```
+
+### Agents As Tools
+
+```python
+@fast.agent(
+  name="orchestrator",
+  instruction="instruction",
+  agents=["agent1", "agent2"],  # exposed as tools: agent__agent1, agent__agent2
+  history_mode="fork",          # scratch|fork|fork_and_merge
+  max_parallel=8,
+  child_timeout_sec=600,
+  max_display_instances=20,
 )
 ```
