@@ -45,7 +45,9 @@ markdown_extensions:
   - attr_list
   - admonition
   - pymdownx.inlinehilite
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path: docs
+      check_paths: true
   - pymdownx.superfences
   - md_in_html
   - pymdownx.highlight:
@@ -87,6 +89,7 @@ nav:
 #    - Installation: getting_started/installation.md
   - Agents:
       - agents/defining.md
+      - Workflows: agents/workflows.md
       - agents/running.md
       - agents/prompting.md
       - System Prompts: agents/instructions.md
@@ -113,6 +116,7 @@ nav:
       - fast-agent go: ref/go_command.md
       - Config File: ref/config_file.md
       - Command Line: ref/cmd_switches.md
+      - Generated Docs: ref/generated_docs.md
       - Class Reference: ref/class_reference.md
       - Open Telemetry: ref/open_telemetry.md
       - Azure Configuration: ref/azure-config.md
