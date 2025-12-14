@@ -163,6 +163,46 @@ async def main():
     await agent.reliable_classifier.send("Classify: ...")
 ```
 
+### Agents As Tools
+
+The Agents As Tools workflow takes a complex task, breaks it into subtasks, and calls other agents as tools based on the main agent instruction.
+
+This pattern is inspired by the OpenAI Agents SDK [Agents as tools](https://openai.github.io/openai-agents-python/tools/#agents-as-tools) feature.
+
+With child agents exposed as tools, you can implement routing, parallelization, and orchestrator-workers [decomposition](https://www.anthropic.com/engineering/building-effective-agents) directly in the instruction (and combine them). Multiple tool calls per turn are supported and executed in parallel.
+
+Common usage patterns may combine:
+
+- Routing: choose the right specialist tool(s) based on the user prompt.
+- Parallelization: fan out over independent items/projects, then aggregate.
+- Orchestrator-workers: break a task into scoped subtasks (often via a simple JSON plan), then coordinate execution.
+
+```python
+@fast.agent(
+    name="NY-Project-Manager",
+    instruction="Return NY time + timezone, plus a one-line project status.",
+    servers=["time"],
+)
+@fast.agent(
+    name="London-Project-Manager",
+    instruction="Return London time + timezone, plus a one-line news update.",
+    servers=["time"],
+)
+@fast.agent(
+    name="PMO-orchestrator",
+    instruction=(
+        "Get reports. Always use one tool call per project/news. "
+        "Responsibilities: NY projects: [OpenAI, Fast-Agent, Anthropic]. London news: [Economics, Art, Culture]. "
+        "Aggregate results and add a one-line PMO summary."
+    ),
+    default=True,
+    agents=["NY-Project-Manager", "London-Project-Manager"],
+)
+async def main() -> None:
+    async with fast.run() as agent:
+        await agent("Get PMO report. Projects: all. News: Art, Culture")
+```
+
 ## Workflow Reference
 
 ### Chain
@@ -256,5 +296,19 @@ async def main():
   match_strategy="exact",  # exact|normalized|structured
   red_flag_max_length=256,
   instruction="instruction",
+)
+```
+
+### Agents As Tools
+
+```python
+@fast.agent(
+  name="orchestrator",
+  instruction="instruction",
+  agents=["agent1", "agent2"],  # exposed as tools: agent__agent1, agent__agent2
+  history_mode="fork",          # scratch|fork|fork_and_merge
+  max_parallel=128, # OpenAI limitation
+  child_timeout_sec=600,
+  max_display_instances=20,
 )
 ```
