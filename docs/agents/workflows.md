@@ -165,9 +165,17 @@ async def main():
 
 ### Agents As Tools
 
-Agents As Tools lets a parent agent call other agents as if they were tools. Define child agents as normal, then define a parent `@fast.agent(...)` with `agents=[...]`. The parent will see synthetic tools named `agent__<child-name>` (alongside any MCP tools you configure). Use tool-friendly agent names (letters/numbers/`_`/`-`) since tool names are derived from agent names.
+The Agents As Tools workflow takes a complex task, breaks it into subtasks, and calls other agents as tools based on the main agent instruction.
 
-This is useful for delegating specific sub-tasks (e.g. summarization, translation, retrieval) to specialist agents while keeping a single top-level agent entrypoint.
+This pattern is inspired by the OpenAI Agents SDK [Agents as tools](https://openai.github.io/openai-agents-python/tools/#agents-as-tools) feature.
+
+With child agents exposed as tools, you can implement routing, parallelization, and orchestrator-worker [decomposition](https://www.anthropic.com/engineering/building-effective-agents) directly in the instruction (and combine them). Multiple tool calls per turn are supported and executed in parallel.
+
+Common usage patterns may combine:
+
+- Routing: choose the right specialist tool(s) based on the user prompt.
+- Parallelization: fan out over independent items/projects, then aggregate.
+- Orchestrator-worker: break a task into scoped subtasks (often via a simple JSON plan), then coordinate execution.
 
 ```python
 from fast_agent import FastAgent
@@ -175,24 +183,28 @@ from fast_agent import FastAgent
 fast = FastAgent("Agents As Tools demo")
 
 @fast.agent(
-  name="ny_project_manager",
-  instruction="Return a short status update for New York.",
+    name="NY-Project-Manager",
+    instruction="Return NY time + timezone, plus a one-line project status.",
+    servers=["time"],
 )
 @fast.agent(
-  name="london_project_manager",
-  instruction="Return a short status update for London.",
+    name="London-Project-Manager",
+    instruction="Return London time + timezone, plus a one-line news update.",
+    servers=["time"],
 )
 @fast.agent(
-  name="pmo_orchestrator",
-  instruction="Get reports from each PM. Call one tool per topic.",
-  agents=["ny_project_manager", "london_project_manager"],
-  # Optional controls:
-  # history_mode="fork_and_merge", child_timeout_sec=600, max_parallel=8, max_display_instances=10
-  default=True,
+    name="PMO-orchestrator",
+    instruction=(
+        "Get reports. Always use one tool call per project/news. "
+        "Responsibilities: NY projects: [OpenAI, Fast-Agent, Anthropic]. London news: [Economics, Art, Culture]. "
+        "Aggregate results and add a one-line PMO summary."
+    ),
+    default=True,
+    agents=["NY-Project-Manager", "London-Project-Manager"],
 )
-async def main():
-  async with fast.run() as agent:
-    await agent("Get PMO report")
+async def main() -> None:
+    async with fast.run() as agent:
+        await agent("Get PMO report. Projects: all. News: Art, Culture")
 ```
 
 ## Workflow Reference
