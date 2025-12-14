@@ -169,13 +169,13 @@ The Agents As Tools workflow takes a complex task, breaks it into subtasks, and 
 
 This pattern is inspired by the OpenAI Agents SDK [Agents as tools](https://openai.github.io/openai-agents-python/tools/#agents-as-tools) feature.
 
-With child agents exposed as tools, you can implement routing, parallelization, and orchestrator-worker [decomposition](https://www.anthropic.com/engineering/building-effective-agents) directly in the instruction (and combine them). Multiple tool calls per turn are supported and executed in parallel.
+With child agents exposed as tools, you can implement routing, parallelization, and orchestrator-workers [decomposition](https://www.anthropic.com/engineering/building-effective-agents) directly in the instruction (and combine them). Multiple tool calls per turn are supported and executed in parallel.
 
 Common usage patterns may combine:
 
 - Routing: choose the right specialist tool(s) based on the user prompt.
 - Parallelization: fan out over independent items/projects, then aggregate.
-- Orchestrator-worker: break a task into scoped subtasks (often via a simple JSON plan), then coordinate execution.
+- Orchestrator-workers: break a task into scoped subtasks (often via a simple JSON plan), then coordinate execution.
 
 ```python
 from fast_agent import FastAgent
