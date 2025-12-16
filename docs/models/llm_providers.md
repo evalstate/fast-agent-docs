@@ -44,6 +44,8 @@ anthropic:
 
 **fast-agent** supports OpenAI `gpt-5` series, `gpt-4.1` series, `o1-preview`, `o1` and `o3-mini` models. Arbitrary model names are supported with `openai.<model_name>`. Supported modalities are model-dependent, check the [OpenAI Models Page](https://platform.openai.com/docs/models) for the latest information.
 
+OpenAI multimodal models support text, images, and PDF input (`application/pdf`). For PDFs, provide a local file/blob rather than a URL.
+
 For reasoning models, you can specify `low`, `medium`, or `high` effort as follows:
 
 ```bash
@@ -105,6 +107,10 @@ fast-agent --model hf.moonshotai/kimi-k2-instruct-0905
 fast-agent --model hf.moonshotai/kimi-k2-instruct-0905:groq
 fast-agent --model hf.deepseek-ai/deepseek-v3.1:fireworks-ai
 ```
+
+### Finding Available Providers
+
+If you have a Hugging Face model ID (for example, `moonshotai/Kimi-K2-Thinking`) and want to see which Inference Providers are available, use `lookup_inference_providers` from `fast_agent.llm` (or `lookup_inference_providers_sync` for non-async code).
 
 ### Model Aliases
 
