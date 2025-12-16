@@ -82,7 +82,14 @@ fast-agent -x
 
 ### Comparison mode (multiple models)
 
-Pass a comma-separated list to `--models` to run one agent per model in parallel and compare responses side-by-side.
+Pass a comma-separated list to `--models` (or `--model`) to run one agent per model in parallel and compare responses side-by-side.
+
+How it works:
+
+- `--instruction` / `-i`, `--servers`, `--url`, and other connection options apply to every model agent.
+- Each model string becomes a separate agent name in the output.
+- Interactive mode (default): every prompt is sent to all models and results are shown in a comparison view.
+- Non-interactive: use `--message` or `--prompt-file` to run once and print results for each model.
 
 ```bash
 fast-agent go --models sonnet,gpt-5-mini.low
