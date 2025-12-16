@@ -16,20 +16,26 @@ fast-agent go [OPTIONS]
 
 ### Options
 
-- `--name TEXT`: Name for the workflow (default: "FastAgent CLI")
-- `--instruction`, `-i <path or url>`: File name or URL for [System Prompt](../agents/instructions.md) (default: "You are a helpful AI Agent.")
+- `--name TEXT`: Name for the agent (default: "fast-agent")
+- `--instruction`, `-i <path or url>`: File name or URL for [System Prompt](../agents/instructions.md)
 - `--config-path`, `-c <path>`: Path to config file
 - `--servers <server1>,<server2>`: Comma-separated list of server names to enable from config
 - `--url TEXT`: Comma-separated list of HTTP/SSE URLs to connect to directly
 - `--auth TEXT`: Bearer token for authorization with URL-based servers
-- `--model <model_string>`: Override the default model (e.g., haiku, sonnet, gpt-4)
-- `--model <model_string1>,<model_string2>,...`: Set up a `parallel` containing each model
+- `--model`, `--models <model_string>`: Override the default model (e.g., haiku, sonnet, gpt-4)
+- `--model`, `--models <model_string1>,<model_string2>,...`: Set up a `parallel` containing each model
 - `--message`, `-m TEXT`: Message to send to the agent (skips interactive mode)
 - `--prompt-file`, `-p <path>`: Path to a prompt file to use (either text or JSON)
-- `--quiet`: Disable progress display and logging
+- `--skills-dir`, `--skills <path>`: Override the default skills directory
 - `--stdio "<command> <options>"`: Run the command to attach a STDIO server (enclose arguments in quotes)
 - `--npx "@package/name <options>"`: Run an NPX package as a STDIO server (enclose arguments in quotes)
 - `--uvx "@package/name <options>"`: Run an UVX package as a STDIO server (enclose arguments in quotes)
+- `--shell`, `-x`: Enable a local shell runtime and expose the execute tool (bash or pwsh)
+
+Global CLI options (apply to all subcommands):
+
+- `--quiet`, `-q`: Disable output
+- `--verbose`, `-v`: Enable verbose mode
 
 ### Examples
 

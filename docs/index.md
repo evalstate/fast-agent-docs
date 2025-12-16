@@ -35,14 +35,14 @@ hide:
 
     ---
 
-    Extensive validated [model support](./models/llm_providers/) for Structured Outputs, Tool Calling and Multimodal capabilities   
+    Extensive validated [model support](./models/llm_providers.md) for Structured Outputs, Tool Calling and Multimodal capabilities   
 
 
 -   :material-check-all:{ .lg .middle } __MCP Feature Support__
 
     ---
 
-    Full MCP feature support including Elication and Sampling and advanced transport diagnostics
+    Full MCP feature support including Elicitation and Sampling and advanced transport diagnostics
 
     [:octicons-arrow-right-24: Reference](mcp/index.md)
 
@@ -81,7 +81,6 @@ Prebuilt agents and examples implementing the patterns in Anthropic's [building 
 <img src="welcome_small.png" style="padding: 0.5em;" />
 </div>
 </div>
-
 
 
 

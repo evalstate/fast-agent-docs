@@ -29,8 +29,7 @@ Environment:
 
 **Note on file templates:** File paths in `{{file:...}}` and `{{file_silent:...}}` must be relative paths. They will be resolved relative to the `workspaceRoot` at runtime. Absolute paths are not allowed and will raise an error.
 
-**Viewing the System Prompt** The System Prompt can be inspected with the `/system` command from `fast-agent` or the `/status 
-system` Slash Command in ACP Mode.
+**Viewing the System Prompt** The System Prompt can be inspected with the `/system` command from `fast-agent` or the `/status system` Slash Command in ACP Mode.
 
 The default System Prompt used with `fast-agent go` or `fast-agent-acp` is:
 
@@ -42,7 +41,7 @@ You are a helpful AI Agent.
 {{file_silent:AGENTS.md}}
 {{env}}
 
-The current date is {{currentDate}}."""
+The current date is {{currentDate}}.
 ```
 
 
@@ -90,7 +89,8 @@ from pathlib import Path
 
 @fast.agent(name="mcp-expert",
     instruction=Path("./mcp-expert.md"))
-""")
+async def main():
+    pass
 ```
 
 ```md title="mcp-expert.md"
@@ -117,14 +117,13 @@ from pydantic import AnyUrl
 You can start an agent with instructions from a file using the `fast-agent` commmand:
 
 ```bash
-fast-agent --instructions mcp-expert.md
-fast-agent -i mcp-expert.md
+fast-agent --instruction mcp-expert.md
 ```
 
 This can be combined with other options to specify model and available servers:
 
 ```bash
-fast-agent -i mcp-expert.md --model sonnet --url https://hf.co/mcp
+fast-agent --instruction mcp-expert.md --model sonnet --url https://hf.co/mcp
 ```
 
 Starts an interactive agent session, with the MCP Schema loaded, attached to Sonnet with the Hugging Face MCP Server.

@@ -81,7 +81,7 @@ An example Zed configuration is:
 
 `uv tool install -U fast-agent-mcp`
 
-The ACP Server can then be started with the `fast-agent-acp` command. Custom agents can be started with `uv <agent.py> --transport acp`.
+The ACP Server can then be started with the `fast-agent-acp` command. Custom agents can be started with `uv run <agent.py> --transport acp`.
 
 For example:
 

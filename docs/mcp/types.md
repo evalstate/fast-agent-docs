@@ -17,9 +17,9 @@ FastAgent makes it easy to transfer conversation history between agents:
 async def main() -> None:
     async with fast.run() as agent:
         # Start an interactive session with "haiku"
-        await agent.prompt(agent_name="haiku")
+        await agent.interactive(agent_name="haiku")
         # Transfer the message history top "openai" (using PromptMessageExtended)
         await agent.openai.generate(agent.haiku.message_history)
         # Continue the conversation
-        await agent.prompt(agent_name="openai")
+        await agent.interactive(agent_name="openai")
 ```
