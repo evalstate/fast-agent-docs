@@ -37,6 +37,14 @@ Global CLI options (apply to all subcommands):
 - `--quiet`, `-q`: Disable progress display and logging
 - `--verbose`, `-v`: Enable verbose mode
 
+### Comparison mode (multiple models)
+
+Pass a comma-separated list to `--model`/`--models` to run one agent per model in parallel and compare responses side-by-side.
+
+```bash
+fast-agent go --model sonnet,gpt-5-mini.low
+```
+
 ### Examples
 
 Note - you may omit `go` when supplying command line options.
