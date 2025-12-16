@@ -37,14 +37,6 @@ Global CLI options (apply to all subcommands):
 - `--quiet`, `-q`: Disable progress display and logging
 - `--verbose`, `-v`: Enable verbose mode
 
-### Comparison mode (multiple models)
-
-Pass a comma-separated list to `--model`/`--models` to run one agent per model in parallel and compare responses side-by-side.
-
-```bash
-fast-agent go --model sonnet,gpt-5-mini.low
-```
-
 ### Examples
 
 Note - you may omit `go` when supplying command line options.
@@ -56,8 +48,8 @@ fast-agent go --model=haiku
 # Basic usage with interactive mode (go omitted)
 fast-agent --model haiku
 
-# Send commands to different LLMs in Parallel
-fast-agent --model kimi,gpt-5-mini.low
+# Compare responses across multiple models (comparison mode)
+fast-agent --models kimi,gpt-5-mini.low
 
 # Specifying servers from configuration
 fast-agent go --servers=fetch,filesystem --model=haiku
@@ -86,6 +78,14 @@ fast-agent --skills ~/my-skills/
 # Provider LLM shell access (use at your own risk)
 fast-agent -x
 
+```
+
+### Comparison mode (multiple models)
+
+Pass a comma-separated list to `--models` to run one agent per model in parallel and compare responses side-by-side.
+
+```bash
+fast-agent go --models sonnet,gpt-5-mini.low
 ```
 
 ### URL Connection Details
