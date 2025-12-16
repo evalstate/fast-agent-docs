@@ -17,7 +17,7 @@ fast-agent go [OPTIONS]
 ### Options
 
 - `--name TEXT`: Name for the agent (default: "fast-agent")
-- `--instruction`, `-i <path or url>`: File name or URL for [System Prompt](../agents/instructions.md)
+- `--instruction`, `-i <path or url>`: File name or URL for [System Prompt](../agents/instructions.md) (default: "You are a helpful AI Agent.")
 - `--config-path`, `-c <path>`: Path to config file
 - `--servers <server1>,<server2>`: Comma-separated list of server names to enable from config
 - `--url TEXT`: Comma-separated list of HTTP/SSE URLs to connect to directly
@@ -34,7 +34,7 @@ fast-agent go [OPTIONS]
 
 Global CLI options (apply to all subcommands):
 
-- `--quiet`, `-q`: Disable output
+- `--quiet`, `-q`: Disable progress display and logging
 - `--verbose`, `-v`: Enable verbose mode
 
 ### Examples
