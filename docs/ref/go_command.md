@@ -23,7 +23,7 @@ fast-agent go [OPTIONS]
 - `--url TEXT`: Comma-separated list of HTTP/SSE URLs to connect to directly
 - `--auth TEXT`: Bearer token for authorization with URL-based servers
 - `--model`, `--models <model_string>`: Override the default model (e.g., haiku, sonnet, gpt-4)
-- `--model`, `--models <model_string1>,<model_string2>,...`: Set up a `parallel` containing each model
+- `--model`, `--models <model1>,<model2>,...`: Run one agent per model in parallel and print a side-by-side comparison of responses
 - `--message`, `-m TEXT`: Message to send to the agent (skips interactive mode)
 - `--prompt-file`, `-p <path>`: Path to a prompt file to use (either text or JSON)
 - `--skills-dir`, `--skills <path>`: Override the default skills directory
