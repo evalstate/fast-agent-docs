@@ -11,13 +11,13 @@ Configuration can also be provided through environment variables, with the namin
 
 ## Configuration File Location
 
-fast-agent automatically searches for configuration files in the current working directory and its parent directories. You can also specify a configuration file path with the `--config` command-line argument.
+fast-agent automatically searches for configuration files in the current working directory and its parent directories. You can also specify a configuration file path with the `--config-path` (`-c`) command-line argument.
 
 ## General Settings
 
 ```yaml
 # Default model for all agents
-default_model: "gpt-5-mini"  # Format: provider.model_name.reasoning_effort
+default_model: "gpt-5-mini.low"  # Format: provider.model_name.reasoning_effort
 
 # Whether to automatically enable Sampling. Model seletion precedence is Agent > Default.
 auto_sampling: true
@@ -42,7 +42,7 @@ anthropic:
 openai:
   api_key: "your_openai_key"  # Can also use OPENAI_API_KEY env var
   base_url: "https://api.openai.com/v1"  # Optional, only include to override
-  reasoning_effort: "medium"  # Default reasoning effort: "low", "medium", or "high"
+  reasoning_effort: "medium"  # Default reasoning effort: "minimal", "low", "medium", or "high"
 ```
 
 ### Azure OpenAI
@@ -94,6 +94,39 @@ deepseek:
 google:
   api_key: "your_google_key"  # Can also use GOOGLE_API_KEY env var
   base_url: "https://generativelanguage.googleapis.com/v1beta/openai"  # Optional
+```
+
+### xAI (Grok)
+
+```yaml
+xai:
+  api_key: "your_xai_key"  # Can also use XAI_API_KEY env var
+  base_url: "https://api.x.ai/v1"  # Optional, defaults to this value
+```
+
+### Groq
+
+```yaml
+groq:
+  api_key: "your_groq_key"  # Can also use GROQ_API_KEY env var
+  base_url: "https://api.groq.com/openai/v1"  # Optional, defaults to this value
+```
+
+### Aliyun (Qwen via OpenAI-compatible API)
+
+```yaml
+aliyun:
+  api_key: "your_aliyun_key"  # Provide via secrets/env as appropriate
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"  # Optional, defaults to this value
+```
+
+### Hugging Face (Inference Providers)
+
+```yaml
+hf:
+  api_key: "${HF_TOKEN}"  # Can also use HF_TOKEN env var
+  base_url: "https://router.huggingface.co/v1"  # Optional
+  default_provider: null  # Optional: groq, fireworks-ai, cerebras, etc.
 ```
 
 ### Generic (Ollama, etc.)
@@ -151,7 +184,7 @@ mcp:
   servers:
     # Example stdio server
     server_name:
-      transport: "stdio"  # "stdio" or "sse"
+      transport: "stdio"  # "stdio", "sse", or "http"
       command: "npx"  # Command to execute
       args: ["@package/server-name"]  # Command arguments as array
       read_timeout_seconds: 60  # Optional timeout in seconds
@@ -165,11 +198,14 @@ mcp:
     streamable_http__server:
       transport: "http"
       url: "http://localhost:8000/mcp"
-      read_transport_sse_timeout_seconds: 300  # Timeout for HTTP connections
+      read_transport_sse_timeout_seconds: 300  # Timeout for HTTP/SSE connections
+      http_timeout_seconds: 300  # Overall HTTP timeout (StreamableHTTP)
+      http_read_timeout_seconds: 300  # Read timeout (StreamableHTTP)
       headers:  # Optional HTTP headers
         Authorization: "Bearer token"
       auth:  # Optional authentication
-      instructions:  # whether to include instructions in {{serverInstructions template variable}}
+        oauth: true
+      include_instructions: true  # Whether to include instructions in {{serverInstructions}}
 
     # Example SSE server
     sse_server:
@@ -179,7 +215,7 @@ mcp:
       headers:  # Optional HTTP headers
         Authorization: "Bearer token"
       auth:  # Optional authentication
-        api_key: "your_api_key"
+        oauth: true
 
 
     # Server with roots
@@ -227,7 +263,43 @@ logger:
   show_tools: true  # Show MCP Server tool calls on console
   truncate_tools: true  # Truncate long tool calls in display
   enable_markup: true # Disable if outputs conflict with rich library markup
-  use_legacy_display: false # enable the < 0.2.43 display
+  streaming: "markdown"  # "markdown", "plain", or "none"
+```
+
+## MCP UI Settings
+
+```yaml
+mcp_ui_mode: "enabled"  # "disabled", "enabled", or "auto"
+mcp_ui_output_dir: ".fast-agent/ui"  # Output directory for generated HTML files
+```
+
+## MCP Timeline Settings
+
+```yaml
+mcp_timeline:
+  steps: 20
+  step_seconds: 30  # seconds per bucket (also supports strings like "30s", "2m")
+```
+
+## Skills Settings
+
+```yaml
+skills:
+  directory: null  # Override the default skills directory
+```
+
+## Shell Execution Settings
+
+```yaml
+shell_execution:
+  timeout_seconds: 90
+  warning_interval_seconds: 30
+```
+
+## LLM Retries
+
+```yaml
+llm_retries: 0
 ```
 
 ## Example Full Configuration
@@ -293,4 +365,3 @@ openai:
 ```
 
 In this example, the `api_key` value will be set to the value of the `OPENAI_API_KEY` environment variable at runtime.
-

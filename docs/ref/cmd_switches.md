@@ -20,9 +20,11 @@ When running a **fast-agent** application (typically `uv run agent.py`), you hav
 | `--quiet` | Disable progress display, tool and message logging | `--quiet` |
 | `--version` | Show version and exit | `--version` |
 | `--server` | Deprecated alias for server mode; use `--transport` instead | `--server` |
-| `--transport {http,sse,stdio}` | Transport protocol; enabling it also turns on server mode | `--transport http` |
-| `--port PORT` | Port for SSE server (default: 8000) | `--port 8080` |
-| `--host HOST` | Host for SSE server (default: 0.0.0.0) | `--host localhost` |
+| `--transport {http,sse,stdio,acp}` | Transport protocol; enabling it also turns on server mode | `--transport http` |
+| `--port PORT` | Port for HTTP/SSE server (default: 8000) | `--port 8080` |
+| `--host HOST` | Host for HTTP/SSE server (default: 0.0.0.0) | `--host localhost` |
+| `--instance-scope {shared,connection,request}` | Control server-side agent instancing (default: shared) | `--instance-scope connection` |
+| `--skills DIR` | Override the default skills directory | `--skills ./skills` |
 
 `--transport` now implies server mode when running a Python module directly. If omitted, it defaults to `http`. `--server` remains available for backward compatibility but will be removed in a future release.
 

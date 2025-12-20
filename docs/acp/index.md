@@ -77,11 +77,19 @@ An example Zed configuration is:
 
 ```
 
+### Hugging Face Inference ACP (`hf-inference-acp`)
+
+`hf-inference-acp` is a dedicated ACP agent for Hugging Face Inference Providers (built on `fast-agent-mcp`).
+
+- Run: `uvx hf-inference-acp@latest`
+- Setup mode (when `HF_TOKEN` is missing) includes: `/set-model` (lists suggested models when called with no args), `/login`, `/check`
+- `/set-model` accepts `alias`, `hf.<org>/<model>[:provider]`, or `<org>/<model>` (auto-adds `hf.` and can display available providers)
+
 ### Installing 
 
 `uv tool install -U fast-agent-mcp`
 
-The ACP Server can then be started with the `fast-agent-acp` command. Custom agents can be started with `uv <agent.py> --transport acp`.
+The ACP Server can then be started with the `fast-agent-acp` command. Custom agents can be started with `uv run <agent.py> --transport acp`.
 
 For example:
 

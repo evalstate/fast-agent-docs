@@ -16,20 +16,26 @@ fast-agent go [OPTIONS]
 
 ### Options
 
-- `--name TEXT`: Name for the workflow (default: "FastAgent CLI")
+- `--name TEXT`: Name for the agent (default: "fast-agent")
 - `--instruction`, `-i <path or url>`: File name or URL for [System Prompt](../agents/instructions.md) (default: "You are a helpful AI Agent.")
 - `--config-path`, `-c <path>`: Path to config file
 - `--servers <server1>,<server2>`: Comma-separated list of server names to enable from config
 - `--url TEXT`: Comma-separated list of HTTP/SSE URLs to connect to directly
 - `--auth TEXT`: Bearer token for authorization with URL-based servers
-- `--model <model_string>`: Override the default model (e.g., haiku, sonnet, gpt-4)
-- `--model <model_string1>,<model_string2>,...`: Set up a `parallel` containing each model
+- `--model`, `--models <model_string>`: Override the default model (e.g., haiku, sonnet, gpt-4)
+- `--model`, `--models <model1>,<model2>,...`: Run one agent per model in parallel and print a side-by-side comparison of responses
 - `--message`, `-m TEXT`: Message to send to the agent (skips interactive mode)
 - `--prompt-file`, `-p <path>`: Path to a prompt file to use (either text or JSON)
-- `--quiet`: Disable progress display and logging
+- `--skills-dir`, `--skills <path>`: Override the default skills directory
 - `--stdio "<command> <options>"`: Run the command to attach a STDIO server (enclose arguments in quotes)
 - `--npx "@package/name <options>"`: Run an NPX package as a STDIO server (enclose arguments in quotes)
 - `--uvx "@package/name <options>"`: Run an UVX package as a STDIO server (enclose arguments in quotes)
+- `--shell`, `-x`: Enable a local shell runtime and expose the execute tool (bash or pwsh)
+
+Global CLI options (apply to all subcommands):
+
+- `--quiet`, `-q`: Disable progress display and logging
+- `--verbose`, `-v`: Enable verbose mode
 
 ### Examples
 
@@ -42,8 +48,8 @@ fast-agent go --model=haiku
 # Basic usage with interactive mode (go omitted)
 fast-agent --model haiku
 
-# Send commands to different LLMs in Parallel
-fast-agent --model kimi,gpt-5-mini.low
+# Compare responses across multiple models (comparison mode)
+fast-agent --models kimi,gpt-5-mini.low
 
 # Specifying servers from configuration
 fast-agent go --servers=fetch,filesystem --model=haiku
@@ -72,6 +78,21 @@ fast-agent --skills ~/my-skills/
 # Provider LLM shell access (use at your own risk)
 fast-agent -x
 
+```
+
+### Comparison mode (multiple models)
+
+Pass a comma-separated list to `--models` (or `--model`) to run one agent per model in parallel and compare responses side-by-side.
+
+How it works:
+
+- `--instruction` / `-i`, `--servers`, `--url`, and other connection options apply to every model agent.
+- Each model string becomes a separate agent name in the output.
+- Interactive mode (default): every prompt is sent to all models and results are shown in a comparison view.
+- Non-interactive: use `--message` or `--prompt-file` to run once and print results for each model.
+
+```bash
+fast-agent go --models sonnet,gpt-5-mini.low
 ```
 
 ### URL Connection Details

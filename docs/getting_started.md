@@ -1,25 +1,32 @@
+# Getting Started
 
-
-Install or upgrade to the latest version:
-```bash
-uvx tool install -U fast-agent-mcp
-```
-
-Set an API KEY h
-
-To run:
+## Install or upgrade
 
 ```bash
-fast-agent
+uv tool install -U fast-agent-mcp
 ```
 
-To load an instruction file:
+If you have multiple Python versions installed, pin the one required by fast-agent:
 
 ```bash
-fast-agent -i prompt.md
-fast-agent -i https://gist.github.com/.... 
+uv tool install -U fast-agent-mcp --python 3.13.5
 ```
 
+## Run
 
+```bash
+fast-agent go
+```
 
-To specify 
+## Instruction file
+
+```bash
+fast-agent go -i prompt.md
+fast-agent go -i https://gist.github.com/....
+```
+
+## Model override
+
+```bash
+fast-agent go --model sonnet
+```

@@ -79,11 +79,12 @@ fast = FastAgent("Server Agent")
 async def main():
     # Start as a server programmatically
     await fast.start_server(
-        transport="sse",
+        transport="http",
         host="0.0.0.0",
         port=8080,
         server_name="API-Agent-Server",
-        server_description="Provides API access to my agent"
+        server_description="Provides API access to my agent",
+        tool_description="Send a message to the {agent} agent",
     )
 
 if __name__ == "__main__":

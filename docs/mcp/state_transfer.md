@@ -173,7 +173,7 @@ async def main():
 
 **fast-agent** gives you the ability to save and reload conversations. 
 
-Enter `***SAVE_HISTORY history.json` in the `agent_two` chat to save the conversation history in MCP `GetPromptResult` format.
+Enter `***SAVE_HISTORY history.json` in the `agent_two` chat to save the conversation history as a JSON `{"messages": [...]}` container (fast-agent/MCP compatible).
 
 You can also save it in a text format for easier editing.
 

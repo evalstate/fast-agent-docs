@@ -58,7 +58,7 @@ You can save the conversation history to a file by sending a `***SAVE_HISTORY <f
 
 !!! Note "File Format / MCP Serialization"
 
-    If the filetype is `json`, then messages are serialized/deserialized using the MCP Prompt schema. The `load_prompt`, `load_prompt_multipart` and `prompt-server` will load either the text or JSON format directly.
+    If the filetype is `json`, fast-agent saves a `{"messages": [...]}` JSON container. It can contain either MCP `PromptMessage` objects (legacy) or `PromptMessageExtended` objects (preserves tool calls, channels, etc). `fast_agent.load_prompt` and `prompt-server` will load either the text or JSON format directly.
 
 This can be helpful when developing applications to:
 
