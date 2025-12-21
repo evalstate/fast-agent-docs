@@ -193,6 +193,30 @@ mcp:
           server_uri_alias: "file:///server/path"  # Optional, for consistent paths
 ```
 
+## Skills Configuration
+
+Configure skill directories and marketplace registries:
+
+```yaml
+skills:
+  # Override default skill directories
+  directories:
+    - ".fast-agent/skills"
+    - "~/my-custom-skills"
+
+  # Available skill registries (marketplaces)
+  marketplace_urls:
+    - "https://github.com/huggingface/skills"
+    - "https://github.com/anthropics/skills"
+```
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `directories` | List of directories to search for SKILL.md files | `.fast-agent/skills`, `.claude/skills` |
+| `marketplace_urls` | List of skill registries for `/skills add` | HuggingFace and Anthropic registries |
+
+See [Agent Skills](../agents/skills.md) for more information on using skills.
+
 ## OpenTelemetry Settings
 
 ```yaml
