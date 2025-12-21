@@ -91,7 +91,7 @@ For MCP Server developers, the form is fast and easy to navigate to facilitating
 
 The `elicitation_forms_server.py` file includes examples of all field types and validations: `Numbers`, `Booleans`, `Enums` and `Strings`.
 
-It also supports the formats specified in the [schema](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/630db617baa801ef8ec99e64aa4b00e99c7165ec/schema/2025-11-25/schema.ts#L2241-L2247): `Email`, `Uri`, `Date` and `Date/Time`.
+It also supports the formats specified in the [schema](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/630db617baa801ef8ec99e64aa4b00e99c7165ec/schema/2025-11-25/schema.ts#L2238-L2249): `Email`, `Uri`, `Date` and `Date/Time`.
 
 
 ## Tool Call
