@@ -1,6 +1,6 @@
 # Agent Skills
 
-**`fast-agent`** supports Agent Skills, and looks for them in either the `.fast-agent/skills` or `.claude/skills` folder.
+**fast-agent** supports Agent Skills, and looks for them in either the `.fast-agent/skills` or `.claude/skills` folder.
 
 When valid SKILL.md files are found:
 
@@ -8,15 +8,89 @@ When valid SKILL.md files are found:
 - Skill descriptions from the manifest and path are added to the System Prompt using the `{{agentSkills}}` expansion. A warning is displayed if this is not present in the System Prompt.
 - The `/skills` command lists the available skills.
 
+## Skill Marketplace
+
+fast-agent can install skills from online registries. By default, two registries are configured:
+
+- [HuggingFace Skills](https://github.com/huggingface/skills)
+- [Anthropic Skills](https://github.com/anthropics/skills)
+
+### Installing Skills
+
+Use the `/skills add` command to browse and install skills from the marketplace:
+
+```
+/skills add
+```
+
+This displays available skills with numbers. Install by name or number:
+
+```
+/skills add 1
+/skills add skill-name
+```
+
+### Removing Skills
+
+Remove installed skills with `/skills remove`:
+
+```
+/skills remove skill-name
+/skills remove 1
+```
+
+### Managing Registries
+
+View the current registry and available registries:
+
+```
+/skills registry
+```
+
+Example output:
+```
+# skills registry
+
+Registry: https://github.com/huggingface/skills
+
+Available registries:
+- [1] https://github.com/huggingface/skills
+- [2] https://github.com/anthropics/skills
+
+Usage: `/skills registry [number|URL]`
+```
+
+Switch registries by number or provide a custom URL:
+
+```
+/skills registry 2
+/skills registry https://github.com/my-org/my-skills
+```
+
+## Configuration
+
+Configure skill directories and registries in `fastagent.config.yaml`:
+
+```yaml
+skills:
+  directories:
+    - ".fast-agent/skills"
+  marketplace_urls:
+    - "https://github.com/huggingface/skills"
+    - "https://github.com/anthropics/skills"
+```
+
+See the [Configuration Reference](../ref/config_file.md#skills-configuration) for details.
+
 ## Command Line Options
 
-If using **``fast-agent``** interactively from the command line, the `--skills <directory>` switch can be used to specify the location of SKILL.md files.
+If using **fast-agent** interactively from the command line, the `--skills <directory>` switch can be used to specify the directory containing skills..
 
 ```bash
 # Specify a skills folder and a model
 fast-agent --skills ~/skill-development/testing/ --model gpt-5-mini.low
 
-# Give fast-agent access to the shell 
+# Give fast-agent access to the shell
 fast-agent -x
 ```
 
@@ -26,7 +100,7 @@ Skills directories can be defined on a per-agent basis:
 
 ```python
 # Define the agent
-@fast.agent(instruction=default_instruction,skills=["~/source/skills"])
+@fast.agent(instruction=default_instruction, skills=["~/source/skills"])
 async def main():
     # use the --model command line switch or agent arguments to change model
     async with fast.run() as agent:
@@ -34,4 +108,3 @@ async def main():
 ```
 
 This allows each individual agent to use a different set of skills if needed.
-
