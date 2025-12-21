@@ -5,7 +5,7 @@ description: Guided demonstration of using MCP Elicitations
 
 # Quick Start: MCP Elicitations
 
-In this quick start, we'll demonstrate **fast-agent**'s [MCP Elicitation](https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation) features.
+In this quick start, we'll demonstrate **fast-agent**'s [MCP Elicitation](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation) features.
 
 ![Elicitation Form](./pics/elicitation_form.gif){: align=right style="width:250px;"  }
 
@@ -91,7 +91,7 @@ For MCP Server developers, the form is fast and easy to navigate to facilitating
 
 The `elicitation_forms_server.py` file includes examples of all field types and validations: `Numbers`, `Booleans`, `Enums` and `Strings`.
 
-It also supports the formats specified in the [schema](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/b98f9805e963af7f67f158bdfa760078be4675a3/schema/2025-06-18/schema.ts#L1335-L1342): `Email`, `Uri`, `Date` and `Date/Time`.
+It also supports the formats specified in the [schema](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/630db617baa801ef8ec99e64aa4b00e99c7165ec/schema/2025-11-25/schema.ts#L2241-L2247): `Email`, `Uri`, `Date` and `Date/Time`.
 
 
 ## Tool Call
