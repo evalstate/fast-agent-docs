@@ -92,6 +92,7 @@ nav:
       - Workflows: agents/workflows.md
       - agents/running.md
       - agents/prompting.md
+      - agents/tool_runner.md
       - System Prompts: agents/instructions.md
       - agents/skills.md
   - Models:
