@@ -75,7 +75,7 @@ Will produce: `You are a helpful AI Agent. Your reliable knowledge cut-off date 
 You are have expert knowledge of the
 MCP (Model Context Protocol) schema.
 
-{{url:https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/refs/heads/main/schema/2025-06-18/schema.ts}}
+{{url:https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/refs/heads/main/schema/2025-11-25/schema.ts}}
 
 Answer any questions about the protocol by referring
 to and quoting the schema where necessary.
@@ -96,7 +96,7 @@ async def main():
 ```md title="mcp-expert.md"
 You are have expert knowledge of the MCP (Model Context Protocol) schema.
 
-{{url:https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/refs/heads/main/schema/2025-06-18/schema.ts}}
+{{url:https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/refs/heads/main/schema/2025-11-25/schema.ts}}
 
 Answer any questions about the protocol by referring to and quoting the schema where necessary.
 Your knowledge cut-off is December 2024, todays date is {{currentDate}}

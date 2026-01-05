@@ -112,7 +112,7 @@ mcp:
        server_uri_alias: # optional
 ```
 
-As per the [MCP specification](https://github.com/modelcontextprotocol/specification/blob/41749db0c4c95b97b99dc056a403cf86e7f3bc76/schema/2025-03-26/schema.ts#L1185-L1191) roots MUST be a valid URI starting with `file://`.
+As per the [MCP specification](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/630db617baa801ef8ec99e64aa4b00e99c7165ec/schema/2025-11-25/schema.ts#L2108-L2133) roots MUST be a valid URI starting with `file://`.
 
 If a server_uri_alias is supplied, **fast-agent** presents this to the MCP Server. This allows you to present a consistent interface to the MCP Server. An example of this usage would be mounting a local directory to a docker volume, and presenting it as `/mnt/data` to the MCP Server for consistency.
 
@@ -151,6 +151,3 @@ mcp:
 - **`forms`** (default). Displays a form to respond to elicitations.
 - **`auto_cancel`** The elicitation capability is advertised to the Server, but all solicitations are automatically cancelled.
 - **`none`** No elicitation capability is advertised to the Server.
-
-
-
