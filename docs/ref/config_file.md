@@ -188,6 +188,8 @@ mcp:
       command: "npx"  # Command to execute
       args: ["@package/server-name"]  # Command arguments as array
       read_timeout_seconds: 60  # Optional timeout in seconds
+      ping_interval_seconds: 30  # Optional ping interval; <=0 disables (default: 30)
+      max_missed_pings: 3  # Optional; consecutive missed pings before marking failed (default: 3)
       env:  # Optional environment variables
         ENV_VAR1: "value1"
         ENV_VAR2: "value2"
@@ -228,6 +230,8 @@ mcp:
           name: "Optional Name"  # Optional display name for the root
           server_uri_alias: "file:///server/path"  # Optional, for consistent paths
 ```
+
+Ping settings are optional and configured per server. `ping_interval_seconds` defaults to 30 seconds (<=0 disables), and `max_missed_pings` defaults to 3.
 
 ## Skills Configuration
 
