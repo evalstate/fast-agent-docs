@@ -75,6 +75,42 @@ openai:
 --8<-- "_generated/model_aliases_openai.md"
 
 
+## Open Responses
+
+Open Responses is an open standard for interoperable LLM interfaces. Read more at [https://www.openresponses.org/](https://www.openresponses.org/).
+
+Use the provide string `openresponses` to select a model:
+
+```bash
+fast-agent --model openresponses.openai/gpt-oss-120b:groq
+```
+
+The default reasoning effort is `medium`. Configure other levels in your YAML:
+
+```yaml
+openresponses:
+  reasoning_effort: "high"  # Options: minimal, low, medium, high
+```
+
+**YAML Configuration:**
+
+```yaml
+openresponses:
+  api_key: "your_api_key"
+  base_url: "https://api.example.com"  # Your Open Responses endpoint
+  reasoning_effort: "medium"  # Default reasoning effort level
+  default_headers:  # Optional custom headers
+    X-Custom-Header: "value"
+```
+
+**Environment Variables:**
+
+- `OPENRESPONSES_API_KEY`: Your API key
+- `OPENRESPONSES_BASE_URL`: Override the API endpoint
+
+**Model Name Format:**
+
+Use `openresponses.<model_name>` to specify models, where `<model_name>` is the model identifier supported by your Open Responses endpoint.
 
 ## Hugging Face
 
