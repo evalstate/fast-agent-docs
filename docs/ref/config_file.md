@@ -24,7 +24,20 @@ auto_sampling: true
 
 # Execution engine (only asyncio is currently supported)
 execution_engine: "asyncio"
+
+# Base directory for fast-agent runtime data
+environment_dir: ".fast-agent"
+
+# Session history storage (on/off)
+session_history: true
+
+# Session history rolling window (number of recent sessions to keep)
+session_history_window: 20
 ```
+
+`session_history` controls whether fast-agent persists session metadata and history files in the environment sessions folder (default `.fast-agent/sessions`). `session_history_window` limits how many recent sessions are kept; older sessions are pruned when new sessions are created. The same window is used for session resume completions and ordinal selection (e.g. `/session resume 1`).
+
+`environment_dir` sets the base folder for local fast-agent data such as skills, sessions, and permission history. You can also override this per run with `fast-agent --env <path>`.
 
 ## Model Providers
 
@@ -252,7 +265,7 @@ skills:
 
 | Setting | Description | Default |
 |---------|-------------|---------|
-| `directories` | List of directories to search for SKILL.md files | `.fast-agent/skills`, `.claude/skills` |
+| `directories` | List of directories to search for SKILL.md files | environment skills directory (default `.fast-agent/skills`), `.claude/skills` |
 | `marketplace_urls` | List of skill registries for `/skills add` | HuggingFace and Anthropic registries |
 
 See [Agent Skills](../agents/skills.md) for more information on using skills.
@@ -322,6 +335,7 @@ skills:
 shell_execution:
   timeout_seconds: 90
   warning_interval_seconds: 30
+  interactive_use_pty: true  # Use PTY for interactive prompt shell commands
 ```
 
 ## LLM Retries

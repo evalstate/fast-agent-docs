@@ -29,12 +29,40 @@ Anthropic models support Text, Vision and PDF content.
 anthropic:
   api_key: "your_anthropic_key" # Required
   base_url: "https://api.anthropic.com/v1" # Default, only include if required
+  cache_mode: "auto" # Options: off, prompt, auto (default: auto)
+  cache_ttl: "5m" # Options: 5m, 1h (default: 5m)
 ```
 
 **Environment Variables:**
 
 - `ANTHROPIC_API_KEY`: Your Anthropic API key
 - `ANTHROPIC_BASE_URL`: Override the API endpoint
+
+**Caching Options:**
+
+The `cache_mode` setting controls how prompt caching is applied:
+
+- `off`: No caching, even if global `prompt_caching` is enabled
+- `prompt`: Caches tools, system prompt, and template content
+- `auto`: Same as `prompt` (default)
+
+The `cache_ttl` setting controls how long cached content persists:
+
+- `5m`: Standard 5-minute cache (default)
+- `1h`: Extended 1-hour cache (additional cost)
+
+**Extended Thinking:**
+
+Claude Sonnet 4+ and Opus 4+ models support extended thinking, which shows Claude's step-by-step reasoning process:
+
+```yaml
+anthropic:
+  thinking_enabled: true # Enable extended thinking (default: false)
+  thinking_budget_tokens: 10000 # Max tokens for reasoning (default: 10000, minimum: 1024)
+```
+
+Note: Extended thinking is incompatible with structured output (forced tool choice). The `thinking_budget_tokens` must be less than `max_tokens`.
+
 
 **Model Name Aliases:**
 

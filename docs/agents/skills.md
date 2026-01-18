@@ -1,6 +1,6 @@
 # Agent Skills
 
-**fast-agent** supports Agent Skills, and looks for them in either the `.fast-agent/skills` or `.claude/skills` folder.
+**fast-agent** supports Agent Skills, and looks for them in either the fast-agent environment directory (default `.fast-agent/skills`) or `.claude/skills`. Use `fast-agent --env <path>` or `environment_dir` in the config file to relocate the environment folder.
 
 When valid SKILL.md files are found:
 
@@ -84,7 +84,7 @@ See the [Configuration Reference](../ref/config_file.md#skills-configuration) fo
 
 ## Command Line Options
 
-If using **fast-agent** interactively from the command line, the `--skills <directory>` switch can be used to specify the directory containing skills..
+If using **fast-agent** interactively from the command line, the `--skills <directory>` switch can be used to specify the directory containing skills. The `--env <path>` flag lets you relocate the entire environment directory (including the default skills folder).
 
 ```bash
 # Specify a skills folder and a model
