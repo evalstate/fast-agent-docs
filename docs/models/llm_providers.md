@@ -103,6 +103,41 @@ openai:
 --8<-- "_generated/model_aliases_openai.md"
 
 
+## Codex (OAuth Responses)
+
+**`fast-agent`** supports using your OpenAI Codex subscription. Simply use `fast-agent auth codexplan` and use `codexplan` as your model. 
+
+**Quick Start:**
+
+```bash
+# Start OAuth login (stores tokens in your OS keyring)
+fast-agent auth codexplan
+
+# Use the Codex planning model
+fast-agent --model codexplan
+```
+
+**Provider Configuration:**
+
+```yaml
+codexresponses:
+  # Optional: override defaults
+  base_url: "https://chatgpt.com/backend-api/codex"
+  text_verbosity: "medium"  # low | medium | high
+  default_headers:
+    X-Custom-Header: "value"
+```
+
+**Environment Variables:**
+
+- `CODEX_API_KEY`: Optional. Provide a Codex OAuth access token directly.
+
+**Notes:**
+
+- Tokens are stored in your OS keyring via `fast-agent auth codexplan`.
+- To remove tokens, use: `fast-agent auth codex-clear`.
+- `fast-agent check` and `fast-agent auth` show Codex OAuth status.
+
 ## Open Responses
 
 Open Responses is an open standard for interoperable LLM interfaces. Read more at [https://www.openresponses.org/](https://www.openresponses.org/).
