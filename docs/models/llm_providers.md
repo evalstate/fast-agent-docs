@@ -137,6 +137,7 @@ codexresponses:
 - Tokens are stored in your OS keyring via `fast-agent auth codexplan`.
 - To remove tokens, use: `fast-agent auth codex-clear`.
 - `fast-agent check` and `fast-agent auth` show Codex OAuth status.
+- Encrypted reasoning is not transferable between API keys/credentials. Remove reasoning traces if transporting between sessions (use the bundled session skill).
 
 ## Open Responses
 

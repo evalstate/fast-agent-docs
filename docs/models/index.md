@@ -26,8 +26,8 @@ Model strings follow this format: `provider.model_name.reasoning_effort`
 
 Examples:
 
-- `anthropic.claude-3-7-sonnet-latest`
-- `openai.gpt-4o`
+- `anthropic.claude-4-5-sonnet-latest`
+- `openai.gpt-5.2`
 - `openai.o3-mini.high`
 - `azure.my-deployment`
 - `generic.llama3.2:latest`
@@ -36,13 +36,13 @@ Examples:
 
 #### Reasoning Effort
 
-For models that support it (`o1`, `o1-preview` and `o3-mini`), you can specify a reasoning effort of **`high`**, **`medium`** or **`low`** - for example `openai.o3-mini.high`. **`medium`** is the default if not specified.
+For models that support it (e.g. `o1`, and `gpt-5` etc), you can specify a reasoning effort of **`high`**, **`medium`** or **`low`** - for example `openai.o3-mini.high`. **`medium`** is the default if not specified.
 
-`gpt-5` additionally supports a `minimal` reasoning effort.
+`gpt-5` class models additionally support a `minimal` reasoning effort.
 
 #### Aliases
 
-For convenience, popular models have an alias set such as `gpt-4o` or `sonnet`. These are documented on the [LLM Providers](llm_providers.md) page.
+For convenience, popular models have an alias set such as `codex` or `sonnet`. These are documented on the [LLM Providers](llm_providers.md) page.
 
 ### Default Configuration
 
