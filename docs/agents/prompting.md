@@ -17,7 +17,7 @@ This returns the text of the agent's response as a string, making it ideal for s
 You can attach files by using `Prompt.user()` method to construct your message:
 
 ```python
-from fast_agent.core.prompt import Prompt
+from fast_agent import Prompt
 from pathlib import Path
 
 plans: str = await agent.send(
@@ -175,13 +175,13 @@ You can list and get Prompts from attached MCP Servers:
 from mcp.types import GetPromptResult, PromptMessage
 
 prompt: GetPromptResult = await agent.get_prompt("setup_sizing")
-first_message: PromptMessage = prompt[0]
+first_message: PromptMessage = prompt.messages[0]
 ```
 
 and send the native MCP `PromptMessage` to the agent with:
 
 ```python
-response: str = agent.send(first_message)
+response: str = await agent.send(first_message)
 ```
 
 > If the last message in the conversation is from the `assistant`, it is returned as the response.
@@ -193,10 +193,10 @@ response: str = agent.send(first_message)
 ```python
 from mcp.types import ReadResourceResult
 
-resource: ReadResourceResult = agent.get_resource(
+resource: ReadResourceResult = await agent.get_resource(
     "resource://images/cat.png", "mcp_server_name" 
 )
-response: str = agent.send(
+response: str = await agent.send(
     Prompt.user("What is in this image?", resource)
 )
 ```
@@ -204,9 +204,9 @@ response: str = agent.send(
 Alternatively, use the _with_resource_ convenience method:
 
 ```python
-response: str = agent.with_resource(
+response: str = await agent.with_resource(
     "What is in this image?",
-    "resource://images/cat.png"
+    "resource://images/cat.png",
     "mcp_server_name",
 )
 
@@ -217,10 +217,10 @@ response: str = agent.with_resource(
 Long prompts can be stored in text files, and loaded with the `load_prompt` utility:
 
 ```python
-from fast_agent.mcp.prompts import load_prompt
-from mcp.types import PromptMessage
+from fast_agent import PromptMessageExtended, load_prompt
+from pathlib import Path
 
-prompt: List[PromptMessage] = load_prompt(Path("two_cities.txt"))
+prompt: list[PromptMessageExtended] = load_prompt(Path("two_cities.txt"))
 result: str = await agent.send(prompt[0])
 ```
 
@@ -258,10 +258,10 @@ units: M
 Multiple messages (conversations) can be applied with the `generate()` method:
 
 ```python
-from fast_agent.mcp.prompts import load_prompt
-from mcp.types import PromptMessage
+from fast_agent import PromptMessageExtended, load_prompt
+from pathlib import Path
 
-prompt: List[PromptMessage] = load_prompt(Path("sizing_conversation.txt"))
+prompt: list[PromptMessageExtended] = load_prompt(Path("sizing_conversation.txt"))
 result: PromptMessageExtended = await agent.generate(prompt)
 ```
 
@@ -280,16 +280,16 @@ source code was attached to achieve those plans. Can I help further?
 ```
 
 ```python
-from fast_agent.mcp.prompts import load_prompt
-from fast_agent import PromptMessageExtended
+from fast_agent import PromptMessageExtended, load_prompt
+from pathlib import Path
 
-prompt: List[PromptMessageExtended] = load_prompt(Path("prompt_secret_plans.txt"))
+prompt: list[PromptMessageExtended] = load_prompt(Path("prompt_secret_plans.txt"))
 result: PromptMessageExtended = await agent.generate(prompt)
 ```
 
 !!! Note "File Format / MCP Serialization"
 
-    If the filetype is `json`, then messages are deserialized using the MCP Prompt schema format. The `load_prompt`, `load_prompt_multipart` and `prompt-server` will load either the text or JSON format directly.
+    If the filetype is `json`, fast-agent saves a `{"messages": [...]}` JSON container. It can contain either MCP `PromptMessage` objects (legacy) or `PromptMessageExtended` objects (preserves tool calls, channels, etc). `fast_agent.load_prompt` and `prompt-server` will load either the text or JSON format directly.
     See [History Saving](../models/index.md#history-saving) to learn how to save a conversation to a file for editing or playback.
 
 
@@ -315,4 +315,3 @@ Hello {{assistant_name}}, how are you?
 ---ASSISTANT
 Great to meet you {{user_name}} how can I be of assistance?
 ```
-

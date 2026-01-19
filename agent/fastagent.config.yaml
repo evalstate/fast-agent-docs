@@ -39,3 +39,6 @@ mcp:
           "@modelcontextprotocol/server-filesystem",
           "~/source/docs-build/",
         ]
+      # Optional ping settings (defaults: 30s interval, 3 missed pings)
+      # ping_interval_seconds: 30
+      # max_missed_pings: 3

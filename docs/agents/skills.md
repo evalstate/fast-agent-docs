@@ -12,9 +12,83 @@ When valid SKILL.md files are found:
 - The `/skills` command lists the available skills.
 - If duplicate skill names exist across directories, later directories override earlier ones. Warnings are surfaced in `/status` (ACP).
 
+## Skill Marketplace
+
+fast-agent can install skills from online registries. By default, two registries are configured:
+
+- [HuggingFace Skills](https://github.com/huggingface/skills)
+- [Anthropic Skills](https://github.com/anthropics/skills)
+
+### Installing Skills
+
+Use the `/skills add` command to browse and install skills from the marketplace:
+
+```
+/skills add
+```
+
+This displays available skills with numbers. Install by name or number:
+
+```
+/skills add 1
+/skills add skill-name
+```
+
+### Removing Skills
+
+Remove installed skills with `/skills remove`:
+
+```
+/skills remove skill-name
+/skills remove 1
+```
+
+### Managing Registries
+
+View the current registry and available registries:
+
+```
+/skills registry
+```
+
+Example output:
+```
+# skills registry
+
+Registry: https://github.com/huggingface/skills
+
+Available registries:
+- [1] https://github.com/huggingface/skills
+- [2] https://github.com/anthropics/skills
+
+Usage: `/skills registry [number|URL]`
+```
+
+Switch registries by number or provide a custom URL:
+
+```
+/skills registry 2
+/skills registry https://github.com/my-org/my-skills
+```
+
+## Configuration
+
+Configure skill directories and registries in `fastagent.config.yaml`:
+
+```yaml
+skills:
+  directories:
+    - ".fast-agent/skills"
+  marketplace_urls:
+    - "https://github.com/huggingface/skills"
+    - "https://github.com/anthropics/skills"
+```
+
+See the [Configuration Reference](../ref/config_file.md#skills-configuration) for details.
+
 ## Command Line Options
 
-If using **`fast-agent`** interactively from the command line, the `--skills <directory>` switch can be used to specify a single skills directory. When supplied, the default search paths are not used.
+If using **fast-agent** interactively from the command line, the `--skills <directory>` switch can be used to specify the directory containing skills. The `--env <path>` flag lets you relocate the entire environment directory (including the default skills folder).
 
 ```bash
 # Specify a skills folder and a model

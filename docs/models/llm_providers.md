@@ -13,7 +13,11 @@ In your `fastagent.config.yaml`:
 <provider>:
   api_key: "your_api_key" # Override with API_KEY env var
   base_url: "https://api.example.com" # Base URL for API calls
+  default_headers: # Optional - custom headers for all API requests
+    X-Custom-Header: "value"
 ```
+
+The `default_headers` option is available for all OpenAI-compatible providers.
 
 ## Anthropic
 
@@ -25,6 +29,8 @@ Anthropic models support Text, Vision and PDF content.
 anthropic:
   api_key: "your_anthropic_key" # Required
   base_url: "https://api.anthropic.com/v1" # Default, only include if required
+  cache_mode: "auto" # Options: off, prompt, auto (default: auto)
+  cache_ttl: "5m" # Options: 5m, 1h (default: 5m)
 ```
 
 **Environment Variables:**
@@ -32,19 +38,41 @@ anthropic:
 - `ANTHROPIC_API_KEY`: Your Anthropic API key
 - `ANTHROPIC_BASE_URL`: Override the API endpoint
 
+**Caching Options:**
+
+The `cache_mode` setting controls how prompt caching is applied:
+
+- `off`: No caching, even if global `prompt_caching` is enabled
+- `prompt`: Caches tools, system prompt, and template content
+- `auto`: Same as `prompt` (default)
+
+The `cache_ttl` setting controls how long cached content persists:
+
+- `5m`: Standard 5-minute cache (default)
+- `1h`: Extended 1-hour cache (additional cost)
+
+**Extended Thinking:**
+
+Claude Sonnet 4+ and Opus 4+ models support extended thinking, which shows Claude's step-by-step reasoning process:
+
+```yaml
+anthropic:
+  thinking_enabled: true # Enable extended thinking (default: false)
+  thinking_budget_tokens: 10000 # Max tokens for reasoning (default: 10000, minimum: 1024)
+```
+
+Note: Extended thinking is incompatible with structured output (forced tool choice). The `thinking_budget_tokens` must be less than `max_tokens`.
+
+
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    | Model Alias | Maps to                    |
-| ----------- | -------------------------- | ----------- | -------------------------- |
-| `claude`    | `claude-sonnet-4-0` | `haiku`     | `claude-3-5-haiku-latest`  |
-| `sonnet`    | `claude-sonnet-4-0` | `haiku3`    | `claude-3-haiku-20240307`  |
-| `sonnet35`  | `claude-3-5-sonnet-latest` | `haiku35`   | `claude-3-5-haiku-latest`  |
-| `sonnet37`  | `claude-3-7-sonnet-latest` | `opus`      | `claude-opus-4-1`     |
-| `opus3`     |     `claude-3-opus-latest` |      |     |
+--8<-- "_generated/model_aliases_anthropic.md"
 
 ## OpenAI
 
 **fast-agent** supports OpenAI `gpt-5` series, `gpt-4.1` series, `o1-preview`, `o1` and `o3-mini` models. Arbitrary model names are supported with `openai.<model_name>`. Supported modalities are model-dependent, check the [OpenAI Models Page](https://platform.openai.com/docs/models) for the latest information.
+
+OpenAI multimodal models support text, images, and PDF input (`application/pdf`). For PDFs, provide a local file/blob rather than a URL.
 
 For reasoning models, you can specify `low`, `medium`, or `high` effort as follows:
 
@@ -72,17 +100,45 @@ openai:
 
 **Model Name Aliases:**
 
-| Model Alias   | Maps to       | Model Alias   | Maps to       |
-| ------------- | ------------- | ------------- | ------------- |
-| `gpt-4o`      | `gpt-4o`      | `gpt-4.1`     | `gpt-4.1`     |
-| `gpt-4o-mini` | `gpt-4o-mini` | `gpt-4.1-mini`| `gpt-4.1-mini`|
-| `o1`          | `o1`          | `gpt-4.1-nano`| `gpt-4.1-nano`|
-| `o1-mini`     | `o1-mini`     | `o1-preview`  | `o1-preview`  |
-| `o3-mini`     | `o3-mini`     | `o3`          |               |
-| `gpt-5`     |  `gpt-5`     | `gpt-5-mini`          | `gpt-5-mini`              |
-| `gpt-5-nano` | `gpt-5-nano` |   |   |
+--8<-- "_generated/model_aliases_openai.md"
 
 
+## Open Responses
+
+Open Responses is an open standard for interoperable LLM interfaces. Read more at [https://www.openresponses.org/](https://www.openresponses.org/).
+
+Use the provide string `openresponses` to select a model:
+
+```bash
+fast-agent --model openresponses.openai/gpt-oss-120b:groq
+```
+
+The default reasoning effort is `medium`. Configure other levels in your YAML:
+
+```yaml
+openresponses:
+  reasoning_effort: "high"  # Options: minimal, low, medium, high
+```
+
+**YAML Configuration:**
+
+```yaml
+openresponses:
+  api_key: "your_api_key"
+  base_url: "https://api.example.com"  # Your Open Responses endpoint
+  reasoning_effort: "medium"  # Default reasoning effort level
+  default_headers:  # Optional custom headers
+    X-Custom-Header: "value"
+```
+
+**Environment Variables:**
+
+- `OPENRESPONSES_API_KEY`: Your API key
+- `OPENRESPONSES_BASE_URL`: Override the API endpoint
+
+**Model Name Format:**
+
+Use `openresponses.<model_name>` to specify models, where `<model_name>` is the model identifier supported by your Open Responses endpoint.
 
 ## Hugging Face
 
@@ -115,6 +171,10 @@ fast-agent --model hf.moonshotai/kimi-k2-instruct-0905
 fast-agent --model hf.moonshotai/kimi-k2-instruct-0905:groq
 fast-agent --model hf.deepseek-ai/deepseek-v3.1:fireworks-ai
 ```
+
+### Finding Available Providers
+
+If you have a Hugging Face model ID (for example, `moonshotai/Kimi-K2-Thinking`) and want to see which Inference Providers are available, use `lookup_inference_providers` from `fast_agent.llm` (or `lookup_inference_providers_sync` for non-async code).
 
 ### Model Aliases
 
@@ -260,9 +320,7 @@ groq:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    |
-| ----------- | -------------------------- |
-| `kimigroq`  | `moonshotai/kimi-k2-instruct` |
+--8<-- "_generated/model_aliases_groq.md"
 
 
 ## DeepSeek
@@ -284,10 +342,7 @@ deepseek:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    |
-| ----------- | -------------------------- |
-| `deepseek`  | `deepseek-chat` |
-| `deepseek3` | `deepseek-chat` |
+--8<-- "_generated/model_aliases_deepseek.md"
 
 
 ## Google
@@ -308,11 +363,7 @@ google:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to                    |
-| ----------- | -------------------------- |
-| `gemini2`  | `gemini-2.0-flash` |
-| `gemini25` | `gemini-2.5-flash-preview-05-20` |
-| `gemini25pro` | `gemini-2.5-pro-preview-05-06` |
+--8<-- "_generated/model_aliases_google.md"
 
 ### OpenAI Mode
 
@@ -337,15 +388,7 @@ xai:
 
 **Model Name Aliases:**
 
-| Model Alias | Maps to (xai.)             |
-| ----------- | -------------------------- |
-| `grok-3`  | `grok-3` |
-| `grok-3-fast`  | `grok-3-fast` |
-| `grok-3-mini`  | `grok-3-mini` |
-| `grok-3-mini-fast`  | `grok-3-mini-fast` |
-| `grok-4` | `grok-4` |
-| `grok-4-fast` | `grok-4-fast-non-reasoning` |
-| `grok-4-fast-reasoning` | `grok-4-fast-reasoning` |
+--8<-- "_generated/model_aliases_xai.md"
 
 
 ## Generic OpenAI / Ollama

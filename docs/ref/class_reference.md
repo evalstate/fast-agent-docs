@@ -16,7 +16,10 @@ FastAgent(
     name: str,
     config_path: str | None = None,
     ignore_unknown_args: bool = False,
-    parse_cli_args: bool = True
+    parse_cli_args: bool = True,
+    quiet: bool = False,
+    skills_directory: str | Path | None = None,
+    **kwargs,
 )
 ```
 
@@ -28,6 +31,9 @@ FastAgent(
 | `config_path` | `str \| None` | `None` | Optional path to config file. If not provided, config is loaded from default locations |
 | `ignore_unknown_args` | `bool` | `False` | Whether to ignore unknown command line arguments when `parse_cli_args` is `True` |
 | `parse_cli_args` | `bool` | `True` | Whether to parse command line arguments. Set to `False` when embedding FastAgent in frameworks like FastAPI/Uvicorn that handle their own argument parsing |
+| `quiet` | `bool` | `False` | Disable progress display, tool and message logging for cleaner output |
+| `skills_directory` | `str \| Path \| None` | `None` | Override the default skills directory |
+| `**kwargs` | `Any` |  | Additional keyword args (advanced use) |
 
 ### Decorator Methods
 
@@ -41,6 +47,8 @@ The `FastAgent` class provides several decorators for creating agents and workfl
 | `@fast.parallel()` | Create a parallel workflow |
 | `@fast.evaluator_optimizer()` | Create an evaluator-optimizer workflow |
 | `@fast.orchestrator()` | Create an orchestrator workflow |
+| `@fast.iterative_planner()` | Create an iterative planner workflow |
+| `@fast.maker()` | Create a MAKER (k-voting) workflow |
 
 See [Defining Agents](../agents/defining.md) for detailed usage of these decorators.
 
@@ -59,11 +67,14 @@ An async context manager that initializes all registered agents and returns an `
 
 ```python
 await fast.start_server(
-    transport: str = "sse",
+    transport: str = "http",
     host: str = "0.0.0.0",
     port: int = 8000,
-    server_name: Optional[str] = None,
-    server_description: Optional[str] = None
+    server_name: str | None = None,
+    server_description: str | None = None,
+    tool_description: str | None = None,
+    instance_scope: str = "shared",
+    permissions_enabled: bool = True,
 )
 ```
 
@@ -71,19 +82,22 @@ Starts the application as an MCP server.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `transport` | `str` | `"sse"` | Transport protocol to use ("stdio" or "sse") |
-| `host` | `str` | `"0.0.0.0"` | Host address for the server when using SSE |
-| `port` | `int` | `8000` | Port for the server when using SSE |
+| `transport` | `str` | `"http"` | Transport protocol to use (`http`, `sse`, `stdio`, `acp`) |
+| `host` | `str` | `"0.0.0.0"` | Host address for the server when using HTTP or SSE |
+| `port` | `int` | `8000` | Port for the server when using HTTP or SSE |
 | `server_name` | `Optional[str]` | `None` | Optional custom name for the MCP server |
 | `server_description` | `Optional[str]` | `None` | Optional description for the MCP server |
+| `tool_description` | `str \| None` | `None` | Customise the exposed `send` tool description (supports `{agent}` placeholder) |
+| `instance_scope` | `str` | `"shared"` | Control how clients receive isolated agent instances (`shared`, `connection`, `request`) |
+| `permissions_enabled` | `bool` | `True` | Enable tool permission requests (ACP only) |
 
 #### `main()`
 
 ```python
-await fast.main()
+is_server_mode = await fast.main()
 ```
 
-Helper method for checking if server mode was requested. Returns `True` if the `--server` flag is set, `False` otherwise.
+Helper method for checking if the legacy `--server` flag was requested (deprecated). Server mode is also triggered by `--transport` when running from the CLI, but that check happens in `run()`.
 
 ## AgentApp Class
 
@@ -108,7 +122,8 @@ response = await agent["agent_name"].send("Hello")
 ```python
 await agent.send(
     message: Union[str, PromptMessage, PromptMessageExtended],
-    agent_name: Optional[str] = None
+    agent_name: str | None = None,
+    request_params: RequestParams | None = None,
 ) -> str
 ```
 
@@ -118,9 +133,10 @@ Send a message to the specified agent (or the default agent if not specified).
 
 ```python
 await agent.apply_prompt(
-    prompt_name: str,
-    arguments: Dict[str, str] | None = None,
-    agent_name: str | None = None
+    prompt: str | GetPromptResult,
+    arguments: dict[str, str] | None = None,
+    agent_name: str | None = None,
+    as_template: bool = False,
 ) -> str
 ```
 
@@ -143,8 +159,10 @@ Send a message with an attached MCP resource.
 
 ```python
 await agent.interactive(
-    agent: str | None = None,
-    default_prompt: str = ""
+    agent_name: str | None = None,
+    default_prompt: str = "",
+    pretty_print_parallel: bool = False,
+    request_params: RequestParams | None = None,
 ) -> str
 ```
 
@@ -242,4 +260,4 @@ if __name__ == "__main__":
 This example shows how to:
 1. Parse your application's own arguments using `argparse`
 2. Create a FastAgent instance with `parse_cli_args=False`
-3. Use your own command-line arguments in combination with FastAgent
+3. Use your own command-line arguments in combination with **`fast-agent`**

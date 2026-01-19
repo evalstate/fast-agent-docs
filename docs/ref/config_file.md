@@ -11,13 +11,13 @@ Configuration can also be provided through environment variables, with the namin
 
 ## Configuration File Location
 
-fast-agent automatically searches for configuration files in the current working directory and its parent directories. You can also specify a configuration file path with the `--config` command-line argument.
+fast-agent automatically searches for configuration files in the current working directory and its parent directories. You can also specify a configuration file path with the `--config-path` (`-c`) command-line argument.
 
 ## General Settings
 
 ```yaml
 # Default model for all agents
-default_model: "gpt-5-mini"  # Format: provider.model_name.reasoning_effort
+default_model: "gpt-5-mini.low"  # Format: provider.model_name.reasoning_effort
 
 # Whether to automatically enable Sampling. Model seletion precedence is Agent > Default.
 auto_sampling: true
@@ -27,6 +27,15 @@ llm_retries: 0
 
 # Execution engine (only asyncio is currently supported)
 execution_engine: "asyncio"
+
+# Base directory for fast-agent runtime data
+environment_dir: ".fast-agent"
+
+# Session history storage (on/off)
+session_history: true
+
+# Session history rolling window (number of recent sessions to keep)
+session_history_window: 20
 ```
 
 `llm_retries` defaults to `0` and is the preferred way to control retry attempts. If unset in
@@ -35,6 +44,9 @@ config, the `FAST_AGENT_RETRIES` environment variable is used as a fallback.
 ## Runtime Environment Variables
 
 - `FAST_AGENT_DISABLE_UV_LOOP=1`: Disable uvloop even if installed (non-Windows). By default, uvloop is used when available.
+`session_history` controls whether fast-agent persists session metadata and history files in the environment sessions folder (default `.fast-agent/sessions`). `session_history_window` limits how many recent sessions are kept; older sessions are pruned when new sessions are created. The same window is used for session resume completions and ordinal selection (e.g. `/session resume 1`).
+
+`environment_dir` sets the base folder for local fast-agent data such as skills, sessions, and permission history. You can also override this per run with `fast-agent --env <path>`.
 
 ## Model Providers
 
@@ -52,7 +64,7 @@ anthropic:
 openai:
   api_key: "your_openai_key"  # Can also use OPENAI_API_KEY env var
   base_url: "https://api.openai.com/v1"  # Optional, only include to override
-  reasoning_effort: "medium"  # Default reasoning effort: "low", "medium", or "high"
+  reasoning_effort: "medium"  # Default reasoning effort: "minimal", "low", "medium", or "high"
 ```
 
 ### Azure OpenAI
@@ -104,6 +116,39 @@ deepseek:
 google:
   api_key: "your_google_key"  # Can also use GOOGLE_API_KEY env var
   base_url: "https://generativelanguage.googleapis.com/v1beta/openai"  # Optional
+```
+
+### xAI (Grok)
+
+```yaml
+xai:
+  api_key: "your_xai_key"  # Can also use XAI_API_KEY env var
+  base_url: "https://api.x.ai/v1"  # Optional, defaults to this value
+```
+
+### Groq
+
+```yaml
+groq:
+  api_key: "your_groq_key"  # Can also use GROQ_API_KEY env var
+  base_url: "https://api.groq.com/openai/v1"  # Optional, defaults to this value
+```
+
+### Aliyun (Qwen via OpenAI-compatible API)
+
+```yaml
+aliyun:
+  api_key: "your_aliyun_key"  # Provide via secrets/env as appropriate
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"  # Optional, defaults to this value
+```
+
+### Hugging Face (Inference Providers)
+
+```yaml
+hf:
+  api_key: "${HF_TOKEN}"  # Can also use HF_TOKEN env var
+  base_url: "https://router.huggingface.co/v1"  # Optional
+  default_provider: null  # Optional: groq, fireworks-ai, cerebras, etc.
 ```
 
 ### Generic (Ollama, etc.)
@@ -161,13 +206,15 @@ mcp:
   servers:
     # Example stdio server
     server_name:
-      transport: "stdio"  # "stdio" or "sse"
+      transport: "stdio"  # "stdio", "sse", or "http"
       command: "npx"  # Command to execute
       args: ["@package/server-name"]  # Command arguments as array
       read_timeout_seconds: 60  # Optional timeout in seconds
       # HTTP transport only:
       # http_timeout_seconds: 30        # Overall HTTP timeout (seconds). If unset, uses MCP SDK default (30s).
       # http_read_timeout_seconds: 300  # Per-read timeout for streaming (seconds). If unset, uses MCP SDK default (300s).
+      ping_interval_seconds: 30  # Optional ping interval; <=0 disables (default: 30)
+      max_missed_pings: 3  # Optional; consecutive missed pings before marking failed (default: 3)
       env:  # Optional environment variables
         ENV_VAR1: "value1"
         ENV_VAR2: "value2"
@@ -178,13 +225,14 @@ mcp:
     streamable_http__server:
       transport: "http"
       url: "http://localhost:8000/mcp"
-      read_transport_sse_timeout_seconds: 300  # (SSE-only; not used for HTTP)
-      http_timeout_seconds: 30        # Overall HTTP timeout (seconds). If unset, uses MCP SDK default (30s).
-      http_read_timeout_seconds: 300  # Per-read timeout for streaming (seconds). If unset, uses MCP SDK default (300s).
+      read_transport_sse_timeout_seconds: 300  # Timeout for HTTP/SSE connections
+      http_timeout_seconds: 300  # Overall HTTP timeout (StreamableHTTP)
+      http_read_timeout_seconds: 300  # Read timeout (StreamableHTTP)
       headers:  # Optional HTTP headers
         Authorization: "Bearer token"
       auth:  # Optional authentication
-      instructions:  # whether to include instructions in {{serverInstructions template variable}}
+        oauth: true
+      include_instructions: true  # Whether to include instructions in {{serverInstructions}}
 
     # Example SSE server
     sse_server:
@@ -194,7 +242,7 @@ mcp:
       headers:  # Optional HTTP headers
         Authorization: "Bearer token"
       auth:  # Optional authentication
-        api_key: "your_api_key"
+        oauth: true
 
 
     # Server with roots
@@ -207,6 +255,32 @@ mcp:
           name: "Optional Name"  # Optional display name for the root
           server_uri_alias: "file:///server/path"  # Optional, for consistent paths
 ```
+
+Ping settings are optional and configured per server. `ping_interval_seconds` defaults to 30 seconds (<=0 disables), and `max_missed_pings` defaults to 3.
+
+## Skills Configuration
+
+Configure skill directories and marketplace registries:
+
+```yaml
+skills:
+  # Override default skill directories
+  directories:
+    - ".fast-agent/skills"
+    - "~/my-custom-skills"
+
+  # Available skill registries (marketplaces)
+  marketplace_urls:
+    - "https://github.com/huggingface/skills"
+    - "https://github.com/anthropics/skills"
+```
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `directories` | List of directories to search for SKILL.md files | environment skills directory (default `.fast-agent/skills`), `.claude/skills` |
+| `marketplace_urls` | List of skill registries for `/skills add` | HuggingFace and Anthropic registries |
+
+See [Agent Skills](../agents/skills.md) for more information on using skills.
 
 ## OpenTelemetry Settings
 
@@ -242,7 +316,44 @@ logger:
   show_tools: true  # Show MCP Server tool calls on console
   truncate_tools: true  # Truncate long tool calls in display
   enable_markup: true # Disable if outputs conflict with rich library markup
-  use_legacy_display: false # enable the < 0.2.43 display
+  streaming: "markdown"  # "markdown", "plain", or "none"
+```
+
+## MCP UI Settings
+
+```yaml
+mcp_ui_mode: "enabled"  # "disabled", "enabled", or "auto"
+mcp_ui_output_dir: ".fast-agent/ui"  # Output directory for generated HTML files
+```
+
+## MCP Timeline Settings
+
+```yaml
+mcp_timeline:
+  steps: 20
+  step_seconds: 30  # seconds per bucket (also supports strings like "30s", "2m")
+```
+
+## Skills Settings
+
+```yaml
+skills:
+  directory: null  # Override the default skills directory
+```
+
+## Shell Execution Settings
+
+```yaml
+shell_execution:
+  timeout_seconds: 90
+  warning_interval_seconds: 30
+  interactive_use_pty: true  # Use PTY for interactive prompt shell commands
+```
+
+## LLM Retries
+
+```yaml
+llm_retries: 0
 ```
 
 ## Example Full Configuration

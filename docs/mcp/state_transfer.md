@@ -72,13 +72,13 @@ To start `"agent_one"` as an MCP Server, run the following command:
 
     ```bash
     # start agent_one as an MCP Server:
-    uv run agent_one.py --server --port 8001
+    uv run agent_one.py --transport http --port 8001
     ```
 === "Windows"
 
     ```pwsh
     # start agent_one as an MCP Server:
-    uv run agent_one.py --server --port 8001
+    uv run agent_one.py --transport http --port 8001
     ```
 
 The agent is now available as an MCP Server. 
@@ -173,7 +173,7 @@ async def main():
 
 **fast-agent** gives you the ability to save and reload conversations. 
 
-Enter `***SAVE_HISTORY history.json` in the `agent_two` chat to save the conversation history in MCP `GetPromptResult` format.
+Enter `***SAVE_HISTORY history.json` in the `agent_two` chat to save the conversation history as a JSON `{"messages": [...]}` container (fast-agent/MCP compatible).
 
 You can also save it in a text format for easier editing.
 

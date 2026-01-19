@@ -19,10 +19,14 @@ When running a **fast-agent** application (typically `uv run agent.py`), you hav
 | `-p, --prompt-file FILE` | Load and apply a prompt file | `--prompt-file conversation.txt` |
 | `--quiet` | Disable progress display, tool and message logging | `--quiet` |
 | `--version` | Show version and exit | `--version` |
-| `--server` | Run as an MCP server | `--server` |
-| `--transport {http,sse,stdio}` | Transport protocol when running as server | `--transport http` |
-| `--port PORT` | Port for SSE server (default: 8000) | `--port 8080` |
-| `--host HOST` | Host for SSE server (default: 0.0.0.0) | `--host localhost` |
+| `--server` | Deprecated alias for server mode; use `--transport` instead | `--server` |
+| `--transport {http,sse,stdio,acp}` | Transport protocol; enabling it also turns on server mode | `--transport http` |
+| `--port PORT` | Port for HTTP/SSE server (default: 8000) | `--port 8080` |
+| `--host HOST` | Host for HTTP/SSE server (default: 0.0.0.0) | `--host localhost` |
+| `--instance-scope {shared,connection,request}` | Control server-side agent instancing (default: shared) | `--instance-scope connection` |
+| `--skills DIR` | Override the default skills directory | `--skills ./skills` |
+
+`--transport` now implies server mode when running a Python module directly. If omitted, it defaults to `http`. `--server` remains available for backward compatibility but will be removed in a future release.
 
 ### Examples
 
@@ -43,10 +47,10 @@ uv run agent.py --agent summarizer --message "Summarize this document"
 uv run agent.py --prompt-file my_conversation.txt
 
 # Run as an SSE server on port 8080
-uv run agent.py --server --transport sse --port 8080
+uv run agent.py --transport sse --port 8080
 
 # Run as a stdio server
-uv run agent.py --server --transport stdio
+uv run agent.py --transport stdio
 
 # Get minimal output (for scripting)
 uv run agent.py --quiet --message "Generate a report"
