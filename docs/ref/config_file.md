@@ -22,9 +22,19 @@ default_model: "gpt-5-mini"  # Format: provider.model_name.reasoning_effort
 # Whether to automatically enable Sampling. Model seletion precedence is Agent > Default.
 auto_sampling: true
 
+# Number of times to retry transient LLM API errors (falls back to FAST_AGENT_RETRIES env)
+llm_retries: 0
+
 # Execution engine (only asyncio is currently supported)
 execution_engine: "asyncio"
 ```
+
+`llm_retries` defaults to `0` and is the preferred way to control retry attempts. If unset in
+config, the `FAST_AGENT_RETRIES` environment variable is used as a fallback.
+
+## Runtime Environment Variables
+
+- `FAST_AGENT_DISABLE_UV_LOOP=1`: Disable uvloop even if installed (non-Windows). By default, uvloop is used when available.
 
 ## Model Providers
 
@@ -155,6 +165,9 @@ mcp:
       command: "npx"  # Command to execute
       args: ["@package/server-name"]  # Command arguments as array
       read_timeout_seconds: 60  # Optional timeout in seconds
+      # HTTP transport only:
+      # http_timeout_seconds: 30        # Overall HTTP timeout (seconds). If unset, uses MCP SDK default (30s).
+      # http_read_timeout_seconds: 300  # Per-read timeout for streaming (seconds). If unset, uses MCP SDK default (300s).
       env:  # Optional environment variables
         ENV_VAR1: "value1"
         ENV_VAR2: "value2"
@@ -165,7 +178,9 @@ mcp:
     streamable_http__server:
       transport: "http"
       url: "http://localhost:8000/mcp"
-      read_transport_sse_timeout_seconds: 300  # Timeout for HTTP connections
+      read_transport_sse_timeout_seconds: 300  # (SSE-only; not used for HTTP)
+      http_timeout_seconds: 30        # Overall HTTP timeout (seconds). If unset, uses MCP SDK default (30s).
+      http_read_timeout_seconds: 300  # Per-read timeout for streaming (seconds). If unset, uses MCP SDK default (300s).
       headers:  # Optional HTTP headers
         Authorization: "Bearer token"
       auth:  # Optional authentication
@@ -293,4 +308,3 @@ openai:
 ```
 
 In this example, the `api_key` value will be set to the value of the `OPENAI_API_KEY` environment variable at runtime.
-

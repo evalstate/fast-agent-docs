@@ -66,11 +66,11 @@ fast-agent go --prompt-file=my-prompt.txt --model=haiku
 # Specify a system prompt file
 fast-agent go -i my_system_prompt.md
 
-# Specify a skills directory
-fast-agent --skills ~/my-skills/
+# Specify a skills directory (overrides default search paths)
+fast-agent go --skills ~/my-skills/
 
 # Provider LLM shell access (use at your own risk)
-fast-agent -x
+fast-agent go -x
 
 ```
 
