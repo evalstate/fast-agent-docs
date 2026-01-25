@@ -216,16 +216,7 @@ If you have a Hugging Face model ID (for example, `moonshotai/Kimi-K2-Thinking`)
 
 Aliased models are verified and tested to work with Structured Outputs and Tool Use. Functionality may vary between providers, or be clamped in some situations.
 
-| Alias         | Maps to                                   |
-| ------------- | ----------------------------------------- |
-| `kimithink`   | `hf.moonshotai/Kimi-K2-Thinking:together` |
-| `kimi`        | `hf.moonshotai/Kimi-K2-Instruct-0905`     |
-| `gpt-oss`     | `hf.openai/gpt-oss-120b`                  |
-| `gpt-oss-20b` | `hf.openai/gpt-oss-20b`                   |
-| `glm`         | `hf.zai-org/GLM-4.6`                      |
-| `qwen3`       | `hf.Qwen/Qwen3-Next-80B-A3B-Instruct`     |
-| `deepseek31`  | `hf.deepseek-ai/DeepSeek-V3.1`            |
-| `minimax`     | `hf.MiniMaxAI/MiniMax-M2`                 |
+--8<-- "_generated/model_aliases_hf.md"
 
 **Using Aliases:**
 
@@ -559,14 +550,7 @@ aliyun:
 
 **Model Name Aliases:**
 
-Check the [Aliyun Official Documentation](https://help.aliyun.com/zh/model-studio/models) for the latest model names and aliases.
-
-| Model Alias  | Maps to                    |
-| ------------ | -------------------------- |
-| `qwen-turbo` | `qwen-turbo-2025-02-11`    |
-| `qwen-plus`  | `qwq-plus-2025-03-05`      |
-| `qwen-max`   | `qwen-max-2024-09-19`      |
-| `qwen-long`  | *undocumented*             |
+--8<-- "_generated/model_aliases_aliyun.md"
 
 ## AWS Bedrock
 

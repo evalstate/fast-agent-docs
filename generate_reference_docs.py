@@ -18,15 +18,27 @@ def _find_fast_agent_repo() -> Path:
     """
     Locate a local fast-agent repo checkout.
 
-    Uses FAST_AGENT_REPO_PATH when set, otherwise assumes ../fast-agent next to this repo.
+    Search order:
+    1. FAST_AGENT_REPO_PATH environment variable
+    2. Parent directory (when docs is a submodule inside fast-agent)
+    3. Sibling directory (when docs is a separate checkout next to fast-agent)
     """
-    repo_override = os.getenv("FAST_AGENT_REPO_PATH")
-    candidate = Path(repo_override).resolve() if repo_override else (DOCS_ROOT.parent / "fast-agent")
-    candidate = candidate.resolve()
+    candidates: list[Path] = []
 
-    expected = candidate / "src" / "fast_agent" / "llm" / "model_factory.py"
-    if expected.exists():
-        return candidate
+    repo_override = os.getenv("FAST_AGENT_REPO_PATH")
+    if repo_override:
+        candidates.append(Path(repo_override))
+
+    # Check if we're a submodule inside fast-agent (docs/ inside the repo)
+    candidates.append(DOCS_ROOT.parent)
+    # Check sibling directory (traditional layout)
+    candidates.append(DOCS_ROOT.parent / "fast-agent")
+
+    for candidate in candidates:
+        candidate = candidate.resolve()
+        expected = candidate / "src" / "fast_agent" / "llm" / "model_factory.py"
+        if expected.exists():
+            return candidate
 
     raise SystemExit(
         "Could not locate fast-agent source.\n"
@@ -120,9 +132,25 @@ def generate_request_params_reference() -> str:
     return "".join(lines)
 
 
-def _format_alias_table(entries: list[tuple[str, str]], *, two_column: bool) -> str:
-    def fmt_cell(s: str) -> str:
-        return f"`{s}`" if s else ""
+def _format_alias_table(
+    entries: list[tuple[str, str]], *, two_column: bool, marked_entries: set[str] | None = None
+) -> str:
+    """Format alias table with optional markers for specific entries.
+
+    Args:
+        entries: List of (alias, target) tuples
+        two_column: Use 2-column layout if True, else 4-column
+        marked_entries: Set of alias names to mark with (*) suffix
+    """
+    marked = marked_entries or set()
+
+    def fmt_cell(s: str, is_alias: bool = False) -> str:
+        if not s:
+            return ""
+        # Add (*) marker for aliases that need it
+        if is_alias and s in marked:
+            return f"`{s}` \\*"
+        return f"`{s}`"
 
     entries = sorted(entries, key=lambda t: t[0].lower())
 
@@ -134,7 +162,7 @@ def _format_alias_table(entries: list[tuple[str, str]], *, two_column: bool) -> 
         lines.append("| Model Alias | Maps to |\n")
         lines.append("| --- | --- |\n")
         for alias, target in entries:
-            lines.append(f"| {fmt_cell(alias)} | {fmt_cell(target)} |\n")
+            lines.append(f"| {fmt_cell(alias, is_alias=True)} | {fmt_cell(target)} |\n")
         return "".join(lines)
 
     # 4-column layout (two alias columns side-by-side)
@@ -151,7 +179,9 @@ def _format_alias_table(entries: list[tuple[str, str]], *, two_column: bool) -> 
             a2, t2 = right[i]
         else:
             a2, t2 = "", ""
-        lines.append(f"| {fmt_cell(a1)} | {fmt_cell(t1)} | {fmt_cell(a2)} | {fmt_cell(t2)} |\n")
+        lines.append(
+            f"| {fmt_cell(a1, is_alias=True)} | {fmt_cell(t1)} | {fmt_cell(a2, is_alias=True)} | {fmt_cell(t2)} |\n"
+        )
     return "".join(lines)
 
 
@@ -166,8 +196,10 @@ def _provider_name_map(repo_root: Path) -> dict[str, str]:
     for node in tree.body:
         if isinstance(node, ast.ClassDef) and node.name == "Provider":
             for stmt in node.body:
-                if isinstance(stmt, ast.Assign) and len(stmt.targets) == 1 and isinstance(
-                    stmt.targets[0], ast.Name
+                if (
+                    isinstance(stmt, ast.Assign)
+                    and len(stmt.targets) == 1
+                    and isinstance(stmt.targets[0], ast.Name)
                 ):
                     key = stmt.targets[0].id
                     # Provider members are assigned tuples like ("openai", "OpenAI")
@@ -238,7 +270,11 @@ def _load_model_factory_constants(
 
 
 def _infer_provider_for_model_string(
-    model_string: str, *, default_providers: dict[str, str], provider_names: set[str], effort_suffixes: set[str]
+    model_string: str,
+    *,
+    default_providers: dict[str, str],
+    provider_names: set[str],
+    effort_suffixes: set[str],
 ) -> str | None:
     """
     Infer provider from a model string using the same high-level rules as ModelFactory.parse_model_string.
@@ -286,15 +322,17 @@ def generate_model_alias_table(
       - "default provider" model names (e.g. `gpt-5` defaults to OpenAI)
       - short aliases from ModelFactory.MODEL_ALIASES (e.g. `sonnet` -> `claude-sonnet-4-5`)
     """
-    model_aliases, default_providers, effort_suffixes, provider_names = _load_model_factory_constants(
-        repo_root
+    model_aliases, default_providers, effort_suffixes, provider_names = (
+        _load_model_factory_constants(repo_root)
     )
 
     entries: dict[str, str] = {}
 
     if include_default_models:
         for model_name, default_provider in default_providers.items():
-            if default_provider == provider_name and _include_default_model_name(provider_name, model_name):
+            if default_provider == provider_name and _include_default_model_name(
+                provider_name, model_name
+            ):
                 entries[model_name] = model_name
 
     for alias, target in model_aliases.items():
@@ -310,27 +348,82 @@ def generate_model_alias_table(
     return _format_alias_table(list(entries.items()), two_column=two_column)
 
 
+def generate_openai_merged_table(*, repo_root: Path) -> str:
+    """
+    Generate a merged OpenAI + Responses table.
+
+    Models from the Responses provider are marked with (*) since they use
+    the Open Responses API but are commonly thought of as "OpenAI models".
+    """
+    model_aliases, default_providers, effort_suffixes, provider_names = (
+        _load_model_factory_constants(repo_root)
+    )
+
+    entries: dict[str, str] = {}
+    responses_entries: set[str] = set()  # Track which entries are via Responses
+
+    # Include models from both openai and responses providers
+    for provider in ("openai", "responses"):
+        for model_name, default_provider in default_providers.items():
+            if default_provider == provider and _include_default_model_name(provider, model_name):
+                entries[model_name] = model_name
+                if provider == "responses":
+                    responses_entries.add(model_name)
+
+    # Include aliases that resolve to openai or responses
+    for alias, target in model_aliases.items():
+        inferred = _infer_provider_for_model_string(
+            target,
+            default_providers=default_providers,
+            provider_names=provider_names,
+            effort_suffixes=effort_suffixes,
+        )
+        if inferred in ("openai", "responses"):
+            # Strip provider prefix for cleaner display (e.g., "responses.gpt-5.1" -> "gpt-5.1")
+            display_target = target
+            for prefix in ("responses.", "openai."):
+                if display_target.startswith(prefix):
+                    display_target = display_target[len(prefix) :]
+                    break
+            entries[alias] = display_target
+            if inferred == "responses":
+                responses_entries.add(alias)
+
+    table = _format_alias_table(
+        list(entries.items()), two_column=False, marked_entries=responses_entries
+    )
+    # Add footnote
+    table += "\n\\* _Via [Responses API](https://openresponses.org)_\n"
+    return table
+
+
 def main() -> int:
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
     repo_root = _find_fast_agent_repo()
 
     # Alias tables are generated from source (AST) so they work even when fast_agent runtime deps
     # aren't installed in the docs environment.
+    # include_default_models=True includes models from DEFAULT_PROVIDERS (no prefix needed)
     _write(
         GENERATED_DIR / "model_aliases_anthropic.md",
         generate_model_alias_table(
             "anthropic",
-            include_default_models=False,
+            include_default_models=True,
             two_column=False,
             repo_root=repo_root,
         ),
     )
+    # OpenAI table merges openai + responses providers, with (*) marking Responses models
     _write(
         GENERATED_DIR / "model_aliases_openai.md",
+        generate_openai_merged_table(repo_root=repo_root),
+    )
+    _write(
+        GENERATED_DIR / "model_aliases_hf.md",
         generate_model_alias_table(
-            "openai",
+            "hf",
             include_default_models=True,
-            two_column=False,
+            two_column=True,
             repo_root=repo_root,
         ),
     )
@@ -338,7 +431,7 @@ def main() -> int:
         GENERATED_DIR / "model_aliases_groq.md",
         generate_model_alias_table(
             "groq",
-            include_default_models=False,
+            include_default_models=True,
             two_column=True,
             repo_root=repo_root,
         ),
@@ -347,7 +440,7 @@ def main() -> int:
         GENERATED_DIR / "model_aliases_deepseek.md",
         generate_model_alias_table(
             "deepseek",
-            include_default_models=False,
+            include_default_models=True,
             two_column=True,
             repo_root=repo_root,
         ),
@@ -356,8 +449,8 @@ def main() -> int:
         GENERATED_DIR / "model_aliases_google.md",
         generate_model_alias_table(
             "google",
-            include_default_models=False,
-            two_column=True,
+            include_default_models=True,
+            two_column=False,
             repo_root=repo_root,
         ),
     )
@@ -365,6 +458,15 @@ def main() -> int:
         GENERATED_DIR / "model_aliases_xai.md",
         generate_model_alias_table(
             "xai",
+            include_default_models=True,
+            two_column=False,
+            repo_root=repo_root,
+        ),
+    )
+    _write(
+        GENERATED_DIR / "model_aliases_aliyun.md",
+        generate_model_alias_table(
+            "aliyun",
             include_default_models=True,
             two_column=True,
             repo_root=repo_root,
