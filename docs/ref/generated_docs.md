@@ -1,6 +1,6 @@
 # Generated Docs
 
-Some parts of the documentation are generated from the `fast-agent` Python package to prevent drift (e.g. model alias tables).
+Some parts of the documentation are generated from the `fast-agent` Python package to prevent drift (e.g. model alias tables and the models reference page).
 
 ## Regenerate
 
@@ -17,4 +17,3 @@ FAST_AGENT_REPO_PATH=../fast-agent python generate_reference_docs.py
 ```
 
 Generated files are written to `docs/_generated/` and included in pages via MkDocs `pymdownx.snippets`.
-

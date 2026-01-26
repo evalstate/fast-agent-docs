@@ -17,7 +17,7 @@ fast-agent automatically searches for configuration files in the current working
 
 ```yaml
 # Default model for all agents
-default_model: "gpt-5-mini.low"  # Format: provider.model_name.reasoning_effort
+default_model: "gpt-5-mini.low"  # Format: provider.model_name with optional reasoning suffix or ?reasoning=
 
 # Whether to automatically enable Sampling. Model seletion precedence is Agent > Default.
 auto_sampling: true

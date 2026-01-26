@@ -132,6 +132,183 @@ def generate_request_params_reference() -> str:
     return "".join(lines)
 
 
+def _choose_alias(
+    canonical: str,
+    canonical_to_aliases: dict[str, list[str]],
+) -> str | None:
+    aliases = canonical_to_aliases.get(canonical, [])
+    if not aliases:
+        return None
+    return sorted(aliases, key=lambda value: (len(value), value))[0]
+
+
+def _normalize_provider_label(provider: str) -> str:
+    return provider.strip().lower()
+
+
+def _format_structured_output(provider: str, json_mode: str | None) -> str:
+    if json_mode is None:
+        if provider == "anthropic":
+            return "`tool_use`"
+        return "—"
+    if json_mode == "schema":
+        return "`json` (schema)"
+    if json_mode == "object":
+        return "`json` (object)"
+    return f"`json` ({json_mode})"
+
+
+def generate_models_reference() -> str:
+    from fast_agent.core.exceptions import ModelConfigError
+    from fast_agent.llm.model_database import ModelDatabase
+    from fast_agent.llm.model_factory import ModelFactory
+    from fast_agent.llm.provider_types import Provider
+    from fast_agent.llm.reasoning_effort import (
+        ReasoningEffortSpec,
+        available_reasoning_values,
+    )
+    from fast_agent.llm.text_verbosity import (
+        TextVerbositySpec,
+        available_text_verbosity_values,
+    )
+
+    canonical_to_aliases: dict[str, list[str]] = {}
+    for alias, target in ModelFactory.MODEL_ALIASES.items():
+        canonical = ModelDatabase.normalize_model_name(target)
+        canonical_to_aliases.setdefault(canonical, []).append(alias)
+
+    provider_overrides: dict[str, Provider] = {
+        "moonshotai/kimi-k2": Provider.GROQ,
+        "moonshotai/kimi-k2-instruct-0905": Provider.GROQ,
+        "moonshotai/kimi-k2-thinking": Provider.GROQ,
+        "moonshotai/kimi-k2-thinking-0905": Provider.GROQ,
+        "qwen/qwen3-32b": Provider.GROQ,
+        "deepseek-r1-distill-llama-70b": Provider.GROQ,
+    }
+
+    def infer_provider(model_name: str, alias: str | None) -> Provider:
+        overridden = provider_overrides.get(model_name)
+        if overridden is not None:
+            return overridden
+
+        provider = ModelFactory.DEFAULT_PROVIDERS.get(model_name)
+        if provider is not None:
+            return provider
+
+        if alias:
+            target = ModelFactory.MODEL_ALIASES.get(alias)
+            if target:
+                try:
+                    return ModelFactory.parse_model_string(target).provider
+                except ModelConfigError:
+                    pass
+
+        lower = model_name.lower()
+        if lower.startswith(("gpt-5", "o1", "o3", "o4")):
+            return Provider.RESPONSES
+        if lower.startswith(("gpt-4", "gpt-4o")):
+            return Provider.OPENAI
+        if lower.startswith("claude-"):
+            return Provider.ANTHROPIC
+        if lower.startswith("gemini-"):
+            return Provider.GOOGLE
+        if lower.startswith("grok-"):
+            return Provider.XAI
+        if lower.startswith("qwen-"):
+            return Provider.ALIYUN
+        if lower.startswith("deepseek-"):
+            return Provider.DEEPSEEK
+        if "/" in lower:
+            return Provider.HUGGINGFACE
+        return Provider.GENERIC
+
+    def model_base_name(
+        model_name: str,
+        alias: str | None,
+        provider: Provider,
+    ) -> str:
+        if alias:
+            return alias
+        if model_name in ModelFactory.DEFAULT_PROVIDERS:
+            return model_name
+        return f"{provider.config_name}.{model_name}"
+
+    def format_reasoning(model_base: str, spec: ReasoningEffortSpec | None) -> str:
+        if spec is None:
+            return "—"
+
+        values = available_reasoning_values(spec)
+        values_text = ", ".join(f"`{value}`" for value in values) if values else "—"
+
+        if spec.kind == "toggle":
+            example_value = "off"
+        elif spec.default is not None:
+            example_value = str(spec.default.value)
+        else:
+            example_value = values[0] if values else "medium"
+
+        if spec.kind == "effort":
+            example = f"{model_base}.{example_value}"
+        else:
+            example = f"{model_base}?reasoning={example_value}"
+
+        return f"{spec.kind}: {values_text}<br>Example: `{example}`"
+
+    def format_verbosity(model_base: str, spec: TextVerbositySpec | None) -> str:
+        if spec is None:
+            return "—"
+        values = available_text_verbosity_values(spec)
+        values_text = ", ".join(f"`{value}`" for value in values) if values else "—"
+        example_value = values[0] if values else "medium"
+        example = f"{model_base}?verbosity={example_value}"
+        return f"{values_text}<br>Example: `{example}`"
+
+    rows: list[tuple[str, str, str, str, str]] = []
+
+    for model_name in ModelDatabase.list_models():
+        params = ModelDatabase.get_model_params(model_name)
+        if params is None:
+            continue
+        alias = _choose_alias(model_name, canonical_to_aliases)
+        provider = infer_provider(model_name, alias)
+        provider_label = _normalize_provider_label(provider.config_name)
+        model_label = model_base_name(model_name, alias, provider)
+
+        structured = _format_structured_output(provider_label, params.json_mode)
+        reasoning = format_reasoning(model_label, params.reasoning_effort_spec)
+        verbosity = format_verbosity(model_label, params.text_verbosity_spec)
+
+        if structured == "—" and reasoning == "—" and verbosity == "—":
+            continue
+
+        rows.append(
+            (
+                f"`{model_label}`",
+                f"`{provider_label}`",
+                structured,
+                reasoning,
+                verbosity,
+            )
+        )
+
+    rows.sort(key=lambda row: (row[1], row[0]))
+
+    lines: list[str] = []
+    lines.append("<!--\n")
+    lines.append("  GENERATED FILE — DO NOT EDIT.\n")
+    lines.append("  Source: generate_reference_docs.py\n")
+    lines.append("-->\n\n")
+    lines.append("| Model | Provider | Structured Output | Reasoning | Verbosity |\n")
+    lines.append("| --- | --- | --- | --- | --- |\n")
+
+    for model, provider, structured, reasoning, verbosity in rows:
+        lines.append(
+            f"| {model} | {provider} | {structured} | {reasoning} | {verbosity} |\n"
+        )
+
+    return "".join(lines)
+
+
 def _format_alias_table(
     entries: list[tuple[str, str]], *, two_column: bool, marked_entries: set[str] | None = None
 ) -> str:
@@ -478,6 +655,7 @@ def main() -> int:
     try:
         _write(GENERATED_DIR / "workflows_reference.md", generate_workflows_reference())
         _write(GENERATED_DIR / "request_params_reference.md", generate_request_params_reference())
+        _write(GENERATED_DIR / "models_reference.md", generate_models_reference())
     except Exception as exc:
         _write(
             GENERATED_DIR / "_generation_warnings.md",
