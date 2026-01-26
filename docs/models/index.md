@@ -4,7 +4,8 @@ title: Model Features and History Saving
 
 # Model Features and History Saving
 
-Models in **fast-agent** are specified with a model string, that takes the format `provider.model_name.<reasoning_effort>`
+Models in **fast-agent** are specified with a model string that takes the format
+`provider.model_name[.reasoning_effort][?reasoning=<value>]`.
 
 ### Precedence
 
@@ -18,17 +19,20 @@ Model specifications in fast-agent follow this precedence order (highest to lowe
 
 ### Format
 
-Model strings follow this format: `provider.model_name.reasoning_effort`
+Model strings follow this format: `provider.model_name[.reasoning_effort][?reasoning=<value>]`
 
 - **provider**: The LLM provider (e.g., `anthropic`, `openai`, `azure`, `deepseek`, `generic`,`openrouter`, `tensorzero`)
 - **model_name**: The specific model to use in API calls (for Azure, this is your deployment name)
 - **reasoning_effort** (optional): Controls the reasoning effort for supported models
+- **reasoning query** (optional): Use `?reasoning=<value>` to set a budget or effort inline
 
 Examples:
 
 - `anthropic.claude-4-5-sonnet-latest`
 - `openai.gpt-5.2`
 - `openai.o3-mini.high`
+- `sonnet?reasoning=4096`
+- `openai.o3-mini?reasoning=high`
 - `azure.my-deployment`
 - `generic.llama3.2:latest`
 - `openrouter.google/gemini-2.5-pro-exp-03-25:free`
@@ -36,7 +40,17 @@ Examples:
 
 #### Reasoning Effort
 
-For models that support it (e.g. `o1`, and `gpt-5` etc), you can specify a reasoning effort of **`high`**, **`medium`** or **`low`** - for example `openai.o3-mini.high`. **`medium`** is the default if not specified.
+For models that support it (e.g. `o1`, and `gpt-5` etc), you can specify a reasoning effort of
+**`high`**, **`medium`** or **`low`** - for example `openai.o3-mini.high`. **`medium`** is the default
+if not specified.
+
+You can also set reasoning via a query suffix. This is especially useful for budget-style reasoning
+models (like Anthropic):
+
+- `sonnet?reasoning=4096` (budget tokens)
+- `openai.o3-mini?reasoning=high`
+
+Use either the suffix or the query, not both.
 
 `gpt-5` class models additionally support a `minimal` reasoning effort.
 

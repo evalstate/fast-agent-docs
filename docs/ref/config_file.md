@@ -56,7 +56,21 @@ config, the `FAST_AGENT_RETRIES` environment variable is used as a fallback.
 anthropic:
   api_key: "your_anthropic_key"  # Can also use ANTHROPIC_API_KEY env var
   base_url: "https://api.anthropic.com/v1"  # Optional, only include to override
+  reasoning: 1024  # Reasoning budget tokens (min 1024). Use "0"/off/false to disable.
+  structured_output_mode: auto  # auto (default), json, or tool_use
 ```
+
+Anthropic models that support extended thinking default to a 1024 token reasoning budget unless you
+override `anthropic.reasoning`. Set `reasoning: "0"`/`off`/`false` to disable reasoning. The reasoning
+budget must be lower than `max_tokens` (fast-agent raises `max_tokens` if needed).
+
+Structured outputs default to JSON schema for newer models that support the
+`structured-outputs-2025-11-13` feature and are compatible with reasoning. Older models fall back to
+`tool_use` structured output, which is **not compatible** with reasoning (fast-agent disables
+reasoning for tool-forced structured outputs). Override with `structured_output_mode: json` or
+`structured_output_mode: tool_use` as needed.
+
+Legacy `thinking_enabled` and `thinking_budget_tokens` settings are deprecated.
 
 ### OpenAI
 
@@ -76,6 +90,8 @@ azure:
   resource_name: "your-resource-name"  # Resource name in Azure
   azure_deployment: "deployment-name"  # Required - deployment name from Azure
   api_version: "2023-05-15"  # Optional API version
+  default_headers:
+    Ocp-Apim-Subscription-Key: "${AZURE_OPENAI_API_KEY}"
   # Do NOT include base_url if you use resource_name
 
 # Option 2: Using base_url and api_key (custom endpoints or sovereign clouds)
@@ -84,6 +100,8 @@ azure:
 #   base_url: "https://your-endpoint.openai.azure.com/"
 #   azure_deployment: "deployment-name"
 #   api_version: "2023-05-15"
+#   default_headers:
+#     Ocp-Apim-Subscription-Key: "${AZURE_OPENAI_API_KEY}"
 #   # Do NOT include resource_name if you use base_url
 
 # Option 3: Using DefaultAzureCredential (for managed identity, Azure CLI, etc.)
@@ -92,6 +110,8 @@ azure:
 #   base_url: "https://your-endpoint.openai.azure.com/"
 #   azure_deployment: "deployment-name"
 #   api_version: "2023-05-15"
+#   default_headers:
+#     Ocp-Apim-Subscription-Key: "${AZURE_OPENAI_API_KEY}"
 #   # Do NOT include api_key or resource_name in this mode
 ```
 
@@ -100,6 +120,7 @@ Important configuration notes:
 - When using `DefaultAzureCredential`, do NOT include `api_key` or `resource_name` (the `azure-identity` package must be installed).
 - When using `base_url`, do NOT include `resource_name`.
 - When using `resource_name`, do NOT include `base_url`.
+- `default_headers` can be used with any option to pass API management headers.
 - The model string format is `azure.deployment-name`
 
 ### DeepSeek
@@ -316,6 +337,7 @@ logger:
   show_tools: true  # Show MCP Server tool calls on console
   truncate_tools: true  # Truncate long tool calls in display
   enable_markup: true # Disable if outputs conflict with rich library markup
+  enable_prompt_marks: true # Emit OSC 133 prompt marks in supported terminals
   streaming: "markdown"  # "markdown", "plain", or "none"
 ```
 

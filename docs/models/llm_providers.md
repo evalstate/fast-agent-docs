@@ -17,7 +17,7 @@ In your `fastagent.config.yaml`:
     X-Custom-Header: "value"
 ```
 
-The `default_headers` option is available for all OpenAI-compatible providers.
+The `default_headers` option is available for OpenAI-compatible providers (including Azure).
 
 ## Anthropic
 
@@ -51,17 +51,41 @@ The `cache_ttl` setting controls how long cached content persists:
 - `5m`: Standard 5-minute cache (default)
 - `1h`: Extended 1-hour cache (additional cost)
 
-**Extended Thinking:**
+**Reasoning + Structured Outputs:**
 
-Claude Sonnet 4+ and Opus 4+ models support extended thinking, which shows Claude's step-by-step reasoning process:
+Anthropic models that support extended thinking default to **reasoning on** with a **1024 token budget**.
+Use `anthropic.reasoning` to set a budget or disable reasoning entirely:
 
 ```yaml
 anthropic:
-  thinking_enabled: true # Enable extended thinking (default: false)
-  thinking_budget_tokens: 10000 # Max tokens for reasoning (default: 10000, minimum: 1024)
+  reasoning: 16000 # Reasoning budget tokens (minimum: 1024)
 ```
 
-Note: Extended thinking is incompatible with structured output (forced tool choice). The `thinking_budget_tokens` must be less than `max_tokens`.
+- Disable reasoning with `reasoning: "0"`, `reasoning: "off"`, or `reasoning: false`.
+- The reasoning budget must be less than `max_tokens`. If you set a budget that meets/exceeds
+  `max_tokens`, fast-agent raises `max_tokens` so the budget fits.
+
+You can also set reasoning per run using the model string:
+
+- `sonnet?reasoning=4096`
+- `anthropic.claude-4-5-sonnet-latest?reasoning=4096`
+
+**Structured output selection (Anthropic JSON schema vs tool_use):**
+
+- Models that support the `structured-outputs-2025-11-13` feature default to JSON schema output
+  (`structured_output_mode: json`). This mode **is compatible with reasoning**.
+- Older models default to the legacy `tool_use` structured output flow. `tool_use` **is not compatible
+  with reasoning** — fast-agent disables reasoning when tool-forced structured output is selected.
+
+You can override the structured output mode explicitly:
+
+```yaml
+anthropic:
+  structured_output_mode: auto # auto (default), json, or tool_use
+```
+
+Deprecated: `thinking_enabled` and `thinking_budget_tokens` are still accepted but should be replaced
+with `reasoning`.
 
 
 **Model Name Aliases:**
@@ -293,6 +317,8 @@ azure:
   resource_name: "your-resource-name" # Resource name (do NOT include if using base_url)
   azure_deployment: "deployment-name" # Required - the model deployment name
   api_version: "2023-05-15" # Optional, default shown
+  default_headers:
+    Ocp-Apim-Subscription-Key: "${AZURE_OPENAI_API_KEY}"
   # Do NOT include base_url if you use resource_name
 
 # Option 2: Custom endpoint with base_url
@@ -317,6 +343,7 @@ azure:
 - When using `DefaultAzureCredential`, do NOT include `api_key` or `resource_name`.
 - When using `base_url`, do NOT include `resource_name`.
 - When using `resource_name`, do NOT include `base_url`.
+- `default_headers` can be used with any option (for example, APIM subscription keys).
 
 **Environment Variables:**
 
