@@ -6,6 +6,7 @@
 | `gpt-oss` | `hf.openai/gpt-oss-120b:cerebras` |
 | `gpt-oss-20b` | `hf.openai/gpt-oss-20b` |
 | `kimi` | `hf.moonshotai/Kimi-K2-Instruct-0905:groq` |
+| `kimi25` | `hf.moonshotai/Kimi-K2.5:novita` |
 | `kimithink` | `hf.moonshotai/Kimi-K2-Thinking:together` |
 | `minimax` | `hf.MiniMaxAI/MiniMax-M2.1:novita` |
 | `qwen3` | `hf.Qwen/Qwen3-Next-80B-A3B-Instruct:together` |

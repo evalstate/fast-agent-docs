@@ -1,6 +1,7 @@
 import asyncio
-from fast_agent.core.fastagent import FastAgent
 import subprocess
+
+from fast_agent.core.fastagent import FastAgent
 
 # Create the application
 fast = FastAgent("fast-agent example",config_path="my-special-place.yaml")

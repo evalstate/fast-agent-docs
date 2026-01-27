@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-
 DOCS_ROOT = Path(__file__).resolve().parent
 GENERATED_DIR = DOCS_ROOT / "docs" / "_generated"
 
@@ -263,7 +262,24 @@ def generate_models_reference() -> str:
         example = f"{model_base}?verbosity={example_value}"
         return f"{values_text}<br>Example: `{example}`"
 
-    rows: list[tuple[str, str, str, str, str]] = []
+    def format_tokenizes(tokenizes: list[str]) -> str:
+        normalized = {mime.lower() for mime in tokenizes}
+        labels: list[str] = []
+
+        if any(mime.startswith("text/") for mime in normalized):
+            labels.append("Text")
+        if any(mime.startswith("image/") for mime in normalized):
+            labels.append("Vision")
+        if "application/pdf" in normalized:
+            labels.append("Document")
+        if any(mime.startswith("audio/") for mime in normalized):
+            labels.append("Audio")
+        if any(mime.startswith("video/") for mime in normalized):
+            labels.append("Video")
+
+        return ", ".join(labels) if labels else "—"
+
+    rows: list[tuple[str, str, str, str, str, str]] = []
 
     for model_name in ModelDatabase.list_models():
         params = ModelDatabase.get_model_params(model_name)
@@ -274,6 +290,7 @@ def generate_models_reference() -> str:
         provider_label = _normalize_provider_label(provider.config_name)
         model_label = model_base_name(model_name, alias, provider)
 
+        tokenizes = format_tokenizes(params.tokenizes)
         structured = _format_structured_output(provider_label, params.json_mode)
         reasoning = format_reasoning(model_label, params.reasoning_effort_spec)
         verbosity = format_verbosity(model_label, params.text_verbosity_spec)
@@ -285,6 +302,7 @@ def generate_models_reference() -> str:
             (
                 f"`{model_label}`",
                 f"`{provider_label}`",
+                tokenizes,
                 structured,
                 reasoning,
                 verbosity,
@@ -298,12 +316,12 @@ def generate_models_reference() -> str:
     lines.append("  GENERATED FILE — DO NOT EDIT.\n")
     lines.append("  Source: generate_reference_docs.py\n")
     lines.append("-->\n\n")
-    lines.append("| Model | Provider | Structured Output | Reasoning | Verbosity |\n")
-    lines.append("| --- | --- | --- | --- | --- |\n")
+    lines.append("| Model | Provider | Tokenizes | Structured Output | Reasoning | Verbosity |\n")
+    lines.append("| --- | --- | --- | --- | --- | --- |\n")
 
-    for model, provider, structured, reasoning, verbosity in rows:
+    for model, provider, tokenizes, structured, reasoning, verbosity in rows:
         lines.append(
-            f"| {model} | {provider} | {structured} | {reasoning} | {verbosity} |\n"
+            f"| {model} | {provider} | {tokenizes} | {structured} | {reasoning} | {verbosity} |\n"
         )
 
     return "".join(lines)
