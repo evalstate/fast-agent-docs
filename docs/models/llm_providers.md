@@ -232,6 +232,16 @@ fast-agent --model hf.moonshotai/kimi-k2-instruct-0905:groq
 fast-agent --model hf.deepseek-ai/deepseek-v3.1:fireworks-ai
 ```
 
+### Kimi K2.5 Instant Mode
+
+Kimi K2.5 supports an **instant** toggle that disables reasoning when enabled. Use the
+`instant` query parameter with the Kimi 2.5 model string:
+
+```bash
+fast-agent --model "hf.moonshotai/Kimi-K2.5?instant=on"  # thinking disabled
+fast-agent --model "hf.moonshotai/Kimi-K2.5?instant=off" # thinking enabled
+```
+
 ### Finding Available Providers
 
 If you have a Hugging Face model ID (for example, `moonshotai/Kimi-K2-Thinking`) and want to see which Inference Providers are available, use `lookup_inference_providers` from `fast_agent.llm` (or `lookup_inference_providers_sync` for non-async code).
