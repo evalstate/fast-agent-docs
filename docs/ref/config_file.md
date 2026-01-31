@@ -23,7 +23,7 @@ default_model: "gpt-5-mini.low"  # Format: provider.model_name with optional rea
 auto_sampling: true
 
 # Number of times to retry transient LLM API errors (falls back to FAST_AGENT_RETRIES env)
-llm_retries: 0
+llm_retries: 1
 
 # Execution engine (only asyncio is currently supported)
 execution_engine: "asyncio"
@@ -38,7 +38,7 @@ session_history: true
 session_history_window: 20
 ```
 
-`llm_retries` defaults to `0` and is the preferred way to control retry attempts. If unset in
+`llm_retries` defaults to `1` and is the preferred way to control retry attempts. If unset in
 config, the `FAST_AGENT_RETRIES` environment variable is used as a fallback.
 
 ## Runtime Environment Variables
@@ -375,7 +375,7 @@ shell_execution:
 ## LLM Retries
 
 ```yaml
-llm_retries: 0
+llm_retries: 1
 ```
 
 ## Example Full Configuration
