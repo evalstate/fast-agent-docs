@@ -596,6 +596,12 @@ def main() -> int:
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
     repo_root = _find_fast_agent_repo()
 
+    # Docs generation process note:
+    # - See docs/docs/ref/generated_docs.md for contributor-facing instructions.
+    # - Typical invocation from the fast-agent repo root:
+    #     uv run python docs/generate_reference_docs.py
+    # - Use FAST_AGENT_REPO_PATH when running from a separate docs checkout.
+
     # Alias tables are generated from source (AST) so they work even when fast_agent runtime deps
     # aren't installed in the docs environment.
     # include_default_models=True includes models from DEFAULT_PROVIDERS (no prefix needed)
@@ -612,6 +618,18 @@ def main() -> int:
     _write(
         GENERATED_DIR / "model_aliases_openai.md",
         generate_openai_merged_table(repo_root=repo_root),
+    )
+    # Keep Codex OAuth aliases in a dedicated include so provider docs can embed
+    # a focused table (`codexplan`, `codexplan52`, etc.) instead of relying only
+    # on the mixed OpenAI/Responses table.
+    _write(
+        GENERATED_DIR / "model_aliases_codexresponses.md",
+        generate_model_alias_table(
+            "codexresponses",
+            include_default_models=True,
+            two_column=True,
+            repo_root=repo_root,
+        ),
     )
     _write(
         GENERATED_DIR / "model_aliases_hf.md",
@@ -670,8 +688,15 @@ def main() -> int:
 
     # Best-effort: these require importing `fast_agent` (and its runtime deps).
     _try_enable_fast_agent_import(repo_root)
+    skip_workflows = os.getenv("FAST_AGENT_DOCS_SKIP_WORKFLOWS", "").lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
     try:
-        _write(GENERATED_DIR / "workflows_reference.md", generate_workflows_reference())
+        if not skip_workflows:
+            _write(GENERATED_DIR / "workflows_reference.md", generate_workflows_reference())
         _write(GENERATED_DIR / "request_params_reference.md", generate_request_params_reference())
         _write(GENERATED_DIR / "models_reference.md", generate_models_reference())
     except Exception as exc:

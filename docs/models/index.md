@@ -44,10 +44,15 @@ For models that support it (e.g. `o1`, and `gpt-5` etc), you can specify a reaso
 **`high`**, **`medium`** or **`low`** - for example `openai.o3-mini.high`. **`medium`** is the default
 if not specified.
 
+Anthropic models use either adaptive thinking (effort levels + `auto`) or budget-based thinking
+(integer token budgets). Budget models also accept `low`/`medium`/`high`/`max` to map to preset
+budgets. Adaptive models default to `auto` and do not accept explicit budgets.
+
 You can also set reasoning via a query suffix. This is especially useful for budget-style reasoning
-models (like Anthropic):
+models (like legacy Anthropic thinking):
 
 - `sonnet?reasoning=4096` (budget tokens)
+- `claude-opus-4-6?reasoning=auto` (adaptive default)
 - `openai.o3-mini?reasoning=high`
 
 Use either the suffix or the query, not both.

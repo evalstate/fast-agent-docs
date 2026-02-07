@@ -53,8 +53,18 @@ The `cache_ttl` setting controls how long cached content persists:
 
 **Reasoning + Structured Outputs:**
 
-Anthropic models that support extended thinking default to **reasoning on** with a **1024 token budget**.
-Use `anthropic.reasoning` to set a budget or disable reasoning entirely:
+`claude-opus-4-6` uses adaptive thinking by default. Use effort levels (`low`, `medium`, `high`,
+`max`) or `auto` with `anthropic.reasoning`:
+
+```yaml
+anthropic:
+  reasoning: "high"
+```
+
+Adaptive models default to `auto` (provider‑chosen) and do not accept explicit budgets.
+
+Anthropic models using budget-based thinking default to **reasoning on** with a **1024 token budget**.
+Use `anthropic.reasoning` to set a budget, map from effort aliases, or disable reasoning entirely:
 
 ```yaml
 anthropic:
@@ -62,6 +72,7 @@ anthropic:
 ```
 
 - Disable reasoning with `reasoning: "0"`, `reasoning: "off"`, or `reasoning: false`.
+- Budget models also accept `low`/`medium`/`high`/`max` to map to preset budgets.
 - The reasoning budget must be less than `max_tokens`. If you set a budget that meets/exceeds
   `max_tokens`, fast-agent raises `max_tokens` so the budget fits.
 
@@ -69,6 +80,7 @@ You can also set reasoning per run using the model string:
 
 - `sonnet?reasoning=4096`
 - `anthropic.claude-4-5-sonnet-latest?reasoning=4096`
+- `claude-opus-4-6?reasoning=auto`
 
 **Structured output selection (Anthropic JSON schema vs tool_use):**
 
@@ -84,8 +96,7 @@ anthropic:
   structured_output_mode: auto # auto (default), json, or tool_use
 ```
 
-Deprecated: `thinking_enabled` and `thinking_budget_tokens` are still accepted but should be replaced
-with `reasoning`.
+Deprecated: `thinking_enabled` and `thinking_budget_tokens` are ignored. Use `reasoning`.
 
 
 **Model Name Aliases:**
@@ -129,7 +140,9 @@ openai:
 
 ## Codex (OAuth Responses)
 
-**`fast-agent`** supports using your OpenAI Codex subscription. Simply use `fast-agent auth codexplan` and use `codexplan` as your model. 
+**`fast-agent`** supports using your OpenAI Codex subscription. Run `fast-agent auth codexplan`
+once, then use a Codex OAuth model alias such as `codexplan` (GPT-5.3 Codex) or
+`codexplan52` (GPT-5.2 Codex).
 
 **Quick Start:**
 
@@ -139,6 +152,9 @@ fast-agent auth codexplan
 
 # Use the Codex planning model
 fast-agent --model codexplan
+
+# Use the GPT-5.2 Codex planning model via OAuth
+fast-agent --model codexplan52
 ```
 
 **Provider Configuration:**
@@ -159,9 +175,15 @@ codexresponses:
 **Notes:**
 
 - Tokens are stored in your OS keyring via `fast-agent auth codexplan`.
+- `codexplan` maps to `codexresponses.gpt-5.3-codex` and `codexplan52` maps to
+  `codexresponses.gpt-5.2-codex`; both use the same stored OAuth token.
 - To remove tokens, use: `fast-agent auth codex-clear`.
 - `fast-agent check` and `fast-agent auth` show Codex OAuth status.
 - Encrypted reasoning is not transferable between API keys/credentials. Remove reasoning traces if transporting between sessions (use the bundled session skill).
+
+**Model Name Aliases:**
+
+--8<-- "_generated/model_aliases_codexresponses.md"
 
 ## Open Responses
 

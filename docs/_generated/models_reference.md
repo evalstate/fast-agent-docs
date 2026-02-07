@@ -12,31 +12,32 @@
 | `qwen3-max` | `aliyun` | Text | `json` (schema) | — | — |
 | `anthropic.claude-3-5-haiku` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
 | `anthropic.claude-3-5-sonnet` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
-| `anthropic.claude-3-7-sonnet` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `anthropic.claude-3-7-sonnet?reasoning=1024` | — |
+| `anthropic.claude-3-7-sonnet` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `anthropic.claude-3-7-sonnet?reasoning=1024` | — |
 | `anthropic.claude-3-haiku` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
 | `anthropic.claude-3-opus` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
 | `anthropic.claude-3-sonnet-20240229` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
 | `anthropic.claude-3-sonnet` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
-| `anthropic.claude-haiku-4-5-20251001` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `anthropic.claude-haiku-4-5-20251001?reasoning=1024` | — |
+| `anthropic.claude-haiku-4-5-20251001` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `anthropic.claude-haiku-4-5-20251001?reasoning=1024` | — |
 | `claude-3-5-haiku-20241022` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
 | `claude-3-5-sonnet-20240620` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
 | `claude-3-5-sonnet-20241022` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
-| `claude-3-7-sonnet-20250219` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-3-7-sonnet-20250219?reasoning=1024` | — |
+| `claude-3-7-sonnet-20250219` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-3-7-sonnet-20250219?reasoning=1024` | — |
 | `claude-3-opus-20240229` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
-| `claude-opus-4-0` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-opus-4-0?reasoning=1024` | — |
-| `claude-opus-4-20250514` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-opus-4-20250514?reasoning=1024` | — |
-| `claude-sonnet-4-20250514` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-sonnet-4-20250514?reasoning=1024` | — |
-| `claude-sonnet-4-5-20250929` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-sonnet-4-5-20250929?reasoning=1024` | — |
-| `claude` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude?reasoning=1024` | — |
+| `claude-opus-4-0` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-opus-4-0?reasoning=1024` | — |
+| `claude-opus-4-20250514` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-opus-4-20250514?reasoning=1024` | — |
+| `claude-sonnet-4-20250514` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-sonnet-4-20250514?reasoning=1024` | — |
+| `claude-sonnet-4-5-20250929` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude-sonnet-4-5-20250929?reasoning=1024` | — |
+| `claude` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `claude?reasoning=1024` | — |
 | `haiku35` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
 | `haiku3` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
-| `haiku` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `haiku?reasoning=1024` | — |
+| `haiku` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `haiku?reasoning=1024` | — |
 | `opus3` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
-| `opus4` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `opus4?reasoning=1024` | — |
-| `opus` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `opus?reasoning=1024` | — |
+| `opus45` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `opus45?reasoning=1024` | — |
+| `opus4` | `anthropic` | Text, Vision, Document | `json` (schema) | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `opus4?reasoning=1024` | — |
+| `opus` | `anthropic` | Text, Vision, Document | `json` (schema) | effort: `auto`, `low`, `medium`, `high`, `max`, `off`<br>Example: `opus.auto` | — |
 | `sonnet35` | `anthropic` | Text, Vision, Document | `tool_use` | — | — |
-| `sonnet37` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `sonnet37?reasoning=1024` | — |
-| `sonnet4` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `0`, `1024`, `16000`, `32000`, `off`<br>Example: `sonnet4?reasoning=1024` | — |
+| `sonnet37` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `sonnet37?reasoning=1024` | — |
+| `sonnet4` | `anthropic` | Text, Vision, Document | `tool_use` | budget: `low`, `medium`, `high`, `max`, `0`, `1024`, `16000`, `32000`, `off`<br>Example: `sonnet4?reasoning=1024` | — |
 | `deepseek` | `deepseek` | Text | `json` (schema) | — | — |
 | `passthrough` | `fast-agent` | Text | `json` (schema) | — | — |
 | `playback` | `fast-agent` | Text | `json` (schema) | — | — |
@@ -78,6 +79,7 @@
 | `openai.gpt-4o-2024-11-20` | `openai` | Text, Vision, Document | `json` (schema) | — | — |
 | `openai.gpt-4o-mini-2024-07-18` | `openai` | Text, Vision, Document | `json` (schema) | — | — |
 | `codex` | `responses` | Text, Vision, Document | `json` (schema) | effort: `low`, `medium`, `high`, `xhigh`<br>Example: `codex.medium` | `low`, `medium`, `high`<br>Example: `codex?verbosity=low` |
+| `codexplan` | `responses` | Text, Vision, Document | `json` (schema) | effort: `low`, `medium`, `high`, `xhigh`<br>Example: `codexplan.medium` | `low`, `medium`, `high`<br>Example: `codexplan?verbosity=low` |
 | `gpt-5-mini` | `responses` | Text, Vision, Document | `json` (schema) | effort: `minimal`, `low`, `medium`, `high`<br>Example: `gpt-5-mini.medium` | `low`, `medium`, `high`<br>Example: `gpt-5-mini?verbosity=low` |
 | `gpt-5-nano` | `responses` | Text, Vision, Document | `json` (schema) | effort: `minimal`, `low`, `medium`, `high`<br>Example: `gpt-5-nano.medium` | `low`, `medium`, `high`<br>Example: `gpt-5-nano?verbosity=low` |
 | `gpt-5.1-codex` | `responses` | Text, Vision, Document | `json` (schema) | effort: `low`, `medium`, `high`, `xhigh`<br>Example: `gpt-5.1-codex.medium` | `low`, `medium`, `high`<br>Example: `gpt-5.1-codex?verbosity=low` |

@@ -75,13 +75,14 @@ Prebuilt agents and examples implementing the patterns in Anthropic's [building 
 * `fast-agent setup` - Create Agent and Configuration files.
 * `uv run agent.py` - Run your first Agent
 * `fast-agent quickstart workflow` - Create Agent workflow examples
+
+Contributing to docs? See [Generated Docs](./ref/generated_docs.md) for how to regenerate reference tables and includes.
 </div>
 <div markdown>
 <!--[Welcome Image](welcome_small.png)-->
 <img src="welcome_small.png" style="padding: 0.5em;" />
 </div>
 </div>
-
 
 
 

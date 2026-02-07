@@ -56,13 +56,22 @@ config, the `FAST_AGENT_RETRIES` environment variable is used as a fallback.
 anthropic:
   api_key: "your_anthropic_key"  # Can also use ANTHROPIC_API_KEY env var
   base_url: "https://api.anthropic.com/v1"  # Optional, only include to override
-  reasoning: 1024  # Reasoning budget tokens (min 1024). Use "0"/off/false to disable.
+  reasoning: auto  # Adaptive models: auto/low/medium/high/max. Budget models: integer tokens or off.
   structured_output_mode: auto  # auto (default), json, or tool_use
 ```
 
-Anthropic models that support extended thinking default to a 1024 token reasoning budget unless you
-override `anthropic.reasoning`. Set `reasoning: "0"`/`off`/`false` to disable reasoning. The reasoning
-budget must be lower than `max_tokens` (fast-agent raises `max_tokens` if needed).
+Anthropic models fall into three groups:
+
+- **No reasoning support**: `reasoning` is ignored with a warning.
+- **Budget-based thinking** (older models): defaults to a 1024 token budget. Set `reasoning` to a
+  budget integer or disable with `"0"`/`off`/`false`. You can also pass `low`/`medium`/`high`/`max`,
+  which map to preset budgets.
+- **Adaptive thinking** (e.g. `claude-opus-4-6`): defaults to `auto` (provider‑chosen). Use effort
+  levels (`low`/`medium`/`high`/`max`) to set `output_config.effort`. Budgets are not supported on
+  adaptive models.
+
+For budget models, the reasoning budget must be lower than `max_tokens` (fast-agent raises
+`max_tokens` if needed).
 
 Structured outputs default to JSON schema for newer models that support the
 `structured-outputs-2025-11-13` feature and are compatible with reasoning. Older models fall back to
@@ -70,7 +79,7 @@ Structured outputs default to JSON schema for newer models that support the
 reasoning for tool-forced structured outputs). Override with `structured_output_mode: json` or
 `structured_output_mode: tool_use` as needed.
 
-Legacy `thinking_enabled` and `thinking_budget_tokens` settings are deprecated.
+Legacy `thinking_enabled` and `thinking_budget_tokens` settings are deprecated and ignored.
 
 ### OpenAI
 
