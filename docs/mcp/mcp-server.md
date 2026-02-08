@@ -22,9 +22,12 @@ Key options:
     - `request` (stateless) - create a new Agent for every tool call and disable MCP Sessions
 - `--description` – Customise the MCP tool description (supports {agent} placeholder)
 - `--shell`, `-x` – Enable local shell tool access (bash or pwsh)
+- `--noenv`, `--no-env` – Run without implicit environment side effects (no implicit card discovery, no session persistence/resume, and no ACP permission-store writes)
 
 Standard CLI flags also apply (e.g. `--config-path`, `--model`, `--servers`, `--stdio`, and global `-q/--quiet`).
 This allows **`fast-agent`** to serve any existing MCP Server in "Agent Mode", use custom system prompts and so on.
+
+`--noenv` conflicts with `--env` (they cannot be used together).
 
 Examples:
 

@@ -110,3 +110,16 @@ Tool calls in ACP mode prompt for permission by default. You will see options fo
 - Disable prompts entirely with `fast-agent-acp --no-permissions` (all tools are allowed).
 - Persistent “Always” decisions are stored in the fast-agent environment directory (default `.fast-agent/auths.md`) so you can audit or edit them later. The file is only created when you choose an “Always” option.
 - “Once” decisions are remembered only for the current session and are not written to disk. Removing the permissions file clears any saved Always rules. Use `fast-agent --env <path>` or `environment_dir` in the config file to relocate the environment folder.
+
+### `--noenv` in ACP mode
+
+Use `fast-agent-acp --noenv` (or `fast-agent serve --transport acp --noenv`) for ephemeral runs.
+
+- Session persistence and resume are disabled.
+- Slash session operations are disabled.
+- Permission-store writes (`auths.md`) are disabled.
+
+Conflicts (fail fast):
+
+- `--noenv` + `--env`
+- `--noenv` + `--resume`

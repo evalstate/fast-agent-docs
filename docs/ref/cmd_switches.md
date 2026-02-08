@@ -75,6 +75,10 @@ This is particularly useful when:
 
 The `fast-agent go` command lets you run an interactive agent directly without creating a Python file. Read the guide [here](go_command.md)
 
+For ephemeral runs with no implicit environment-side effects, use `--noenv` (alias `--no-env`).
+
+For card-based loading and the distinction between `--agent-cards` and `--card-tool`, see [AgentCards and ToolCards](agent_cards.md).
+
 ## fast-agent check Command
 
 Use `fast-agent check` to diagnose your configuration:

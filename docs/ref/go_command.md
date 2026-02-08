@@ -24,7 +24,13 @@ fast-agent go [OPTIONS]
 - `--auth TEXT`: Bearer token for authorization with URL-based servers
 - `--model`, `--models <model_string>`: Override the default model (e.g., haiku, sonnet, gpt-4)
 - `--model`, `--models <model1>,<model2>,...`: Run one agent per model in parallel and print a side-by-side comparison of responses
+- `--agent-cards`, `--card <path or url>`: Load AgentCards as runnable agents (repeatable)
+- `--card-tool <path or url>`: Load AgentCards and attach them as tools to the selected/default agent (repeatable)
+- `--agent <name>`: Target a specific loaded agent by name for `--message`, `--prompt-file`, and initial interactive mode
 - `--message`, `-m TEXT`: Message to send to the agent (skips interactive mode)
+- `--env <path>`: Override the base `.fast-agent` environment directory (where default `agent-cards/` and `tool-cards/` are discovered)
+- `--noenv`, `--no-env`: Run in ephemeral mode (disable implicit environment card loading, session persistence/resume, and permission-store side effects)
+- `--resume <id|latest>`: Resume the latest session (or a specific session id)
 - `--prompt-file`, `-p <path>`: Path to a prompt file to use (either text or JSON)
 - `--skills-dir`, `--skills <path>`: Override the default skills directory
 - `--stdio "<command> <options>"`: Run the command to attach a STDIO server (enclose arguments in quotes)
@@ -66,6 +72,12 @@ fast-agent --npx @modelcontextprotocol/server-everything
 # Non-interactive mode with a single message
 fast-agent go --message="What is the weather today?" --model=haiku
 
+# Target one specific loaded agent when multiple agents are available
+fast-agent go --agent-cards ./agents --agent researcher
+
+# Send one message to a specific loaded agent and exit
+fast-agent go --agent-cards ./agents --agent qa --message "run smoke checks"
+
 # Using a prompt file
 fast-agent go --prompt-file=my-prompt.txt --model=haiku
 
@@ -93,7 +105,48 @@ How it works:
 
 ```bash
 fast-agent go --models sonnet,gpt-5-mini.low
+
+# Route to one model agent directly (instead of side-by-side parallel output)
+fast-agent go --models sonnet,gpt-5-mini.low --agent sonnet --message "Summarize this"
 ```
+
+### Agent targeting notes
+
+- Use `--agent` when you loaded multiple agents (for example with `--agent-cards`).
+- If `--instruction` points to a local file, fast-agent may derive an internal default agent name
+  from the file name (for example `research.md` -> `research`). `--agent` still takes precedence
+  for explicit targeting.
+- Explicit targeting can include tool-only agents when needed for testing.
+
+### AgentCards vs ToolCards
+
+`tool-cards` are not a separate file format. They are still AgentCards.
+
+- `--agent-cards`: load cards as normal runnable agents.
+- `--card-tool`: load cards, then attach those loaded agents as tools to a parent agent.
+
+By default, `fast-agent go` will auto-discover cards from your environment folder when present:
+
+- `<env>/agent-cards/` for runnable agents
+- `<env>/tool-cards/` for cards to attach as tools
+
+When `--noenv` is set, this implicit discovery is disabled. Explicit `--agent-cards` and
+`--card-tool` values still work.
+
+See [AgentCards and ToolCards reference](agent_cards.md) for details and recommended layout.
+
+### `--noenv` mode
+
+Use `--noenv` when you want to run without implicit environment side effects.
+
+- Session persistence is disabled.
+- Session resume is disabled.
+- Default environment card auto-loading is disabled.
+
+Conflicts (fail fast):
+
+- `--noenv` + `--env`
+- `--noenv` + `--resume`
 
 ### URL Connection Details
 
