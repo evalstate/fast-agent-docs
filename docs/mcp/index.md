@@ -4,6 +4,22 @@ title: Configuring Servers
 
 MCP Servers are configured in the `fastagent.config.yaml` file. Secrets can be kept in `fastagent.secrets.yaml`, which follows the same format (**fast-agent** merges the contents of the two files). 
 
+## AgentCard runtime MCP connections (`mcp_connect`)
+
+AgentCards can also declare runtime MCP targets directly with `mcp_connect`.
+This is useful when a card depends on MCP servers that are not predeclared in
+`fastagent.config.yaml`.
+
+```yaml
+mcp_connect:
+  - target: "https://demo.hf.space"
+  - target: "@modelcontextprotocol/server-everything"
+    name: "everything"
+```
+
+`mcp.servers` remains the place for reusable, preconfigured aliases.
+`mcp_connect` is card-scoped runtime declaration.
+
 ## Adding a STDIO Server
 
 The below shows an example of configuring an MCP Server named `server_one`. 

@@ -46,6 +46,24 @@ If a card should not appear in normal interactive agent lists, set:
 tool_only: true
 ```
 
+## Runtime MCP targets (`mcp_connect`)
+
+Use `mcp_connect` when a card needs MCP servers that are **not** preconfigured
+under `mcp.servers` in `fastagent.config.yaml`.
+
+```yaml
+mcp_connect:
+  - target: "https://demo.hf.space"
+  - target: "@modelcontextprotocol/server-everything"
+    name: "everything"
+```
+
+- `target` (required): URL, `@pkg`, `npx ...`, `uvx ...`, or stdio command.
+- `name` (optional): explicit server alias; if omitted, fast-agent infers one.
+
+If an inferred/provided name collides with another server using different settings,
+startup fails with a collision error. Prefer explicit `name` values for stability.
+
 ## Examples
 
 ```bash

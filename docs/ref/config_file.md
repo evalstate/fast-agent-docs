@@ -231,6 +231,10 @@ The model string format is `bedrock.model-id` (e.g., `bedrock.amazon.nova-lite-v
 
 MCP Servers are defined under the `mcp.servers` section:
 
+`mcp.servers` contains preconfigured aliases. AgentCards may additionally declare
+runtime targets via `mcp_connect`; those are resolved at startup and do not need
+to be prelisted here.
+
 ```yaml
 mcp:
   servers:

@@ -17,7 +17,7 @@ fast-agent go [OPTIONS]
 ### Options
 
 - `--name TEXT`: Name for the agent (default: "fast-agent")
-- `--instruction`, `-i <path or url>`: File name or URL for [System Prompt](../agents/instructions.md) (default: "You are a helpful AI Agent.")
+- `--instruction`, `-i <path or url>`: File name or URL for [System Prompt](../agents/instructions.md)
 - `--config-path`, `-c <path>`: Path to config file
 - `--servers <server1>,<server2>`: Comma-separated list of server names to enable from config
 - `--url TEXT`: Comma-separated list of HTTP/SSE URLs to connect to directly
@@ -31,6 +31,7 @@ fast-agent go [OPTIONS]
 - `--env <path>`: Override the base `.fast-agent` environment directory (where default `agent-cards/` and `tool-cards/` are discovered)
 - `--noenv`, `--no-env`: Run in ephemeral mode (disable implicit environment card loading, session persistence/resume, and permission-store side effects)
 - `--resume <id|latest>`: Resume the latest session (or a specific session id)
+- `--smart`: Prefer a smart default agent when fast-agent creates the default agent
 - `--prompt-file`, `-p <path>`: Path to a prompt file to use (either text or JSON)
 - `--skills-dir`, `--skills <path>`: Override the default skills directory
 - `--stdio "<command> <options>"`: Run the command to attach a STDIO server (enclose arguments in quotes)
@@ -53,6 +54,9 @@ fast-agent go --model=haiku
 
 # Basic usage with interactive mode (go omitted)
 fast-agent --model haiku
+
+# Use smart default agent (go omitted)
+fast-agent --smart --model haiku
 
 # Compare responses across multiple models (comparison mode)
 fast-agent --models kimi,gpt-5-mini.low
@@ -102,6 +106,7 @@ How it works:
 - Each model string becomes a separate agent name in the output.
 - Interactive mode (default): every prompt is sent to all models and results are shown in a comparison view.
 - Non-interactive: use `--message` or `--prompt-file` to run once and print results for each model.
+- `--smart` is ignored when multiple models are provided.
 
 ```bash
 fast-agent go --models sonnet,gpt-5-mini.low
@@ -132,6 +137,9 @@ By default, `fast-agent go` will auto-discover cards from your environment folde
 
 When `--noenv` is set, this implicit discovery is disabled. Explicit `--agent-cards` and
 `--card-tool` values still work.
+
+Cards loaded via `--agent-cards` / `--card-tool` can include `mcp_connect` entries;
+those runtime MCP servers are resolved and attached automatically during startup.
 
 See [AgentCards and ToolCards reference](agent_cards.md) for details and recommended layout.
 
