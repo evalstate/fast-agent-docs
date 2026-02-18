@@ -17,7 +17,7 @@ fast-agent automatically searches for configuration files in the current working
 
 ```yaml
 # Default model for all agents
-default_model: "gpt-5-mini.low"  # Format: provider.model_name with optional reasoning suffix or ?reasoning=
+default_model: "gpt-5-mini.low"  # Format: provider.model_name with optional suffix/query params
 
 # Whether to automatically enable Sampling. Model seletion precedence is Agent > Default.
 auto_sampling: true
@@ -58,6 +58,24 @@ anthropic:
   base_url: "https://api.anthropic.com/v1"  # Optional, only include to override
   reasoning: auto  # Adaptive models: auto/low/medium/high/max. Budget models: integer tokens or off.
   structured_output_mode: auto  # auto (default), json, or tool_use
+  web_search:
+    enabled: false
+    max_uses: 3  # Optional, must be > 0
+    allowed_domains: ["example.com"]  # Optional; mutually exclusive with blocked_domains
+    # blocked_domains: ["tracking.example"]
+    user_location:  # Optional
+      type: approximate
+      city: "London"
+      country: "UK"
+      region: "England"
+      timezone: "Europe/London"
+  web_fetch:
+    enabled: false
+    citations_enabled: false
+    max_uses: 3  # Optional, must be > 0
+    max_content_tokens: 4096  # Optional, must be > 0
+    allowed_domains: ["example.com"]  # Optional; mutually exclusive with blocked_domains
+    # blocked_domains: ["ads.example"]
 ```
 
 Anthropic models fall into three groups:
@@ -80,6 +98,13 @@ reasoning for tool-forced structured outputs). Override with `structured_output_
 `structured_output_mode: tool_use` as needed.
 
 Legacy `thinking_enabled` and `thinking_budget_tokens` settings are deprecated and ignored.
+
+Anthropic built-in web tools can also be toggled per run in the model string:
+
+- `claude-opus-4-6?web_search=on&web_fetch=on`
+- `sonnet?web_search=off`
+
+Allowed values: `on`/`off` (also accepts `true`/`false`, `1`/`0`).
 
 ### OpenAI
 

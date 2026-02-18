@@ -279,7 +279,25 @@ def generate_models_reference() -> str:
 
         return ", ".join(labels) if labels else "—"
 
-    rows: list[tuple[str, str, str, str, str, str]] = []
+    def format_anthropic_web_tools(model_name: str) -> str:
+        search_version = ModelDatabase.get_anthropic_web_search_version(model_name)
+        fetch_version = ModelDatabase.get_anthropic_web_fetch_version(model_name)
+        required_betas = ModelDatabase.get_anthropic_required_betas(model_name) or ()
+
+        if not search_version and not fetch_version:
+            return "—"
+
+        details: list[str] = []
+        if search_version:
+            details.append(f"`web_search` ({search_version})")
+        if fetch_version:
+            details.append(f"`web_fetch` ({fetch_version})")
+        if required_betas:
+            joined = ", ".join(f"`{beta}`" for beta in required_betas)
+            details.append(f"beta: {joined}")
+        return "<br>".join(details)
+
+    rows: list[tuple[str, str, str, str, str, str, str]] = []
 
     for model_name in ModelDatabase.list_models():
         params = ModelDatabase.get_model_params(model_name)
@@ -294,8 +312,9 @@ def generate_models_reference() -> str:
         structured = _format_structured_output(provider_label, params.json_mode)
         reasoning = format_reasoning(model_label, params.reasoning_effort_spec)
         verbosity = format_verbosity(model_label, params.text_verbosity_spec)
+        web_tools = format_anthropic_web_tools(model_name)
 
-        if structured == "—" and reasoning == "—" and verbosity == "—":
+        if structured == "—" and reasoning == "—" and verbosity == "—" and web_tools == "—":
             continue
 
         rows.append(
@@ -306,6 +325,7 @@ def generate_models_reference() -> str:
                 structured,
                 reasoning,
                 verbosity,
+                web_tools,
             )
         )
 
@@ -316,12 +336,14 @@ def generate_models_reference() -> str:
     lines.append("  GENERATED FILE — DO NOT EDIT.\n")
     lines.append("  Source: generate_reference_docs.py\n")
     lines.append("-->\n\n")
-    lines.append("| Model | Provider | Tokenizes | Structured Output | Reasoning | Verbosity |\n")
-    lines.append("| --- | --- | --- | --- | --- | --- |\n")
+    lines.append(
+        "| Model | Provider | Tokenizes | Structured Output | Reasoning | Verbosity | Built-in Web Tools |\n"
+    )
+    lines.append("| --- | --- | --- | --- | --- | --- | --- |\n")
 
-    for model, provider, tokenizes, structured, reasoning, verbosity in rows:
+    for model, provider, tokenizes, structured, reasoning, verbosity, web_tools in rows:
         lines.append(
-            f"| {model} | {provider} | {tokenizes} | {structured} | {reasoning} | {verbosity} |\n"
+            f"| {model} | {provider} | {tokenizes} | {structured} | {reasoning} | {verbosity} | {web_tools} |\n"
         )
 
     return "".join(lines)
@@ -515,7 +537,7 @@ def generate_model_alias_table(
 
     Includes:
       - "default provider" model names (e.g. `gpt-5` defaults to OpenAI)
-      - short aliases from ModelFactory.MODEL_ALIASES (e.g. `sonnet` -> `claude-sonnet-4-5`)
+      - short aliases from ModelFactory.MODEL_ALIASES (e.g. `sonnet` -> `claude-sonnet-4-6`)
     """
     model_aliases, default_providers, effort_suffixes, provider_names = (
         _load_model_factory_constants(repo_root)

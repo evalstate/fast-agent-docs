@@ -31,6 +31,22 @@ anthropic:
   base_url: "https://api.anthropic.com/v1" # Default, only include if required
   cache_mode: "auto" # Options: off, prompt, auto (default: auto)
   cache_ttl: "5m" # Options: 5m, 1h (default: 5m)
+  web_search:
+    enabled: false
+    # max_uses: 3
+    # allowed_domains: ["example.com", "*.docs.example.com"]
+    # blocked_domains: ["social.example"]  # mutually exclusive with allowed_domains
+    # user_location:
+    #   type: approximate
+    #   city: "London"
+    #   country: "UK"
+  web_fetch:
+    enabled: false
+    citations_enabled: false
+    # max_uses: 3
+    # max_content_tokens: 4096
+    # allowed_domains: ["example.com"]
+    # blocked_domains: ["tracking.example"]  # mutually exclusive with allowed_domains
 ```
 
 **Environment Variables:**
@@ -97,6 +113,35 @@ anthropic:
 ```
 
 Deprecated: `thinking_enabled` and `thinking_budget_tokens` are ignored. Use `reasoning`.
+
+**Built-in Anthropic web tools (`web_search` + `web_fetch`):**
+
+fast-agent can enable Anthropic server-side web tools directly (these are not MCP tool calls):
+
+- `anthropic.web_search.enabled: true`
+- `anthropic.web_fetch.enabled: true`
+
+Optional controls:
+
+- `max_uses`
+- `allowed_domains` / `blocked_domains` (mutually exclusive)
+- `web_search.user_location` (approximate city/region/country/timezone)
+- `web_fetch.max_content_tokens`
+- `web_fetch.citations_enabled`
+
+You can override per run in the model string:
+
+- `claude-opus-4-6?web_search=on&web_fetch=on`
+- `sonnet?web_search=off`
+
+Supported values are `on`/`off` (also accepts `true`/`false`, `1`/`0`).
+
+Version policy is model-aware:
+
+- Claude 4.6 models use `web_search_20260209` and `web_fetch_20260209`
+  (with required beta header `code-execution-web-tools-2026-02-09`).
+- Other supported Anthropic models use legacy versions
+  (`web_search_20250305`, `web_fetch_20250910`).
 
 
 **Model Name Aliases:**

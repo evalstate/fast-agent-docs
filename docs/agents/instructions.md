@@ -1,6 +1,6 @@
 # System Prompts
 
-Agents can have their System Instructions set and customised in a number of flexible ways. The default System Prompt caters or Agent Skills, MCP Server Instructions, `AGENTS.md` and Shell access.
+Agents can have their System Instructions set and customised in a number of flexible ways. The default System Prompt caters for Agent Skills, MCP Server Instructions, `AGENTS.md` and Shell access.
 
 ## Template Variables
 
@@ -8,12 +8,17 @@ The following variables are available in System Prompt templates:
 
 | Variable | Description |  Notes |
 |----------|-------------|-------|
+| <nobr>`{{internal:resource_id}}`</nobr> | Loads packaged internal markdown resources | Examples: `{{internal:smart_prompt}}`, `{{internal:smart_agent_cards}}` |
 | <nobr>`{{file:path}}`</nobr> | Reads and embeds local file contents (errors if file missing) |  **Must be a relative path** (resolved relative to `workspaceRoot`) |
 | <nobr>`{{file_silent:path}}`</nobr> | Reads and embeds local file contents (empty if file missing) |  **Must be a relative path** (resolved relative to `workspaceRoot`) |
 | <nobr>`{{url:https://...}}`</nobr> | Fetches and embeds content from a URL |
 | <nobr>`{{serverInstructions}}`</nobr> | MCP server instructions with available tools |  Warning displayed in `/mcp` if Instructions are present and template variable missing |
 | <nobr>`{{agentSkills}}`</nobr> | Agent skill manifests with descriptions |  |
 | <nobr>`{{workspaceRoot}}`</nobr> | Current working directory / workspace root | Set by Client in ACP Mode |
+| <nobr>`{{agentName}}`</nobr> | Current agent name |  |
+| <nobr>`{{agentType}}`</nobr> | Current agent type |  |
+| <nobr>`{{agentCardPath}}`</nobr> | Source AgentCard path | `(internal)` when not loaded from a card |
+| <nobr>`{{agentCardDir}}`</nobr> | Directory containing the source AgentCard | `(internal)` when not loaded from a card |
 | <nobr>`{{hostPlatform}}`</nobr> | Host platform information |  |
 | <nobr>`{{pythonVer}}`</nobr> | Python version |  |
 | <nobr>`{{env}}`</nobr> | Formatted environment block with all environment details |  |
@@ -31,7 +36,7 @@ Environment:
 
 **Viewing the System Prompt** The System Prompt can be inspected with the `/system` command from `fast-agent` or the `/status system` Slash Command in ACP Mode.
 
-The default System Prompt used with `fast-agent go` or `fast-agent-acp` is:
+The standard default System Prompt used with `fast-agent go` or `fast-agent-acp` (without `--smart`) is:
 
 ```markdown title="Default System Prompt"
 You are a helpful AI Agent.
@@ -42,6 +47,20 @@ You are a helpful AI Agent.
 {{env}}
 
 The current date is {{currentDate}}.
+```
+
+When `--smart` is enabled, fast-agent uses the internal smart prompt resource:
+
+```markdown title="Smart System Prompt Selector"
+{{internal:smart_prompt}}
+```
+
+You can also include only the AgentCard guidance section inside your own instruction template:
+
+```markdown title="Custom Prompt Including AgentCard Guidance"
+You are a safety-focused assistant.
+{{internal:smart_agent_cards}}
+Always confirm before destructive operations.
 ```
 
 

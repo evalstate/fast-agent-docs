@@ -5,7 +5,7 @@ title: Model Features and History Saving
 # Model Features and History Saving
 
 Models in **fast-agent** are specified with a model string that takes the format
-`provider.model_name[.reasoning_effort][?reasoning=<value>]`.
+`provider.model_name[.reasoning_effort][?query=value&...]`.
 
 ### Precedence
 
@@ -19,12 +19,13 @@ Model specifications in fast-agent follow this precedence order (highest to lowe
 
 ### Format
 
-Model strings follow this format: `provider.model_name[.reasoning_effort][?reasoning=<value>]`
+Model strings follow this format: `provider.model_name[.reasoning_effort][?query=value&...]`
 
 - **provider**: The LLM provider (e.g., `anthropic`, `openai`, `azure`, `deepseek`, `generic`,`openrouter`, `tensorzero`)
 - **model_name**: The specific model to use in API calls (for Azure, this is your deployment name)
 - **reasoning_effort** (optional): Controls the reasoning effort for supported models
-- **reasoning query** (optional): Use `?reasoning=<value>` to set a budget or effort inline
+- **query parameters** (optional): provider/model-specific runtime overrides such as
+  `reasoning`, `structured`, `context`, `transport`, `web_search`, and `web_fetch`.
 
 Examples:
 
@@ -33,6 +34,7 @@ Examples:
 - `openai.o3-mini.high`
 - `sonnet?reasoning=4096`
 - `openai.o3-mini?reasoning=high`
+- `claude-opus-4-6?web_search=on&web_fetch=on`
 - `azure.my-deployment`
 - `generic.llama3.2:latest`
 - `openrouter.google/gemini-2.5-pro-exp-03-25:free`
