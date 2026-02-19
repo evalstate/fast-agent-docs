@@ -26,6 +26,8 @@ Model strings follow this format: `provider.model_name[.reasoning_effort][?query
 - **reasoning_effort** (optional): Controls the reasoning effort for supported models
 - **query parameters** (optional): provider/model-specific runtime overrides such as
   `reasoning`, `structured`, `context`, `transport`, `web_search`, and `web_fetch`.
+  (`web_fetch` is Anthropic-only; `web_search` is available for Anthropic and
+  Responses-family providers).
 
 Examples:
 
@@ -35,6 +37,7 @@ Examples:
 - `sonnet?reasoning=4096`
 - `openai.o3-mini?reasoning=high`
 - `claude-opus-4-6?web_search=on&web_fetch=on`
+- `openai.gpt-5?web_search=on`
 - `azure.my-deployment`
 - `generic.llama3.2:latest`
 - `openrouter.google/gemini-2.5-pro-exp-03-25:free`

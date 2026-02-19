@@ -113,7 +113,30 @@ openai:
   api_key: "your_openai_key"  # Can also use OPENAI_API_KEY env var
   base_url: "https://api.openai.com/v1"  # Optional, only include to override
   reasoning_effort: "medium"  # Default reasoning effort: "minimal", "low", "medium", or "high"
+  web_search:
+    enabled: false
+    tool_type: "web_search"  # Optional: web_search (default) or web_search_preview
+    search_context_size: "medium"  # Optional: low, medium, high
+    allowed_domains: ["example.com"]  # Optional, max 100 entries
+    user_location:  # Optional
+      type: approximate
+      city: "London"
+      country: "UK"
+      region: "England"
+      timezone: "Europe/London"
+    external_web_access: true  # Optional; applies to tool_type=web_search
 ```
+
+The same `web_search` block is also supported for `openresponses` and
+`codexresponses` provider sections.
+
+Responses-family providers can also be toggled per run in the model string:
+
+- `openai.gpt-5?web_search=on`
+- `openresponses.openai/gpt-oss-120b:groq?web_search=on`
+- `codexresponses.gpt-5.3-codex?web_search=off`
+
+Allowed values: `on`/`off` (also accepts `true`/`false`, `1`/`0`).
 
 ### Azure OpenAI
 
