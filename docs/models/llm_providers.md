@@ -171,33 +171,7 @@ Structured outputs use the OpenAI API Structured Outputs feature.
 openai:
   api_key: "your_openai_key" # Default
   base_url: "https://api.openai.com/v1" # Default, only include if required
-  web_search:
-    enabled: false
-    # tool_type: web_search  # web_search (default) | web_search_preview
-    # search_context_size: medium  # low | medium | high
-    # allowed_domains: ["example.com"]  # Up to 100 domains
-    # user_location:
-    #   type: approximate
-    #   city: "London"
-    #   country: "UK"
-    #   region: "England"
-    #   timezone: "Europe/London"
-    # external_web_access: true  # Supported by tool_type=web_search
 ```
-
-**Built-in OpenAI Responses web search:**
-
-fast-agent can attach OpenAI's server-side web search tool for Responses-family
-providers (`openai`, `openresponses`, and `codexresponses`).
-
-- `openai.web_search.enabled: true`
-
-Per-run override in model strings:
-
-- `openai.gpt-5?web_search=on`
-- `codexresponses.gpt-5.3-codex?web_search=off`
-
-Supported values are `on`/`off` (also accepts `true`/`false`, `1`/`0`).
 
 **Environment Variables:**
 
@@ -207,6 +181,36 @@ Supported values are `on`/`off` (also accepts `true`/`false`, `1`/`0`).
 **Model Name Aliases:**
 
 --8<-- "_generated/model_aliases_openai.md"
+
+## Responses (OpenAI Responses API)
+
+Use the `responses` provider for OpenAI Responses API models (for example `gpt-5`, `o3`, `o4-mini`).
+
+```yaml
+responses:
+  api_key: "your_openai_key"
+  base_url: "https://api.openai.com/v1" # Optional override
+  reasoning: "medium" # Optional default
+  text_verbosity: "medium" # Optional default for supporting models
+  transport: "sse" # sse | websocket | auto (websocket currently codexresponses-only)
+  web_search:
+    enabled: false
+    tool_type: web_search # web_search | web_search_preview
+    # search_context_size: medium # low | medium | high
+    # allowed_domains: ["openai.com", "docs.openai.com"]
+    # external_web_access: false # only applies to tool_type=web_search
+    # user_location:
+    #   type: approximate
+    #   city: "Minneapolis"
+    #   region: "Minnesota"
+    #   country: "US"
+    #   timezone: "America/Chicago"
+```
+
+Per-run override via model string is also supported:
+
+- `responses.gpt-5-mini?web_search=on`
+- `responses.gpt-5-mini?web_search=off`
 
 
 ## Codex (OAuth Responses)
@@ -237,12 +241,6 @@ codexresponses:
   text_verbosity: "medium"  # low | medium | high
   web_search:
     enabled: false
-    # tool_type: web_search
-    # search_context_size: medium
-    # allowed_domains: ["example.com"]
-    # user_location:
-    #   type: approximate
-    # external_web_access: true
   default_headers:
     X-Custom-Header: "value"
 ```
@@ -288,14 +286,6 @@ openresponses:
   api_key: "your_api_key"
   base_url: "https://api.example.com"  # Your Open Responses endpoint
   reasoning_effort: "medium"  # Default reasoning effort level
-  web_search:
-    enabled: false
-    # tool_type: web_search
-    # search_context_size: medium
-    # allowed_domains: ["example.com"]
-    # user_location:
-    #   type: approximate
-    # external_web_access: true
   default_headers:  # Optional custom headers
     X-Custom-Header: "value"
 ```

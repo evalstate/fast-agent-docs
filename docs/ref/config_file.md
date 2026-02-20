@@ -168,6 +168,34 @@ Responses-family providers can also be toggled per run in the model string:
 
 Allowed values: `on`/`off` (also accepts `true`/`false`, `1`/`0`).
 
+### Responses (OpenAI Responses API)
+
+```yaml
+responses:
+  api_key: "your_openai_key"  # Can also use OPENAI_API_KEY env var
+  base_url: "https://api.openai.com/v1"  # Optional, only include to override
+  reasoning: "medium"  # Optional default reasoning setting
+  text_verbosity: "medium"  # Optional: low | medium | high
+  transport: "sse"  # sse | websocket | auto
+  web_search:
+    enabled: false
+    tool_type: web_search  # web_search | web_search_preview
+    search_context_size: medium  # Optional: low | medium | high
+    allowed_domains: ["openai.com"]  # Optional, max 100 domains
+    external_web_access: false  # Optional, only for tool_type=web_search
+    user_location:  # Optional
+      type: approximate
+      city: "Minneapolis"
+      region: "Minnesota"
+      country: "US"
+      timezone: "America/Chicago"
+```
+
+`web_search` can be toggled per run in the model string:
+
+- `responses.gpt-5-mini?web_search=on`
+- `responses.gpt-5-mini?web_search=off`
+
 ### Azure OpenAI
 
 ```yaml
