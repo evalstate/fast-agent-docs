@@ -25,7 +25,8 @@ Model strings follow this format: `provider.model_name[.reasoning_effort][?query
 - **model_name**: The specific model to use in API calls (for Azure, this is your deployment name)
 - **reasoning_effort** (optional): Controls the reasoning effort for supported models
 - **query parameters** (optional): provider/model-specific runtime overrides such as
-  `reasoning`, `structured`, `context`, `transport`, `web_search`, and `web_fetch`.
+  `reasoning`, `structured`, `context`, `transport`, `temperature` (`temp` alias),
+  `web_search`, and `web_fetch`.
   (`web_fetch` is Anthropic-only; `web_search` is available for Anthropic and
   Responses-family providers).
 
@@ -36,6 +37,7 @@ Examples:
 - `openai.o3-mini.high`
 - `sonnet?reasoning=4096`
 - `openai.o3-mini?reasoning=high`
+- `gpt-5?temperature=0.2`
 - `claude-opus-4-6?web_search=on&web_fetch=on`
 - `openai.gpt-5?web_search=on`
 - `azure.my-deployment`
@@ -63,6 +65,17 @@ models (like legacy Anthropic thinking):
 Use either the suffix or the query, not both.
 
 `gpt-5` class models additionally support a `minimal` reasoning effort.
+
+#### Temperature
+
+You can set sampling temperature directly in the model string query:
+
+- `gpt-5?temperature=0.2`
+- `openai.gpt-4.1?temp=0.7`
+
+If temperature is omitted, fast-agent does not send a temperature parameter.
+Only explicit values (for example via `?temperature=` / `?temp=` or request
+params/config) are forwarded.
 
 #### Aliases
 
