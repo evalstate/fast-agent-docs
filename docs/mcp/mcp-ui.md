@@ -62,7 +62,7 @@ fast-agent --url https://huggingface.co/mcp --auth $HF_TOKEN
 
 ## Advanced Configuration
 
-To create configuration files for advanced configuration, use the `fast-agent setup` command. 
+To create configuration files for advanced configuration, use the `fast-agent scaffold` command. 
 
 This allows you to configure some `mcp-ui` settings, or configure servers to use custom headers.
 

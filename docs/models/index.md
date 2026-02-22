@@ -81,6 +81,12 @@ params/config) are forwarded.
 
 For convenience, popular models have an alias set such as `codex` or `sonnet`. These are documented on the [LLM Providers](llm_providers.md) page.
 
+You can also define your own namespaced aliases in `fastagent.config.yaml` and reference them
+with exact tokens like `$system.fast`.
+
+If a configured alias cannot be resolved, fast-agent logs a warning and automatically falls back
+to the next lower-precedence model source.
+
 ### Default Configuration
 
 You can set a default model for your application in your `fastagent.config.yaml`:

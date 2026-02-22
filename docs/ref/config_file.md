@@ -19,6 +19,12 @@ fast-agent automatically searches for configuration files in the current working
 # Default model for all agents
 default_model: "gpt-5-mini.low"  # Format: provider.model_name with optional suffix/query params
 
+# Optional namespaced model aliases (used via exact tokens like $system.fast)
+model_aliases:
+  system:
+    fast: "gpt-5-mini?reasoning=low"
+    plan: "claude-sonnet-4-5"
+
 # Whether to automatically enable Sampling. Model seletion precedence is Agent > Default.
 auto_sampling: true
 
@@ -40,6 +46,30 @@ session_history_window: 20
 
 `llm_retries` defaults to `1` and is the preferred way to control retry attempts. If unset in
 config, the `FAST_AGENT_RETRIES` environment variable is used as a fallback.
+
+## Namespaced Model Aliases
+
+Use `model_aliases` to create exact-token aliases such as `$system.fast` and reuse them in
+`default_model`, `--model`, environment overrides, and agent card `model` fields.
+
+```yaml
+default_model: "$system.fast"
+
+model_aliases:
+  system:
+    fast: "gpt-5-mini?reasoning=low"
+    plan: "claude-sonnet-4-5"
+```
+
+Notes:
+
+- Alias tokens must match this form exactly: `$<namespace>.<key>` (for example `$system.fast`).
+- Aliases can point to other aliases (recursive expansion is supported with cycle detection).
+- If an alias cannot be resolved, fast-agent logs a warning and falls back to the next
+  lower-precedence model source (explicit model → CLI → config → env → hardcoded default).
+  This warning is emitted through the normal logger/event pipeline and may be surfaced in UIs.
+- If a selected model is not an alias token (doesn't start with `$`), normal validation behavior
+  applies.
 
 ## Runtime Environment Variables
 

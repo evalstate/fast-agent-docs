@@ -94,19 +94,19 @@ fast-agent check show
 fast-agent check show --secrets
 ```
 
-## fast-agent setup Command
+## fast-agent scaffold Command
 
 Create a new agent project with configuration files:
 
 ```bash
 # Set up in current directory
-fast-agent setup
+fast-agent scaffold
 
 # Set up in a specific directory
-fast-agent setup --config-dir ./my-agent
+fast-agent scaffold --config-dir ./my-agent
 
 # Force overwrite existing files
-fast-agent setup --force
+fast-agent scaffold --force
 ```
 
 ## fast-agent quickstart Command

@@ -72,7 +72,7 @@ Prebuilt agents and examples implementing the patterns in Anthropic's [building 
 * `uv tool install fast-agent-mcp` - Install fast-agent. If you have multiple Python versions, use `--python 3.13.5` to ensure you get the latest version of fast-agent.
 * `fast-agent go` - Start an interactive session...
 * `fast-agent go --url https://hf.co/mcp` - ...with a remote MCP.
-* `fast-agent setup` - Create Agent and Configuration files.
+* `fast-agent scaffold` - Create Agent and Configuration files.
 * `uv run agent.py` - Run your first Agent
 * `fast-agent quickstart workflow` - Create Agent workflow examples
 
@@ -83,6 +83,5 @@ Contributing to docs? See [Generated Docs](./ref/generated_docs.md) for how to r
 <img src="welcome_small.png" style="padding: 0.5em;" />
 </div>
 </div>
-
 
 

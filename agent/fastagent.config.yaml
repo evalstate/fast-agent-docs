@@ -12,6 +12,15 @@
 
 default_model: gpt-5-mini
 
+# Optional custom model aliases (exact token format: $<namespace>.<key>)
+# model_aliases:
+#   system:
+#     fast: gpt-5-mini?reasoning=low
+#     plan: claude-sonnet-4-5
+#
+# You can then reference aliases in model fields, e.g.:
+# default_model: $system.fast
+
 # Logging and Console Configuration:
 logger:
   # level: "debug" | "info" | "warning" | "error"
