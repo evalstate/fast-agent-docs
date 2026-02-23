@@ -4,6 +4,23 @@ title: Configuring Servers
 
 MCP Servers are configured in the `fastagent.config.yaml` file. Secrets can be kept in `fastagent.secrets.yaml`, which follows the same format (**fast-agent** merges the contents of the two files). 
 
+`mcp.servers.<name>` supports canonical server blocks and shorthand `target` entries:
+
+```yaml
+mcp:
+  servers:
+    remote_api:
+      target: "https://api.example.com/mcp"
+      headers:
+        Authorization: "Bearer ${EXAMPLE_TOKEN}"
+      auth:
+        oauth: true
+```
+
+`target` must be a pure target string (URL/package/command only). Do not embed
+fast-agent CLI flags like `--auth`/`--oauth` inside `target`; use `headers` and
+`auth` fields instead.
+
 ## AgentCard runtime MCP connections (`mcp_connect`)
 
 AgentCards can also declare runtime MCP targets directly with `mcp_connect`.
@@ -13,6 +30,10 @@ This is useful when a card depends on MCP servers that are not predeclared in
 ```yaml
 mcp_connect:
   - target: "https://demo.hf.space"
+    headers:
+      Authorization: "Bearer ${DEMO_TOKEN}"
+    auth:
+      oauth: true
   - target: "@modelcontextprotocol/server-everything"
     name: "everything"
 ```
@@ -167,3 +188,23 @@ mcp:
 - **`forms`** (default). Displays a form to respond to elicitations.
 - **`auto_cancel`** The elicitation capability is advertised to the Server, but all solicitations are automatically cancelled.
 - **`none`** No elicitation capability is advertised to the Server.
+
+## Experimental Session Capability (client-first demos)
+
+By default, **fast-agent** does not advertise experimental session capability in
+the client initialize payload. It detects server support from the server's
+initialize response.
+
+To demonstrate a client-first negotiation style, enable per-server advertising:
+
+```yaml title="fastagent.config.yaml"
+mcp:
+  server_five:
+    transport: "http"
+    url: "http://localhost:8765/mcp"
+    experimental_session_advertise: true
+    experimental_session_advertise_version: 2
+```
+
+When enabled, those values are included under
+`client.capabilities.experimental.session` during `initialize`.

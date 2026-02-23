@@ -341,6 +341,31 @@ MCP Servers are defined under the `mcp.servers` section:
 runtime targets via `mcp_connect`; those are resolved at startup and do not need
 to be prelisted here.
 
+You can define servers in canonical form (`transport`/`url`/`command`) or with
+the shorthand `target` field:
+
+```yaml
+mcp:
+  servers:
+    githubcopilot:
+      target: "https://api.githubcopilot.com/mcp/"
+      load_on_start: false
+      auth:
+        oauth: true
+
+    filesystem:
+      target: "@modelcontextprotocol/server-filesystem /workspace"
+      load_on_start: false
+```
+
+When `target` is used, explicit fields override target-derived defaults.
+For example, `transport`, `url`, `headers`, and `auth` on the server entry take
+precedence over derived values.
+
+`target` must be a pure target string. Do not embed fast-agent CLI flags
+(`--auth`, `--oauth`, `--timeout`, etc.) inside `target`; use structured fields
+like `headers` and `auth` instead.
+
 ```yaml
 mcp:
   servers:

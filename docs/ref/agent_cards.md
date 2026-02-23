@@ -54,12 +54,24 @@ under `mcp.servers` in `fastagent.config.yaml`.
 ```yaml
 mcp_connect:
   - target: "https://demo.hf.space"
+    headers:
+      Authorization: "Bearer ${DEMO_TOKEN}"
+    auth:
+      oauth: true
   - target: "@modelcontextprotocol/server-everything"
     name: "everything"
 ```
 
 - `target` (required): URL, `@pkg`, `npx ...`, `uvx ...`, or stdio command.
 - `name` (optional): explicit server alias; if omitted, fast-agent infers one.
+- `headers` (optional): structured HTTP headers.
+- `auth` (optional): structured auth settings (for example `oauth: true`).
+
+`target` is a pure target string. Do not embed fast-agent CLI flags (like
+`--auth` or `--oauth`) in card targets. Use `headers`/`auth` fields instead.
+
+When both target-derived values and explicit fields are present, explicit fields
+(`headers`, `auth`, etc.) win.
 
 If an inferred/provided name collides with another server using different settings,
 startup fails with a collision error. Prefer explicit `name` values for stability.
