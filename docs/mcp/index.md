@@ -17,6 +17,20 @@ mcp:
         oauth: true
 ```
 
+You can also supply a list of target-first entries via `mcp.targets`:
+
+```yaml
+mcp:
+  targets:
+    - target: "https://demo.hf.space"
+    - target: "@modelcontextprotocol/server-filesystem /workspace"
+      name: "filesystem"
+      load_on_start: false
+```
+
+`mcp.targets` entries are normalized into named `mcp.servers` aliases. If both
+forms define the same alias, the explicit `mcp.servers.<name>` entry wins.
+
 `target` must be a pure target string (URL/package/command only). Do not embed
 fast-agent CLI flags like `--auth`/`--oauth` inside `target`; use `headers` and
 `auth` fields instead.

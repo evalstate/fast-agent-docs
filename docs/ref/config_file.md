@@ -358,6 +358,23 @@ mcp:
       load_on_start: false
 ```
 
+You can also provide target-first entries as a list under `mcp.targets`. This
+matches AgentCard-style runtime target declarations while still normalizing to
+canonical named servers:
+
+```yaml
+mcp:
+  targets:
+    - target: "https://demo.hf.space"
+    - target: "@modelcontextprotocol/server-filesystem /workspace"
+      name: "filesystem"
+      load_on_start: false
+```
+
+`mcp.targets` entries normalize into `mcp.servers` aliases. If both
+`mcp.targets` and `mcp.servers` define the same name, the explicit
+`mcp.servers.<name>` entry wins.
+
 When `target` is used, explicit fields override target-derived defaults.
 For example, `transport`, `url`, `headers`, and `auth` on the server entry take
 precedence over derived values.
