@@ -195,6 +195,10 @@ responses:
 
 - `responses.gpt-5-mini?web_search=on`
 - `responses.gpt-5-mini?web_search=off`
+- `responses.gpt-5.3-codex?transport=ws`
+
+Websocket transport is available for all models used through the `responses` provider. When
+websocket transport is active, follow-up turns may be sent incrementally for efficiency.
 
 ### Azure OpenAI
 

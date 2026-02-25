@@ -192,7 +192,7 @@ responses:
   base_url: "https://api.openai.com/v1" # Optional override
   reasoning: "medium" # Optional default
   text_verbosity: "medium" # Optional default for supporting models
-  transport: "sse" # sse | websocket | auto (websocket currently codexresponses-only)
+  transport: "sse" # sse | websocket | auto
   web_search:
     enabled: false
     tool_type: web_search # web_search | web_search_preview
@@ -211,6 +211,10 @@ Per-run override via model string is also supported:
 
 - `responses.gpt-5-mini?web_search=on`
 - `responses.gpt-5-mini?web_search=off`
+- `responses.gpt-5.3-codex?transport=ws`
+
+Websocket transport is available for all models used through the `responses` provider. When
+websocket transport is active, follow-up turns may be sent incrementally for efficiency.
 
 
 ## Codex (OAuth Responses)
