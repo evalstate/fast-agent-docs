@@ -73,6 +73,28 @@ mcp_connect:
 When both target-derived values and explicit fields are present, explicit fields
 (`headers`, `auth`, etc.) win.
 
+## Child-owned tool schemas (`tool_input_schema`)
+
+Agent cards can declare an optional tool schema used when that card is exposed as
+a child tool (`agent__<name>`) by a parent `agent`/`smart` card.
+
+```yaml
+tool_input_schema:
+  type: object
+  properties:
+    query:
+      type: string
+      description: What to investigate.
+  required: [query]
+```
+
+- If omitted, fast-agent falls back to the legacy schema:
+  `{ type: object, properties: { message: string }, required: [message] }`.
+- For structured schemas without `message`, child invocation receives a
+  deterministic JSON rendering of the tool arguments as user input.
+- Use `properties.<param>.description` (especially for required params) to help
+  parent LLM tool-call quality.
+
 If an inferred/provided name collides with another server using different settings,
 startup fails with a collision error. Prefer explicit `name` values for stability.
 
