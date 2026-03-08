@@ -126,10 +126,18 @@ from fast_agent.types import RequestParams
 | `use_history`         | `bool`   | `True`  | Agent/LLM maintains conversation history. Does not include applied Prompts                        |
 | `max_iterations`      | `int`    | `99`    | The maximum number of tool calls allowed in a conversation turn                        |
 | `parallel_tool_calls` | `bool`   | `True`  | Whether to allow simultaneous tool calls   |
+| `tool_result_mode`    | `"postprocess" \| "passthrough" \| "selectable"` | `"postprocess"` | Control whether tool results are synthesized into a final reply, returned directly, or exposed as a per-call `response_mode` choice on agent tools |
 | `response_format`     | `Any`    | `None`  | Response format for structured calls (advanced use). Prefer to use `structured` with a Pydantic model instead                |
 | `template_vars` | `Dict[str,Any]` | `{}` | Dictionary of template values for dynamic templates. Currently only supported for TensorZero provider |
 | `mcp_metadata` | `Optional[Dict[str,Any]]` | `None` | Metadata to pass through to MCP tool calls via the _meta field |
 | `temperature` | `float` | `None` | Temperature to use for the completion request |
+
+
+`tool_result_mode` is especially useful when an agent is exposed as a tool:
+
+- `postprocess`: always let the agent synthesize a final answer after tool execution
+- `passthrough`: always return tool results directly
+- `selectable`: expose an optional `response_mode` input so callers can choose `postprocess` or `passthrough` per invocation
 
 
 
