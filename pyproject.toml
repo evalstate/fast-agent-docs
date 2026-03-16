@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "fast-agent-docs"
 version = "0.1.0"
 description = "Documentation site for fast-agent"
-requires-python = "==3.13.5"
+requires-python = ">=3.11,<3.14"
 dependencies = [
   "cairosvg==2.7.1",
   "mkdocs==1.6.1",
