@@ -255,6 +255,8 @@ Overlays are environment-local, so different environments can define different o
 
 The easiest way to create a local overlay is the `fast-agent model llamacpp` command.
 
+It queries a llama.cpp-compatible server, discovers models from the models endpoint, reads runtime defaults from the props endpoint, and writes an overlay into the active environment. The generated overlay uses the `openresponses` provider, the normalized `/v1` base URL, the selected auth mode, and the discovered request defaults and metadata.
+
 ### Discover available models
 
 ```bash
