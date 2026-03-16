@@ -260,7 +260,7 @@ It queries a llama.cpp-compatible server, discovers models from the models endpo
 ### Discover available models
 
 ```bash
-fast-agent model llamacpp --url http://localhost:8080 --json
+fast-agent model llamacpp list --url http://localhost:8080 --json
 ```
 
 This queries the server's model listing and prints the discovered catalog.
@@ -268,9 +268,9 @@ This queries the server's model listing and prints the discovered catalog.
 ### Import a model as an overlay
 
 ```bash
-fast-agent model llamacpp \
+fast-agent model llamacpp import \
   --url http://localhost:8080 \
-  --model unsloth/Qwen3.5-9B-GGUF \
+  unsloth/Qwen3.5-9B-GGUF \
   --name qwen-local
 ```
 
@@ -284,20 +284,18 @@ fast-agent will:
 ### Dry-run and print the generated YAML
 
 ```bash
-fast-agent model llamacpp \
+fast-agent model llamacpp preview \
   --url http://localhost:8080/v1 \
-  --model meta-llama/Llama-3.2-3B-Instruct \
-  --name llama-local \
-  --dry-run \
-  --generate-overlay
+  meta-llama/Llama-3.2-3B-Instruct \
+  --name llama-local
 ```
 
 ### Import with environment-based auth
 
 ```bash
-fast-agent model llamacpp \
+fast-agent model llamacpp import \
   --url https://lab.example \
-  --model unsloth/Qwen3.5-9B-GGUF \
+  unsloth/Qwen3.5-9B-GGUF \
   --name qwen-lab \
   --auth env \
   --api-key-env LLAMA_CPP_TOKEN

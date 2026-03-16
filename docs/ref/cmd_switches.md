@@ -105,8 +105,11 @@ fast-agent model setup
 # Inspect reference resolution and onboarding readiness
 fast-agent model doctor
 
-# Discover llama.cpp models and import one as a local overlay
+# Interactively discover llama.cpp models and import one as a local overlay
 fast-agent model llamacpp --url http://localhost:8080
+
+# List discovered llama.cpp models
+fast-agent model llamacpp list --url http://localhost:8080
 ```
 
 For overlay manifests and llama.cpp import details, see [Model Overlays](../models/model_overlays.md).
