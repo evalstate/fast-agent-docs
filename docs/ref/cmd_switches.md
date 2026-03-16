@@ -94,6 +94,23 @@ fast-agent check show
 fast-agent check show --secrets
 ```
 
+## fast-agent model Command
+
+Use `fast-agent model` for interactive model onboarding flows:
+
+```bash
+# Configure or update namespaced model references
+fast-agent model setup
+
+# Inspect reference resolution and onboarding readiness
+fast-agent model doctor
+
+# Discover llama.cpp models and import one as a local overlay
+fast-agent model llamacpp --url http://localhost:8080
+```
+
+For overlay manifests and llama.cpp import details, see [Model Overlays](../models/model_overlays.md).
+
 ## fast-agent scaffold Command
 
 Create a new agent project with configuration files:

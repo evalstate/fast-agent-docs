@@ -17,10 +17,11 @@ fast-agent automatically searches for configuration files in the current working
 
 ```yaml
 # Default model for all agents
-default_model: "gpt-5-mini.low"  # Format: provider.model_name with optional suffix/query params
+default_model: "gpt-5-mini?reasoning=low"  # Format: provider.model_name with optional query params
 
-# Optional namespaced model aliases (used via exact tokens like $system.fast)
-model_aliases:
+# Optional namespaced model references (configured under model_references and
+# used via exact tokens like $system.fast)
+model_references:
   system:
     fast: "gpt-5-mini?reasoning=low"
     plan: "claude-sonnet-4-5"
@@ -47,15 +48,15 @@ session_history_window: 20
 `llm_retries` defaults to `1` and is the preferred way to control retry attempts. If unset in
 config, the `FAST_AGENT_RETRIES` environment variable is used as a fallback.
 
-## Namespaced Model Aliases
+## Namespaced Model References
 
-Use `model_aliases` to create exact-token aliases such as `$system.fast` and reuse them in
+Use `model_references` to create exact-token model references such as `$system.fast` and reuse them in
 `default_model`, `--model`, environment overrides, and agent card `model` fields.
 
 ```yaml
 default_model: "$system.fast"
 
-model_aliases:
+model_references:
   system:
     fast: "gpt-5-mini?reasoning=low"
     plan: "claude-sonnet-4-5"
@@ -63,13 +64,69 @@ model_aliases:
 
 Notes:
 
-- Alias tokens must match this form exactly: `$<namespace>.<key>` (for example `$system.fast`).
-- Aliases can point to other aliases (recursive expansion is supported with cycle detection).
-- If an alias cannot be resolved, fast-agent logs a warning and falls back to the next
+- Model reference tokens must match this form exactly: `$<namespace>.<key>` (for example `$system.fast`).
+- Model references can point to other model references (recursive expansion is supported with cycle detection).
+- If a model reference cannot be resolved, fast-agent logs a warning and falls back to the next
   lower-precedence model source (explicit model → CLI → config → env → hardcoded default).
   This warning is emitted through the normal logger/event pipeline and may be surfaced in UIs.
-- If a selected model is not an alias token (doesn't start with `$`), normal validation behavior
+- If a selected model is not a model reference token (doesn't start with `$`), normal validation behavior
   applies.
+
+## Model Overlays
+
+Model overlays are environment-local named model entries stored under the active environment directory.
+
+Files are loaded from:
+
+- `model-overlays/*.yaml`
+- `model-overlays.secrets.yaml`
+
+Use overlays when you want a short local token such as `qwen-local` to carry:
+
+- a provider
+- a wire model name
+- a custom `base_url`
+- auth settings
+- request defaults
+- local metadata for picker/display use
+
+Example overlay manifest:
+
+```yaml
+name: qwen-local
+provider: openresponses
+model: unsloth/Qwen3.5-9B-GGUF
+connection:
+  base_url: http://localhost:8080/v1
+  auth: none
+defaults:
+  temperature: 0.8
+  top_p: 0.95
+  max_tokens: 2048
+metadata:
+  context_window: 75264
+  max_output_tokens: 2048
+picker:
+  label: Qwen local
+  description: Imported from llama.cpp
+  current: true
+```
+
+Once present, the overlay name can be used anywhere a model string is accepted:
+
+```yaml
+default_model: "qwen-local"
+```
+
+or:
+
+```yaml
+model_references:
+  system:
+    fast: "qwen-local"
+```
+
+For a complete guide, see [Model Overlays](../models/model_overlays.md).
 
 ## Runtime Environment Variables
 
@@ -546,7 +603,7 @@ llm_retries: 1
 ## Example Full Configuration
 
 ```yaml
-default_model: "gpt-5-mini.low"
+default_model: "gpt-5-mini?reasoning=low"
 
 # Model provider settings
 anthropic:
