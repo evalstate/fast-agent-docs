@@ -54,9 +54,6 @@ Any **fast-agent** application can be deployed as an MCP server with a simple co
 # Start as a Streamable HTTP server (http://localhost:8080/mcp)
 uv run agent.py --transport http --port 8080
 
-# Start as an SSE server (http://localhost:8080/sse)
-uv run agent.py --transport sse --port 8080
-
 # Start as a stdio server
 uv run agent.py --transport stdio
 ```

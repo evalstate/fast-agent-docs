@@ -46,8 +46,8 @@ uv run agent.py --agent summarizer --message "Summarize this document"
 # Apply a prompt file
 uv run agent.py --prompt-file my_conversation.txt
 
-# Run as an SSE server on port 8080
-uv run agent.py --transport sse --port 8080
+# Run as an HTTP server on port 8080
+uv run agent.py --transport http --port 8080
 
 # Run as a stdio server
 uv run agent.py --transport stdio

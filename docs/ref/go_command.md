@@ -24,6 +24,8 @@ fast-agent go [OPTIONS]
 - `--auth TEXT`: Bearer token for authorization with URL-based servers
 - `--model`, `--models <model_string>`: Override the default model (e.g., haiku, sonnet, gpt-4)
 - `--model`, `--models <model1>,<model2>,...`: Run one agent per model in parallel and print a side-by-side comparison of responses
+- `--pack`, `--card-pack <name>`: Ensure a named card pack is installed in the selected environment before starting
+- `--pack-registry <path or url>`: Marketplace file or URL used to resolve `--pack` when it is not already installed
 - `--agent-cards`, `--card <path or url>`: Load AgentCards as runnable agents (repeatable)
 - `--card-tool <path or url>`: Load AgentCards and attach them as tools to the selected/default agent (repeatable)
 - `--agent <name>`: Target a specific loaded agent by name for `--message`, `--prompt-file`, and initial interactive mode
@@ -51,6 +53,15 @@ Note - you may omit `go` when supplying command line options.
 ```bash
 # Basic usage with interactive mode
 fast-agent go --model=haiku
+
+# Install or reuse a card pack, then launch immediately
+fast-agent go --pack analyst --model haiku
+
+# Resolve a pack from a specific marketplace file
+fast-agent go --pack analyst --pack-registry ./marketplace.json --model haiku
+
+# Multi-agent pack: target one specific agent
+fast-agent go --pack analyst --agent planner --model haiku
 
 # Basic usage with interactive mode (go omitted)
 fast-agent --model haiku
@@ -143,6 +154,25 @@ those runtime MCP servers are resolved and attached automatically during startup
 
 See [AgentCards and ToolCards reference](agent_cards.md) for details and recommended layout.
 
+### Card packs
+
+Use `--pack` when you want fast-agent to install or reuse a named card pack in
+the selected environment and then launch immediately.
+
+Typical flow:
+
+1. Resolve the environment from `--env` or normal fast-agent settings
+2. Reuse the pack if it is already installed there
+3. Otherwise resolve it from the configured marketplace (or `--pack-registry`)
+4. Install it into the environment
+5. Continue through the normal `fast-agent go` startup path
+
+Notes:
+
+- `--pack` cannot be combined with `--noenv`
+- `--model` is a fallback only; an explicit model declared in an AgentCard still takes precedence
+- Some packs install multiple agents, so you may also want `--agent <name>`
+
 ### `--noenv` mode
 
 Use `--noenv` when you want to run without implicit environment side effects.
@@ -155,6 +185,7 @@ Conflicts (fail fast):
 
 - `--noenv` + `--env`
 - `--noenv` + `--resume`
+- `--noenv` + `--pack`
 
 ### URL Connection Details
 
