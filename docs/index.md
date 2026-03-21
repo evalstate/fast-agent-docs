@@ -37,7 +37,7 @@ hide:
 
     ---
 
-    Extensive [model support](./models/llm_providers.md) including OpenAI Codex, Opus and Hugging Face and llama.cpp. WebSockets, Search, Structured Outputs, Multimodal and more.    
+    Advanced [support](./models/llm_providers.md) for models including OpenAI, Anthropic, Hugging Face, llama.cpp and more. Bring your Codex OAuth token.
 
 
 -   :material-check-all:{ .lg .middle } __MCP Feature Support__
