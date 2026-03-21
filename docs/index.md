@@ -10,7 +10,7 @@ hide:
 
     ---
 
-    Run with the [uv](https://astral.sh/uv package manager now:
+    Run with the [uv](https://astral.sh/uv) package manager now:
 
     ```
     uvx fast-agent-mcp@latest -x
