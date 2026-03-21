@@ -4,16 +4,18 @@ hide:
     - navigation
     - toc
 ---
-<center>
-# welcome to fast-agent
-</center>
 
 <div class="grid cards" markdown>
--   :material-clock-fast:{ .lg .middle } __Set up in 5 minutes__
+-   :material-clock-fast:{ .lg .middle } __Start now__
 
     ---
 
-    Simple installation and setup with [`uv`](https://docs.astral.sh/uv/) to be up and running in minutes. Out-of-the box examples of Agents, Workflows and MCP Usage. 
+    Run with the [uv](https://astral.sh/uv package manager now:
+
+    ```
+    uvx fast-agent-mcp@latest -x
+    ```
+    
 
     <!-- [:octicons-arrow-right-24: Get started](#get-started) -->
 
@@ -31,11 +33,11 @@ hide:
     Get started with MCP Elicitations for User Interaction. 
     [:octicons-arrow-right-24: Try now](./mcp/elicitations.md)
 
--   :material-beaker-check-outline:{ .lg .middle } __Comprehensive Test Suite__
+-   :material-beaker-check-outline:{ .lg .middle } __Validated Model Support__
 
     ---
 
-    Extensive validated [model support](./models/llm_providers.md) for Structured Outputs, Tool Calling and Multimodal capabilities   
+    Extensive [model support](./models/llm_providers.md) including OpenAI Codex, Opus and Hugging Face and llama.cpp. WebSockets, Search, Structured Outputs, Multimodal and more.    
 
 
 -   :material-check-all:{ .lg .middle } __MCP Feature Support__
