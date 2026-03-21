@@ -10,7 +10,7 @@ hide:
 
     ---
 
-    Run with the [uv](https://astral.sh/uv) package manager now:
+    Run with the [uv](https://astral.sh/uv) package manager:
 
     ```
     uvx fast-agent-mcp@latest -x
@@ -53,11 +53,6 @@ hide:
     ---
 
     Lightweight deployment - in-built Echo and Playback LLMs allow robust agent application testing
-
-
-
-
-
 
 </div>
 
