@@ -29,12 +29,12 @@ fast-agent go [OPTIONS]
 - `--agent-cards`, `--card <path or url>`: Load AgentCards as runnable agents (repeatable)
 - `--card-tool <path or url>`: Load AgentCards and attach them as tools to the selected/default agent (repeatable)
 - `--agent <name>`: Target a specific loaded agent by name for `--message`, `--prompt-file`, and initial interactive mode
-- `--message`, `-m TEXT`: Message to send to the agent (skips interactive mode)
+- `--message`, `-m TEXT`: Message to send to the agent once, then exit
 - `--env <path>`: Override the base `.fast-agent` environment directory (where default `agent-cards/` and `tool-cards/` are discovered)
 - `--noenv`, `--no-env`: Run in ephemeral mode (disable implicit environment card loading, session persistence/resume, and permission-store side effects)
 - `--resume <id|latest>`: Resume the latest session (or a specific session id)
 - `--smart`: Prefer a smart default agent when fast-agent creates the default agent
-- `--prompt-file`, `-p <path>`: Path to a prompt file to use (either text or JSON)
+- `--prompt-file`, `-p <path>`: Prompt file to send to the agent once, then exit (either text or JSON)
 - `--skills-dir`, `--skills <path>`: Override the default skills directory
 - `--stdio "<command> <options>"`: Run the command to attach a STDIO server (enclose arguments in quotes)
 - `--npx "@package/name <options>"`: Run an NPX package as a STDIO server (enclose arguments in quotes)
@@ -93,7 +93,7 @@ fast-agent go --agent-cards ./agents --agent researcher
 # Send one message to a specific loaded agent and exit
 fast-agent go --agent-cards ./agents --agent qa --message "run smoke checks"
 
-# Using a prompt file
+# Non-interactive mode with a prompt file
 fast-agent go --prompt-file=my-prompt.txt --model=haiku
 
 # Specify a system prompt file

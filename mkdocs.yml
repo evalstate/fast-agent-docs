@@ -86,6 +86,7 @@ copyright: © 2025 llmindset.co.uk
 nav:
   - fast-agent: index.md
   - Guides:
+      - guides/codex.md
       - guides/hf-dev.md
 #  - Getting Started:
 #    - Installation: getting_started/installation.md
