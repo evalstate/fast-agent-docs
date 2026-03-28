@@ -312,3 +312,10 @@ async def main() -> None:
   max_display_instances=20,
 )
 ```
+
+Child cards can define `tool_input_schema` to control how they appear as
+`agent__*` tools to the parent model. If omitted, fast-agent falls back to the
+legacy schema requiring a single `message` string argument.
+
+For structured child schemas that do not include `message`, fast-agent forwards
+tool arguments to the child as deterministic JSON in the first user message.
