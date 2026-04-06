@@ -143,6 +143,22 @@ Version policy is model-aware:
 - Other supported Anthropic models use legacy versions
   (`web_search_20250305`, `web_fetch_20250910`).
 
+**Provider-managed remote MCP:**
+
+The direct `anthropic` provider also supports provider-managed remote MCP
+servers declared with `management: provider` under `mcp.servers` or card
+`mcp_connect` entries.
+
+- Supported on `anthropic`
+- Not supported on `anthropic-vertex`
+- Server must be a remote `http`/`sse` URL
+- Use `access_token` for bearer auth if required
+
+See [Configuration Reference](../ref/config_file.md#mcp-server-configuration)
+for the MCP server schema and
+[AgentCards and ToolCards](../ref/agent_cards.md#runtime-mcp-targets-mcp_connect)
+for card-scoped runtime targets.
+
 
 **Model Name Aliases:**
 
@@ -215,6 +231,21 @@ Per-run override via model string is also supported:
 
 Websocket transport is available for all models used through the `responses` provider. When
 websocket transport is active, follow-up turns may be sent incrementally for efficiency.
+
+**Provider-managed remote MCP:**
+
+Responses-family providers support provider-managed remote MCP servers declared
+with `management: provider` under `mcp.servers` or card `mcp_connect` entries.
+
+- Supported on `responses` and `codexresponses`
+- Not supported on `openai` or `openresponses`
+- Server must be a remote `http`/`sse` URL
+- `defer_loading: true` is available as a Responses-family hint for lazy remote tool loading
+
+See [Configuration Reference](../ref/config_file.md#mcp-server-configuration)
+for the MCP server schema and
+[AgentCards and ToolCards](../ref/agent_cards.md#runtime-mcp-targets-mcp_connect)
+for card-scoped runtime targets.
 
 
 ## Codex (OAuth Responses)

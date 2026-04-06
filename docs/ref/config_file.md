@@ -444,6 +444,47 @@ precedence over derived values.
 (`--auth`, `--oauth`, `--timeout`, etc.) inside `target`; use structured fields
 like `headers` and `auth` instead.
 
+### Provider-managed remote MCP
+
+Use `management: provider` when you want the model provider to execute a remote
+MCP server directly instead of having fast-agent connect to it as a local MCP
+client.
+
+```yaml
+mcp:
+  servers:
+    stripe:
+      management: provider
+      transport: "http"
+      url: "https://mcp.stripe.com"
+      access_token: "${STRIPE_TOKEN}"
+      description: "Stripe official MCP"
+      defer_loading: true  # Responses-family hint; ignored by Anthropic
+```
+
+Provider-managed remote MCP is supported only for:
+
+- `anthropic`
+- `responses`
+- `codexresponses`
+
+It is not available for providers such as `openai`, `openresponses`,
+`google`, or `anthropic-vertex`.
+
+Rules for provider-managed servers:
+
+- Must be URL-based remote servers (`http` or `sse`)
+- `url` is required
+- Use `access_token` for bearer auth when needed
+- `command`, `args`, `env`, `cwd`, `headers`, `auth`, and `roots` are not supported
+- `defer_loading` is only used by Responses-family providers
+
+When a provider-managed server is attached to an agent/card:
+
+- `tools.<server_name>` must use exact tool names only
+- wildcard tool filters are not supported
+- `prompts.<server_name>` and `resources.<server_name>` filters are not supported
+
 ```yaml
 mcp:
   servers:
