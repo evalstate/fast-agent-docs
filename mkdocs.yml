@@ -92,6 +92,7 @@ nav:
 #    - Installation: getting_started/installation.md
   - Agents:
       - agents/defining.md
+      - Function Tools: agents/function_tools.md
       - Workflows: agents/workflows.md
       - agents/running.md
       - agents/prompting.md

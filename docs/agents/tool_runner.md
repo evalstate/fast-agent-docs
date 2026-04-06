@@ -1,6 +1,6 @@
 # Tool Runner
 
-Tool Runner is the internal loop that powers tool calling for `ToolAgent` and MCP agents. It:
+Tool Runner is the internal loop that powers tool calling for `ToolAgent`, MCP agents, and local Python function tools. It:
 - Sends messages to the LLM.
 - Detects tool requests.
 - Executes tools.

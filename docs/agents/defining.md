@@ -77,6 +77,113 @@ await agent("print the next number in the sequence")
 
 In the example `human_input.py`, the agent will prompt the user for additional information to complete the task.
 
+## Function Tools
+
+`fast-agent` supports two kinds of tools:
+
+- **MCP tools** provided by configured servers via `servers=[...]`
+- **Local Python function tools** provided directly in your application with `function_tools=`, `@fast.tool`, or `@agent.tool`
+
+Use local function tools when you want to expose ordinary Python functions to an agent without running an MCP server.
+
+### Global function tools with `@fast.tool`
+
+For convenience, `@fast.tool` registers a local Python function tool that is available to agents that support function tools and do **not** declare an explicit `function_tools` list.
+
+```python
+from fast_agent import FastAgent
+
+fast = FastAgent("Function Tools Example")
+
+
+@fast.tool
+def get_weather(city: str) -> str:
+    """Return the current weather for a city."""
+    return f"Sunny in {city}"
+
+
+@fast.tool(name="add", description="Add two whole numbers")
+def add_numbers(a: int, b: int) -> int:
+    return a + b
+
+
+@fast.agent(name="assistant", instruction="You are helpful.")
+async def main() -> None:
+    pass
+```
+
+Both sync and async functions are supported. By default, the tool name comes from the Python function name and the description comes from the function docstring.
+
+### Agent-scoped tools with `@agent.tool`
+
+`@agent.tool` registers a local Python function tool on one specific agent:
+
+```python
+@fast.agent(name="writer", instruction="You write and translate text.")
+async def writer() -> None:
+    pass
+
+
+@writer.tool
+def translate(text: str, language: str) -> str:
+    """Translate text to the given language."""
+    return f"[{language}] {text}"
+
+
+@writer.tool(name="summarize", description="Produce a one-line summary")
+def summarize_text(text: str) -> str:
+    return f"Summary: {text[:80]}..."
+```
+
+This is useful when different agents should see different local tools.
+
+### Scoping rules
+
+Function tool scoping is explicit:
+
+- Agents with no explicit `function_tools` receive global `@fast.tool` registrations
+- Agents with `@agent.tool` registrations only see their own scoped tools
+- Agents with `function_tools=[...]` only see the tools in that list
+- Agents with `function_tools=[]` explicitly opt out of global function tools
+
+### Reusing the same helper with different metadata
+
+Per-agent metadata is scoped to each registration, so you can reuse the same helper function across agents with different names or descriptions:
+
+```python
+@fast.agent(name="support", instruction="Help support users.")
+async def support() -> None:
+    pass
+
+
+@fast.agent(name="billing", instruction="Help billing users.")
+async def billing() -> None:
+    pass
+
+
+def lookup_customer(customer_id: str) -> str:
+    """Fetch customer details."""
+    return f"customer:{customer_id}"
+
+
+support.tool(name="support_lookup", description="Lookup a support customer")(lookup_customer)
+billing.tool(name="billing_lookup", description="Lookup a billing customer")(lookup_customer)
+```
+
+### Supported decorators
+
+- `@fast.agent(...)` supports `@agent.tool`
+- Some `@fast.custom(...)` agents support local function tools if the custom class constructor accepts `tools=...`
+- Workflow decorators such as router, chain, parallel, orchestrator, and maker do **not** expose `.tool`
+
+If a custom agent class does not accept `tools=...`, using `function_tools=` with that class raises a configuration error.
+
+For more examples, see:
+
+- [`examples/function-tools/basic.py`](https://github.com/evalstate/fast-agent/blob/main/examples/function-tools/basic.py)
+- [`examples/function-tools/scoping.py`](https://github.com/evalstate/fast-agent/blob/main/examples/function-tools/scoping.py)
+- [Function Tools](function_tools.md)
+
 ## Agent and Workflow Reference
 
 ### Calling Agents
@@ -142,9 +249,10 @@ from fast_agent.types import RequestParams
   name="agent",                          # name of the agent
   instruction="You are a helpful Agent", # base instruction for the agent
   servers=["filesystem"],                # list of MCP Servers for the agent
-  #tools={"filesystem": ["tool_1", "tool_2"]  # Filter the tools available to the agent. Defaults to all
-  #resources={"filesystem: ["resource_1", "resource_2"]} # Filter the resources available to the agent. Defaults to all
-  #prompts={"filesystem": ["prompt_1", "prompt_2"]}  # Filter the prompts available to the agent. Defaults to all.
+  #tools={"filesystem": ["tool_1", "tool_2"]}  # Filter MCP tools by server. Defaults to all
+  #resources={"filesystem": ["resource_1", "resource_2"]}  # Filter MCP resources by server. Defaults to all
+  #prompts={"filesystem": ["prompt_1", "prompt_2"]}  # Filter MCP prompts by server. Defaults to all
+  #function_tools=[helper_fn, "tools.py:other_helper"],  # Local Python function tools for this agent
   model="o3-mini.high",                  # specify a model for the agent
   use_history=True,                      # agent maintains chat history
   request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())
@@ -164,9 +272,10 @@ Workflow definitions (chain/parallel/router/orchestrator/maker) are documented o
   name="custom",                         # name of the custom agent
   instruction="instruction",             # base instruction for the orchestrator
   servers=["filesystem"],                # list of MCP Servers for the agent
-  #tools={"filesystem": ["tool_1", "tool_2"]  # Filter the tools available to the agent. Defaults to all
-  #resources={"filesystem: ["resource_1", "resource_2"]} # Filter the resources available to the agent. Defaults to all
-  #prompts={"filesystem": ["prompt_1", "prompt_2"]}  # Filter the prompts available to the agent. Defaults to all
+  #tools={"filesystem": ["tool_1", "tool_2"]}  # Filter MCP tools by server. Defaults to all
+  #resources={"filesystem": ["resource_1", "resource_2"]}  # Filter MCP resources by server. Defaults to all
+  #prompts={"filesystem": ["prompt_1", "prompt_2"]}  # Filter MCP prompts by server. Defaults to all
+  #function_tools=[helper_fn],            # Local Python function tools, if Custom accepts tools=...
   model="o3-mini.high",                  # specify a model for the agent
   use_history=True,                      # agent maintains chat history
   request_params=RequestParams(temperature= 0.7), # additional parameters for the LLM (or RequestParams())

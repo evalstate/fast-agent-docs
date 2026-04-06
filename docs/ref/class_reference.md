@@ -41,6 +41,7 @@ The `FastAgent` class provides several decorators for creating agents and workfl
 
 | Decorator | Description |
 |-----------|-------------|
+| `@fast.tool()` | Register a local Python function tool |
 | `@fast.agent()` | Create a basic agent |
 | `@fast.chain()` | Create a chain workflow |
 | `@fast.router()` | Create a router workflow |
@@ -51,6 +52,39 @@ The `FastAgent` class provides several decorators for creating agents and workfl
 | `@fast.maker()` | Create a MAKER (k-voting) workflow |
 
 See [Defining Agents](../agents/defining.md) for detailed usage of these decorators.
+
+### Function tool decorators
+
+`FastAgent` also supports local Python function tools that do not require an MCP server:
+
+```python
+@fast.tool
+def get_weather(city: str) -> str:
+    """Return the current weather for a city."""
+    return f"Sunny in {city}"
+```
+
+Decorated agent functions created with `@fast.agent(...)` may also expose `.tool` for agent-scoped tools:
+
+```python
+@fast.agent(name="writer", instruction="You write things.")
+async def writer() -> None:
+    pass
+
+
+@writer.tool(name="summarize", description="Produce a one-line summary")
+def summarize_text(text: str) -> str:
+    return f"Summary: {text[:80]}..."
+```
+
+Notes:
+
+- global `@fast.tool` registrations are used only by agents that do not declare explicit `function_tools`
+- `function_tools=[]` explicitly opts an agent out of global function tools
+- workflow decorators do not expose `.tool`
+- custom agents support `function_tools=` only when their constructor accepts `tools=...`
+
+See [Function Tools](../agents/function_tools.md) for examples and scoping details.
 
 ### Methods
 
