@@ -145,6 +145,11 @@ anthropic:
   base_url: "https://api.anthropic.com/v1"  # Optional, only include to override
   reasoning: auto  # Adaptive models: auto/low/medium/high/max. Budget models: integer tokens or off.
   structured_output_mode: auto  # auto (default), json, or tool_use
+  vertex_ai:
+    enabled: false  # Optional; enables Anthropic-on-Vertex configuration intent
+    project_id: "my-gcp-project"  # Optional if resolved from env/ADC
+    location: "global"  # Optional; defaults to global
+    # base_url: "https://example-vertex-endpoint"
   web_search:
     enabled: false
     max_uses: 3  # Optional, must be > 0
@@ -192,6 +197,38 @@ Anthropic built-in web tools can also be toggled per run in the model string:
 - `sonnet?web_search=off`
 
 Allowed values: `on`/`off` (also accepts `true`/`false`, `1`/`0`).
+
+Anthropic-on-Vertex now uses a dedicated provider namespace instead of model query routing.
+
+Use:
+
+- `anthropic-vertex.claude-sonnet-4-6`
+- `anthropic-vertex.claude-haiku-4-5`
+- `anthropic-vertex.claude-opus-4-6`
+
+Do not use the legacy `?via=vertex` / `?source=vertex` query parameters.
+
+The `anthropic-vertex` provider uses Google Application Default Credentials
+(ADC) and reads its connection settings from `anthropic.vertex_ai`. It does not
+require a direct Anthropic API key.
+
+Project ID can be sourced from:
+
+- `ANTHROPIC_VERTEX_PROJECT_ID`
+- `GOOGLE_CLOUD_PROJECT`
+- `GOOGLE_PROJECT_ID`
+- `GCLOUD_PROJECT`
+- `GCP_PROJECT`
+
+Location can be sourced from:
+
+- `ANTHROPIC_VERTEX_LOCATION`
+- `GOOGLE_CLOUD_LOCATION`
+- `GOOGLE_CLOUD_REGION`
+- `CLOUD_ML_REGION`
+- `VERTEX_REGION`
+
+If location is omitted, fast-agent defaults to `global`.
 
 ### OpenAI
 
@@ -313,7 +350,18 @@ deepseek:
 google:
   api_key: "your_google_key"  # Can also use GOOGLE_API_KEY env var
   base_url: "https://generativelanguage.googleapis.com/v1beta/openai"  # Optional
+  vertex_ai:
+    enabled: true
+    project_id: "your-gcp-project"
+    location: "global"
 ```
+
+When `google.vertex_ai.enabled` is true, fast-agent uses ADC/IAM auth for the native Google
+provider and does not require `GOOGLE_API_KEY`.
+
+With Vertex enabled, the Google native provider also accepts partner model ids such as
+`google.claude-sonnet-4-6`. If you want the dedicated Anthropic-on-Vertex route instead, use the
+separate `anthropic-vertex` provider.
 
 ### xAI (Grok)
 

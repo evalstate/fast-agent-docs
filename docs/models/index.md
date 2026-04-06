@@ -21,7 +21,7 @@ Model specifications in fast-agent follow this precedence order (highest to lowe
 
 Model strings follow this format: `provider.model_name[?reasoning=value][&query=value...]`
 
-- **provider**: The LLM provider (e.g., `anthropic`, `openai`, `azure`, `deepseek`, `generic`,`openrouter`, `tensorzero`)
+- **provider**: The LLM provider (for example `anthropic`, `anthropic-vertex`, `openai`, `azure`, `deepseek`, `generic`, `openrouter`, `tensorzero`)
 - **model_name**: The specific model to use in API calls (for Azure, this is your deployment name)
 - **query parameters** (optional): provider/model-specific runtime overrides such as
   `reasoning`, `structured`, `context`, `transport`, `temperature` (`temp` alias),
@@ -32,6 +32,7 @@ Model strings follow this format: `provider.model_name[?reasoning=value][&query=
 Examples:
 
 - `anthropic.claude-4-5-sonnet-latest`
+- `anthropic-vertex.claude-sonnet-4-6`
 - `openai.gpt-5.2`
 - `openai.o3-mini?reasoning=high`
 - `sonnet?reasoning=4096`
