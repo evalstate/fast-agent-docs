@@ -54,6 +54,81 @@ anthropic:
 - `ANTHROPIC_API_KEY`: Your Anthropic API key
 - `ANTHROPIC_BASE_URL`: Override the API endpoint
 
+### Anthropic on Vertex AI
+
+Anthropic-on-Vertex is now exposed as a dedicated provider: `anthropic-vertex`.
+
+Use provider-prefixed model strings such as:
+
+- `anthropic-vertex.claude-sonnet-4-6`
+- `anthropic-vertex.claude-haiku-4-5`
+- `anthropic-vertex.claude-opus-4-6`
+
+Do not use the old query-string routing forms such as `?via=vertex` or `?source=vertex`.
+
+When you select `anthropic-vertex`:
+
+- fast-agent uses the dedicated Anthropic Vertex client path
+- **Google Application Default Credentials (ADC)** are required
+- an Anthropic direct API key is **not** required
+- the provider appears separately in model selection and diagnostics as **Anthropic (Vertex)**
+
+**YAML Configuration:**
+
+```yaml
+anthropic:
+  vertex_ai:
+    enabled: true
+    project_id: "my-gcp-project" # Optional if resolved from env/ADC
+    location: "global" # Optional, defaults to global
+    # base_url: "https://example-vertex-endpoint"
+```
+
+The `anthropic-vertex` provider reads its Vertex connection settings from
+`anthropic.vertex_ai`.
+
+**Environment Variables:**
+
+Project ID can be provided by any of:
+
+- `ANTHROPIC_VERTEX_PROJECT_ID`
+- `GOOGLE_CLOUD_PROJECT`
+- `GOOGLE_PROJECT_ID`
+- `GCLOUD_PROJECT`
+- `GCP_PROJECT`
+
+Location can be provided by any of:
+
+- `ANTHROPIC_VERTEX_LOCATION`
+- `GOOGLE_CLOUD_LOCATION`
+- `GOOGLE_CLOUD_REGION`
+- `CLOUD_ML_REGION`
+- `VERTEX_REGION`
+
+If location is not set, fast-agent defaults to `global`.
+
+**Authentication:**
+
+Anthropic-on-Vertex requires Google ADC, for example:
+
+```bash
+gcloud auth application-default login
+```
+
+or a service account exposed through the usual Google credential environment.
+
+**Example:**
+
+```yaml
+default_model: "anthropic-vertex.claude-sonnet-4-6"
+
+anthropic:
+  vertex_ai:
+    enabled: true
+    project_id: "my-gcp-project"
+    location: "global"
+```
+
 **Caching Options:**
 
 The `cache_mode` setting controls how prompt caching is applied:
@@ -527,6 +602,30 @@ google:
 **Environment Variables:**
 
 - `GOOGLE_API_KEY`: Your Google API key
+
+### Vertex AI mode
+
+For Vertex AI, configure `google.vertex_ai` and authenticate with Google ADC/IAM instead of a
+Gemini API key:
+
+```yaml
+google:
+  vertex_ai:
+    enabled: true
+    project_id: "your-gcp-project"
+    location: "global" # or a supported regional location
+```
+
+In this mode, `fast-agent` uses the Google native provider without requiring `GOOGLE_API_KEY`.
+
+Vertex partner model ids such as Anthropic Claude are passed through unchanged, so with Vertex
+enabled you can use either:
+
+- `google.claude-sonnet-4-6`
+- `google.publishers/anthropic/models/claude-sonnet-4-6`
+
+If you want the dedicated Anthropic-flavoured route instead, use the separate
+`anthropic-vertex` provider described above.
 
 **Model Name Aliases:**
 
