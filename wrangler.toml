@@ -1,8 +1,0 @@
-name = "fast-agent-docs"
-pages_build_output_dir = "site"
-
-[build]
-command = "python3 -m pip install uv==0.11.1 && uv sync --frozen --python 3.11 && uv run --frozen --python 3.11 mkdocs build"
-
-[vars]
-SKIP_DEPENDENCY_INSTALL = "1"
