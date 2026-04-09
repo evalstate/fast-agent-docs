@@ -124,6 +124,41 @@ The `function_tools` list may contain:
 
 - Python callables
 - string specs like `"tools.py:helper_name"`
+- structured specs with display metadata (commonly used in AgentCards)
+
+### Code-style tool call highlighting
+
+Structured `function_tools` entries can opt into syntax-highlighted tool-call
+display in the console/TUI. This is especially useful in AgentCards and
+ToolCards.
+
+Supported fields:
+
+- `entrypoint` — Python function entrypoint, for example `tools.py:run_query`
+- `variant` — currently only `code`
+- `code_arg` — which argument should be rendered as the code body
+- `language` — syntax highlighter language, for example `python`, `bash`, `sql`
+
+Example:
+
+```yaml
+function_tools:
+  - entrypoint: tools.py:run_query
+    variant: code
+    code_arg: code
+    language: python
+```
+
+Behavior:
+
+- the argument named by `code_arg` is rendered as highlighted code
+- other tool arguments are shown as footer metadata
+- if `variant: code` is set and you omit the optional fields, defaults are:
+  - `code_arg: code`
+  - `language: python`
+
+This affects display only. It does not change how the tool executes or what the
+LLM sees.
 
 ## Scoping and inheritance rules
 
@@ -191,6 +226,13 @@ def sync_tool(value: int) -> int:
 async def async_tool(value: int) -> int:
     return value * 2
 ```
+
+## Shell tool highlighting
+
+Shell tool calls are highlighted automatically when tool display is enabled.
+For example, `execute` calls are rendered using detected shell syntax (`bash`,
+`pwsh`, etc.), and `apply_patch` commands use a specialized preview display
+when possible.
 
 ## Supported agent types
 

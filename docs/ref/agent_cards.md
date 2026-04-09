@@ -46,6 +46,41 @@ If a card should not appear in normal interactive agent lists, set:
 tool_only: true
 ```
 
+## Function tools in cards
+
+AgentCards can declare local Python function tools with `function_tools`.
+
+Simple form:
+
+```yaml
+function_tools:
+  - tools.py:run_query
+```
+
+Structured form with code-style display metadata:
+
+```yaml
+function_tools:
+  - entrypoint: tools.py:run_query
+    variant: code
+    code_arg: code
+    language: python
+```
+
+- `entrypoint` is required in the structured form.
+- `variant` currently supports `code`.
+- `code_arg` selects which tool argument is rendered as the code body.
+- `language` sets the syntax highlighter language used in tool-call display.
+
+If `variant: code` is present and the optional fields are omitted, fast-agent
+defaults to:
+
+- `code_arg: code`
+- `language: python`
+
+This changes only how the tool call is rendered in the console/TUI. It does not
+change tool execution.
+
 ## Runtime MCP targets (`mcp_connect`)
 
 Use `mcp_connect` when a card needs MCP servers that are **not** preconfigured
