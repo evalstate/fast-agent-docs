@@ -98,6 +98,36 @@ tool_input_schema:
 If an inferred/provided name collides with another server using different settings,
 startup fails with a collision error. Prefer explicit `name` values for stability.
 
+Provider-managed remote MCP is also supported in cards:
+
+```yaml
+mcp_connect:
+  - target: "https://mcp.stripe.com"
+    name: "stripe"
+    description: "Stripe official MCP"
+    management: provider
+    access_token: "${STRIPE_TOKEN}"
+    defer_loading: true
+```
+
+- `management: provider` delegates remote MCP execution to the LLM provider.
+- `target` must be a URL-based remote server when `management: provider` is used.
+- `access_token` is the bearer token for the remote MCP server.
+- `description` is optional metadata used where the provider supports it.
+- `defer_loading` is a Responses-family hint for lazy remote tool loading.
+- Do not use `headers` or `auth` with provider-managed entries; use `access_token` instead.
+
+Provider-managed card targets are supported only for agents using:
+
+- `anthropic`
+- `responses`
+- `codexresponses`
+
+They are not supported for `anthropic-vertex` or other providers.
+
+For provider-managed servers, use exact tool names in `tools.<server_name>`.
+Wildcard tool filters, prompt filters, and resource filters are not supported.
+
 ## Examples
 
 ```bash

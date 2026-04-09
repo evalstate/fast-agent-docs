@@ -107,6 +107,44 @@ mcp:
 
 ```
 
+## Provider-managed remote MCP
+
+fast-agent can also pass a remote MCP server through to the model provider
+instead of connecting to it locally.
+
+```yaml title="fastagent.config.yaml"
+mcp:
+  servers:
+    stripe:
+      management: "provider"
+      transport: "http"
+      url: "https://mcp.stripe.com"
+      access_token: "${STRIPE_TOKEN}"
+      description: "Stripe official MCP"
+      defer_loading: true  # Responses-family hint
+```
+
+This mode is supported only for:
+
+- `anthropic`
+- `responses`
+- `codexresponses`
+
+It is not supported for `anthropic-vertex`, `openai`, `openresponses`, or
+other providers.
+
+Provider-managed servers must be remote URL servers (`http` or `sse`). They do
+not support local-process settings such as `command`, `args`, `env`, `cwd`,
+`headers`, `auth`, or `roots`.
+
+Use `access_token` for bearer auth instead of `headers.Authorization`.
+
+When filtering provider-managed servers on an agent/card:
+
+- `tools.<server_name>` must contain exact tool names
+- wildcard tool filters are not supported
+- prompt/resource filtering is not supported
+
 ## MCP Filtering
 
 Agents and Workflows supporting the `servers` parameter have the ability to filter the tools, resources and prompts available to the agent.  This can greatly reduce the amount of context generated for the agents - which can both increase the accuracy of the responses and reduce costs due to the lower token count of the context.  
@@ -132,6 +170,10 @@ For example:
 )
 
 ```
+
+For provider-managed remote MCP servers, filtering is more restrictive:
+tool filters must use exact names, and prompt/resource filters are not
+supported.
 
 ## Implementation Spoofing
 
