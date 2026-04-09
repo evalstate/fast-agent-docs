@@ -604,6 +604,16 @@ logger:
   streaming: "markdown"  # "markdown", "plain", or "none"
 ```
 
+When `logger.show_tools` is enabled, fast-agent can render some tool calls with
+syntax highlighting:
+
+- shell tool calls are highlighted automatically (`bash`, `pwsh`, etc.)
+- local function tools using `variant: code` are rendered with the configured
+  `language` and `code_arg`
+
+There is no separate global tool-highlighting mode setting; this behavior is
+driven by tool metadata plus `logger.show_tools`.
+
 ## MCP UI Settings
 
 ```yaml
