@@ -37,7 +37,7 @@ Examples:
 - `sonnet?reasoning=4096`
 - `openai.o3-mini?reasoning=high`
 - `gpt-5?temperature=0.2`
-- `claude-opus-4-6?web_search=on&web_fetch=on`
+- `claude-opus-4-7?web_search=on&web_fetch=on`
 - `openai.gpt-5?web_search=on`
 - `azure.my-deployment`
 - `generic.llama3.2:latest`
@@ -54,11 +54,16 @@ Anthropic models use either adaptive thinking (effort levels + `auto`) or budget
 (integer token budgets). Budget models also accept `low`/`medium`/`high`/`max` to map to preset
 budgets. Adaptive models default to `auto` and do not accept explicit budgets.
 
+On Claude Opus 4.7, fast-agent also supports Anthropic task budgets for agentic loops:
+
+- `opus?task_budget=128k`
+- `claude-opus-4-7?reasoning=xhigh&task_budget=256k`
+
 You can also set reasoning directly in the model string query. This is especially useful for
 budget-style reasoning models:
 
 - `sonnet?reasoning=4096` (budget tokens)
-- `claude-opus-4-6?reasoning=auto` (adaptive default)
+- `claude-opus-4-7?reasoning=auto` (adaptive default)
 - `openai.o3-mini?reasoning=high`
 
 `gpt-5` class models additionally support a `minimal` reasoning effort.
@@ -77,7 +82,8 @@ params/config) are forwarded.
 #### Model presets and model references
 
 For convenience, popular models have built-in **model presets** such as `codex` or `sonnet`.
-These are documented on the [LLM Providers](llm_providers.md) page.
+The [LLM Providers](llm_providers.md) page shows these presets first, followed by each
+provider's curated catalog in an expandable section.
 
 You can also create local **model overlays**. These are environment-local named model entries that
 bundle endpoint settings, auth, request defaults, and local metadata under a short token such as

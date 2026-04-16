@@ -1,6 +1,6 @@
 # Generated Docs
 
-Some parts of the documentation are generated from the `fast-agent` Python package to prevent drift (e.g. model preset tables and the models reference page).
+Some parts of the documentation are generated from the `fast-agent` Python package to prevent drift (for example model preset tables, provider catalog tables, and the models reference page).
 
 ## Regenerate
 
