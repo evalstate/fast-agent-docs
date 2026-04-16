@@ -43,6 +43,20 @@ This is perfect for scripting, automation, or one-off queries.
 
 The `--quiet` flag switches off the Progress, Chat and Tool displays.
 
+If you need an exact machine-readable stdout contract, prefer `fast-agent go` with
+`--json-schema` and `--noenv`:
+
+```bash
+fast-agent go \
+  --noenv \
+  --model haiku \
+  --message "What is the weather in London?" \
+  --json-schema ./schema.json
+```
+
+In this mode, fast-agent validates the result against the supplied JSON Schema and prints only
+the final JSON document to stdout.
+
 
 ## MCP Server Deployment
 

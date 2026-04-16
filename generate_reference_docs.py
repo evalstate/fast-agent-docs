@@ -6,11 +6,20 @@ import ast
 import inspect
 import os
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 DOCS_ROOT = Path(__file__).resolve().parent
 GENERATED_DIR = DOCS_ROOT / "docs" / "_generated"
+
+
+@dataclass(frozen=True)
+class _CatalogDocEntry:
+    alias: str
+    model: str
+    current: bool = True
+    fast: bool = False
 
 
 def _find_fast_agent_repo() -> Path:
@@ -172,15 +181,11 @@ def generate_models_reference() -> str:
     )
 
     canonical_to_aliases: dict[str, list[str]] = {}
-    for alias, target in ModelFactory.MODEL_ALIASES.items():
+    for alias, target in ModelFactory.MODEL_PRESETS.items():
         canonical = ModelDatabase.normalize_model_name(target)
         canonical_to_aliases.setdefault(canonical, []).append(alias)
 
     provider_overrides: dict[str, Provider] = {
-        "moonshotai/kimi-k2": Provider.GROQ,
-        "moonshotai/kimi-k2-instruct-0905": Provider.GROQ,
-        "moonshotai/kimi-k2-thinking": Provider.GROQ,
-        "moonshotai/kimi-k2-thinking-0905": Provider.GROQ,
         "qwen/qwen3-32b": Provider.GROQ,
         "deepseek-r1-distill-llama-70b": Provider.GROQ,
     }
@@ -190,12 +195,12 @@ def generate_models_reference() -> str:
         if overridden is not None:
             return overridden
 
-        provider = ModelFactory.DEFAULT_PROVIDERS.get(model_name)
+        provider = ModelDatabase.get_default_provider(model_name)
         if provider is not None:
             return provider
 
         if alias:
-            target = ModelFactory.MODEL_ALIASES.get(alias)
+            target = ModelFactory.MODEL_PRESETS.get(alias)
             if target:
                 try:
                     return ModelFactory.parse_model_string(target).provider
@@ -228,7 +233,7 @@ def generate_models_reference() -> str:
     ) -> str:
         if alias:
             return alias
-        if model_name in ModelFactory.DEFAULT_PROVIDERS:
+        if ModelDatabase.get_default_provider(model_name) == provider:
             return model_name
         return f"{provider.config_name}.{model_name}"
 
@@ -246,10 +251,7 @@ def generate_models_reference() -> str:
         else:
             example_value = values[0] if values else "medium"
 
-        if spec.kind == "effort":
-            example = f"{model_base}.{example_value}"
-        else:
-            example = f"{model_base}?reasoning={example_value}"
+        example = f"{model_base}?reasoning={example_value}"
 
         return f"{spec.kind}: {values_text}<br>Example: `{example}`"
 
@@ -402,6 +404,27 @@ def _format_alias_table(
     return "".join(lines)
 
 
+def _expand_catalog_model(model_spec: str, presets: dict[str, str]) -> str:
+    """Resolve one layer of preset indirection for catalog display."""
+    return presets.get(model_spec, model_spec)
+
+
+def _format_catalog_table(entries: list[_CatalogDocEntry], *, presets: dict[str, str]) -> str:
+    if not entries:
+        return "_No curated catalog entries._\n"
+
+    lines: list[str] = []
+    lines.append("| Catalog Entry | Resolves to | Status | Fast |\n")
+    lines.append("| --- | --- | --- | --- |\n")
+    ordered = sorted(entries, key=lambda entry: (not entry.current, entry.alias.lower()))
+    for entry in ordered:
+        status = "current" if entry.current else "listed"
+        fast = "yes" if entry.fast else "—"
+        resolved = _expand_catalog_model(entry.model, presets)
+        lines.append(f"| `{entry.alias}` | `{resolved}` | {status} | {fast} |\n")
+    return "".join(lines)
+
+
 def _provider_name_map(repo_root: Path) -> dict[str, str]:
     """
     Map Provider enum member name -> provider config string (e.g. OPENAI -> "openai").
@@ -431,9 +454,32 @@ def _load_model_factory_constants(
     repo_root: Path,
 ) -> tuple[dict[str, str], dict[str, str], set[str], set[str]]:
     """
-    Load ModelFactory.MODEL_ALIASES and ModelFactory.DEFAULT_PROVIDERS from source using AST.
-    Returns (model_aliases, default_providers, effort_suffixes).
+    Load model presets/default providers, preferring runtime imports when available.
     """
+    try:
+        if str(repo_root / "src") not in sys.path:
+            sys.path.insert(0, str(repo_root / "src"))
+        if str(repo_root) not in sys.path:
+            sys.path.insert(0, str(repo_root))
+
+        from fast_agent.llm.model_database import ModelDatabase
+        from fast_agent.llm.model_factory import ModelFactory
+        from fast_agent.llm.provider_types import Provider
+
+        provider_names = {provider.value for provider in Provider}
+        model_aliases = {
+            key: value for key, value in ModelFactory.MODEL_PRESETS.items() if isinstance(value, str)
+        }
+        default_providers = {
+            model_name: provider.value
+            for model_name in ModelDatabase.MODELS
+            if (provider := ModelDatabase.get_default_provider(model_name)) is not None
+        }
+        effort_suffixes: set[str] = set()
+        return model_aliases, default_providers, effort_suffixes, provider_names
+    except Exception:
+        pass
+
     model_factory = repo_root / "src" / "fast_agent" / "llm" / "model_factory.py"
     tree = ast.parse(model_factory.read_text(encoding="utf-8"))
 
@@ -453,7 +499,7 @@ def _load_model_factory_constants(
                     continue
                 target_name = stmt.targets[0].id
 
-                if target_name == "MODEL_ALIASES" and isinstance(stmt.value, ast.Dict):
+                if target_name == "MODEL_PRESETS" and isinstance(stmt.value, ast.Dict):
                     for k, v in zip(stmt.value.keys, stmt.value.values):
                         if (
                             isinstance(k, ast.Constant)
@@ -463,27 +509,99 @@ def _load_model_factory_constants(
                         ):
                             model_aliases[k.value] = v.value
 
-                if target_name == "DEFAULT_PROVIDERS" and isinstance(stmt.value, ast.Dict):
-                    for k, v in zip(stmt.value.keys, stmt.value.values):
-                        if not (isinstance(k, ast.Constant) and isinstance(k.value, str)):
-                            continue
-                        # Values are Provider.OPENAI etc
-                        if (
-                            isinstance(v, ast.Attribute)
-                            and isinstance(v.value, ast.Name)
-                            and v.value.id == "Provider"
-                        ):
-                            provider_member = v.attr
-                            provider_name = provider_map.get(provider_member)
-                            if provider_name:
-                                default_providers[k.value] = provider_name
-
-                if target_name == "EFFORT_MAP" and isinstance(stmt.value, ast.Dict):
-                    for k in stmt.value.keys:
-                        if isinstance(k, ast.Constant) and isinstance(k.value, str):
-                            effort_suffixes.add(k.value.lower())
-
     return model_aliases, default_providers, effort_suffixes, provider_names
+
+
+def _load_model_catalog_entries(repo_root: Path) -> dict[str, list[_CatalogDocEntry]]:
+    """Load provider catalog entries, preferring runtime imports when available."""
+    try:
+        if str(repo_root / "src") not in sys.path:
+            sys.path.insert(0, str(repo_root / "src"))
+        if str(repo_root) not in sys.path:
+            sys.path.insert(0, str(repo_root))
+
+        from fast_agent.llm.model_selection import ModelSelectionCatalog
+
+        return {
+            provider.value: [
+                _CatalogDocEntry(
+                    alias=entry.alias,
+                    model=entry.model,
+                    current=entry.current,
+                    fast=entry.fast,
+                )
+                for entry in entries
+            ]
+            for provider, entries in ModelSelectionCatalog.CATALOG_ENTRIES_BY_PROVIDER.items()
+        }
+    except Exception:
+        pass
+
+    model_selection = repo_root / "src" / "fast_agent" / "llm" / "model_selection.py"
+    tree = ast.parse(model_selection.read_text(encoding="utf-8"))
+    provider_map = _provider_name_map(repo_root)
+    catalog_entries: dict[str, list[_CatalogDocEntry]] = {}
+
+    def _string_constant(node: ast.AST | None) -> str | None:
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            return node.value
+        return None
+
+    def _bool_constant(node: ast.AST | None, default: bool) -> bool:
+        if isinstance(node, ast.Constant) and isinstance(node.value, bool):
+            return node.value
+        return default
+
+    for node in tree.body:
+        if not isinstance(node, ast.ClassDef) or node.name != "ModelSelectionCatalog":
+            continue
+        for stmt in node.body:
+            target: ast.AST | None = None
+            value: ast.AST | None = None
+            if isinstance(stmt, ast.Assign) and len(stmt.targets) == 1:
+                target = stmt.targets[0]
+                value = stmt.value
+            elif isinstance(stmt, ast.AnnAssign):
+                target = stmt.target
+                value = stmt.value
+            if not isinstance(target, ast.Name) or target.id != "CATALOG_ENTRIES_BY_PROVIDER":
+                continue
+            if not isinstance(value, ast.Dict):
+                continue
+            for key_node, value_node in zip(value.keys, value.values):
+                if not (
+                    isinstance(key_node, ast.Attribute)
+                    and isinstance(key_node.value, ast.Name)
+                    and key_node.value.id == "Provider"
+                ):
+                    continue
+                provider_name = provider_map.get(key_node.attr)
+                if provider_name is None:
+                    continue
+                entries: list[_CatalogDocEntry] = []
+                if isinstance(value_node, ast.Tuple):
+                    for item in value_node.elts:
+                        if not (
+                            isinstance(item, ast.Call)
+                            and isinstance(item.func, ast.Name)
+                            and item.func.id == "CatalogModelEntry"
+                        ):
+                            continue
+                        kwargs = {kw.arg: kw.value for kw in item.keywords if kw.arg is not None}
+                        alias = _string_constant(kwargs.get("alias"))
+                        model = _string_constant(kwargs.get("model"))
+                        if alias is None or model is None:
+                            continue
+                        entries.append(
+                            _CatalogDocEntry(
+                                alias=alias,
+                                model=model,
+                                current=_bool_constant(kwargs.get("current"), True),
+                                fast=_bool_constant(kwargs.get("fast"), False),
+                            )
+                        )
+                catalog_entries[provider_name] = entries
+    return catalog_entries
 
 
 def _infer_provider_for_model_string(
@@ -507,7 +625,28 @@ def _infer_provider_for_model_string(
     if parts and parts[0] in provider_names:
         return parts[0]
 
-    return default_providers.get(base)
+    inferred = default_providers.get(base)
+    if inferred:
+        return inferred
+
+    lower = base.lower()
+    if lower.startswith("claude-"):
+        return "anthropic"
+    if lower.startswith(("gpt-5", "o1", "o3", "o4")):
+        return "responses"
+    if lower.startswith(("gpt-4", "gpt-4o")):
+        return "openai"
+    if lower.startswith("gemini-"):
+        return "google"
+    if lower.startswith("grok-"):
+        return "xai"
+    if lower.startswith("qwen-"):
+        return "aliyun"
+    if lower.startswith("deepseek-"):
+        return "deepseek"
+    if "/" in lower:
+        return "hf"
+    return None
 
 
 def _include_default_model_name(provider_name: str, model_name: str) -> bool:
@@ -525,32 +664,23 @@ def _include_default_model_name(provider_name: str, model_name: str) -> bool:
     return True
 
 
-def generate_model_alias_table(
+def generate_model_presets_table(
     provider_name: str,
     *,
-    include_default_models: bool,
     two_column: bool = True,
     repo_root: Path,
 ) -> str:
     """
-    Generate a provider-specific model alias table from fast-agent source-of-truth.
+    Generate a provider-specific model preset table from fast-agent source-of-truth.
 
-    Includes:
-      - "default provider" model names (e.g. `gpt-5` defaults to OpenAI)
-      - short aliases from ModelFactory.MODEL_ALIASES (e.g. `sonnet` -> `claude-sonnet-4-6`)
+    Includes only short aliases/presets from ModelFactory.MODEL_PRESETS
+    (for example `sonnet` -> `claude-sonnet-4-6`).
     """
     model_aliases, default_providers, effort_suffixes, provider_names = (
         _load_model_factory_constants(repo_root)
     )
 
     entries: dict[str, str] = {}
-
-    if include_default_models:
-        for model_name, default_provider in default_providers.items():
-            if default_provider == provider_name and _include_default_model_name(
-                provider_name, model_name
-            ):
-                entries[model_name] = model_name
 
     for alias, target in model_aliases.items():
         inferred = _infer_provider_for_model_string(
@@ -562,7 +692,34 @@ def generate_model_alias_table(
         if inferred == provider_name:
             entries[alias] = target
 
+    if not entries:
+        return "_No presets defined._\n"
+
     return _format_alias_table(list(entries.items()), two_column=two_column)
+
+
+def generate_model_alias_table(
+    provider_name: str,
+    *,
+    include_default_models: bool,
+    two_column: bool = True,
+    repo_root: Path,
+) -> str:
+    """Backward-compatible alias for preset-table generation."""
+    del include_default_models
+    return generate_model_presets_table(
+        provider_name,
+        two_column=two_column,
+        repo_root=repo_root,
+    )
+
+
+def generate_model_catalog_table(provider_name: str, *, repo_root: Path) -> str:
+    """Generate a provider-specific catalog table from ModelSelectionCatalog."""
+    model_aliases, _, _, _ = _load_model_factory_constants(repo_root)
+    catalog_entries = _load_model_catalog_entries(repo_root)
+    entries = catalog_entries.get(provider_name, [])
+    return _format_catalog_table(entries, presets=model_aliases)
 
 
 def generate_openai_merged_table(*, repo_root: Path) -> str:
@@ -578,14 +735,6 @@ def generate_openai_merged_table(*, repo_root: Path) -> str:
 
     entries: dict[str, str] = {}
     responses_entries: set[str] = set()  # Track which entries are via Responses
-
-    # Include models from both openai and responses providers
-    for provider in ("openai", "responses"):
-        for model_name, default_provider in default_providers.items():
-            if default_provider == provider and _include_default_model_name(provider, model_name):
-                entries[model_name] = model_name
-                if provider == "responses":
-                    responses_entries.add(model_name)
 
     # Include aliases that resolve to openai or responses
     for alias, target in model_aliases.items():
@@ -624,88 +773,39 @@ def main() -> int:
     #     uv run python docs/generate_reference_docs.py
     # - Use FAST_AGENT_REPO_PATH when running from a separate docs checkout.
 
-    # Alias tables are generated from source (AST) so they work even when fast_agent runtime deps
-    # aren't installed in the docs environment.
-    # include_default_models=True includes models from DEFAULT_PROVIDERS (no prefix needed)
-    _write(
-        GENERATED_DIR / "model_aliases_anthropic.md",
-        generate_model_alias_table(
-            "anthropic",
-            include_default_models=True,
-            two_column=False,
+    # Preset and catalog tables are generated from source (AST/runtime metadata)
+    # so they work even when fast_agent runtime deps aren't installed in the docs
+    # environment.
+    preset_specs = [
+        ("anthropic", False),
+        ("openai", True),
+        ("responses", True),
+        ("codexresponses", True),
+        ("hf", True),
+        ("groq", True),
+        ("deepseek", True),
+        ("google", False),
+        ("xai", False),
+        ("aliyun", True),
+    ]
+
+    for provider_name, two_column in preset_specs:
+        preset_table = generate_model_presets_table(
+            provider_name,
+            two_column=two_column,
             repo_root=repo_root,
-        ),
-    )
-    # OpenAI table merges openai + responses providers, with (*) marking Responses models
+        )
+        _write(GENERATED_DIR / f"model_presets_{provider_name}.md", preset_table)
+        _write(GENERATED_DIR / f"model_aliases_{provider_name}.md", preset_table)
+        _write(
+            GENERATED_DIR / f"model_catalog_{provider_name}.md",
+            generate_model_catalog_table(provider_name, repo_root=repo_root),
+        )
+
+    # Backward-compatible merged OpenAI + Responses include.
     _write(
-        GENERATED_DIR / "model_aliases_openai.md",
+        GENERATED_DIR / "model_aliases_openai_merged.md",
         generate_openai_merged_table(repo_root=repo_root),
-    )
-    # Keep Codex OAuth aliases in a dedicated include so provider docs can embed
-    # a focused table (`codexplan`, `codexplan52`, etc.) instead of relying only
-    # on the mixed OpenAI/Responses table.
-    _write(
-        GENERATED_DIR / "model_aliases_codexresponses.md",
-        generate_model_alias_table(
-            "codexresponses",
-            include_default_models=True,
-            two_column=True,
-            repo_root=repo_root,
-        ),
-    )
-    _write(
-        GENERATED_DIR / "model_aliases_hf.md",
-        generate_model_alias_table(
-            "hf",
-            include_default_models=True,
-            two_column=True,
-            repo_root=repo_root,
-        ),
-    )
-    _write(
-        GENERATED_DIR / "model_aliases_groq.md",
-        generate_model_alias_table(
-            "groq",
-            include_default_models=True,
-            two_column=True,
-            repo_root=repo_root,
-        ),
-    )
-    _write(
-        GENERATED_DIR / "model_aliases_deepseek.md",
-        generate_model_alias_table(
-            "deepseek",
-            include_default_models=True,
-            two_column=True,
-            repo_root=repo_root,
-        ),
-    )
-    _write(
-        GENERATED_DIR / "model_aliases_google.md",
-        generate_model_alias_table(
-            "google",
-            include_default_models=True,
-            two_column=False,
-            repo_root=repo_root,
-        ),
-    )
-    _write(
-        GENERATED_DIR / "model_aliases_xai.md",
-        generate_model_alias_table(
-            "xai",
-            include_default_models=True,
-            two_column=False,
-            repo_root=repo_root,
-        ),
-    )
-    _write(
-        GENERATED_DIR / "model_aliases_aliyun.md",
-        generate_model_alias_table(
-            "aliyun",
-            include_default_models=True,
-            two_column=True,
-            repo_root=repo_root,
-        ),
     )
 
     # Best-effort: these require importing `fast_agent` (and its runtime deps).
@@ -724,7 +824,7 @@ def main() -> int:
     except Exception as exc:
         _write(
             GENERATED_DIR / "_generation_warnings.md",
-            f"Generated alias tables successfully, but skipped import-based references: `{type(exc).__name__}: {exc}`\n",
+            f"Generated preset/catalog tables successfully, but skipped import-based references: `{type(exc).__name__}: {exc}`\n",
         )
 
     return 0
