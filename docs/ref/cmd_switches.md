@@ -77,6 +77,14 @@ The `fast-agent go` command lets you run an interactive agent directly without c
 
 For ephemeral runs with no implicit environment-side effects, use `--noenv` (alias `--no-env`).
 
+For machine-readable one-shot JSON output, use:
+
+```bash
+fast-agent go --noenv --message "..." --json-schema ./schema.json
+```
+
+This validates the response locally and writes only JSON to stdout.
+
 For card-based loading and the distinction between `--agent-cards` and `--card-tool`, see [AgentCards and ToolCards](agent_cards.md).
 
 ## fast-agent check Command

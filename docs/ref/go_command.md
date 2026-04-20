@@ -30,6 +30,7 @@ fast-agent go [OPTIONS]
 - `--card-tool <path or url>`: Load AgentCards and attach them as tools to the selected/default agent (repeatable)
 - `--agent <name>`: Target a specific loaded agent by name for `--message`, `--prompt-file`, and initial interactive mode
 - `--message`, `-m TEXT`: Message to send to the agent once, then exit
+- `--json-schema <path>`: Validate one-shot output against a JSON Schema and print only valid JSON to stdout
 - `--env <path>`: Override the base `.fast-agent` environment directory (where default `agent-cards/` and `tool-cards/` are discovered)
 - `--noenv`, `--no-env`: Run in ephemeral mode (disable implicit environment card loading, session persistence/resume, and permission-store side effects)
 - `--resume <id|latest>`: Resume the latest session (or a specific session id)
@@ -87,6 +88,9 @@ fast-agent --npx @modelcontextprotocol/server-everything
 # Non-interactive mode with a single message
 fast-agent go --message="What is the weather today?" --model=haiku
 
+# Machine-readable structured one-shot output
+fast-agent go --noenv --model haiku --message "What is the weather in London?" --json-schema ./schema.json
+
 # Target one specific loaded agent when multiple agents are available
 fast-agent go --agent-cards ./agents --agent researcher
 
@@ -106,6 +110,35 @@ fast-agent go --skills ~/my-skills/
 fast-agent go -x
 
 ```
+
+### Machine-readable JSON output
+
+Use `--json-schema` when you need a strict scripting/automation contract from `fast-agent go`.
+
+Rules:
+
+- `--json-schema` must be combined with exactly one of:
+  - `--message`
+  - `--prompt-file`
+- stdout contains only the final validated JSON document
+- errors and diagnostics go to stderr
+- this mode is not supported with multi-model fan-out
+
+Recommended automation pattern:
+
+- use `--noenv` to avoid implicit environment-side effects
+- keep input one-shot with `--message` or `--prompt-file`
+- provide a schema file that describes the exact payload you want
+
+```bash
+fast-agent go \
+  --noenv \
+  --model sonnet \
+  --message "What is the weather in London?" \
+  --json-schema ./schema.json
+```
+
+When you need exact JSON on stdout, prefer this mode over parsing chat output or exported histories.
 
 ### Comparison mode (multiple models)
 

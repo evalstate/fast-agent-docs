@@ -171,9 +171,24 @@ Anthropic models fall into three groups:
 - **Budget-based thinking** (older models): defaults to a 1024 token budget. Set `reasoning` to a
   budget integer or disable with `"0"`/`off`/`false`. You can also pass `low`/`medium`/`high`/`max`,
   which map to preset budgets.
-- **Adaptive thinking** (e.g. `claude-opus-4-6`): defaults to `auto` (provider‑chosen). Use effort
-  levels (`low`/`medium`/`high`/`max`) to set `output_config.effort`. Budgets are not supported on
-  adaptive models.
+- **Adaptive thinking** (e.g. `claude-opus-4-7`): defaults to `auto` (provider‑chosen). Use effort
+  levels (`low`/`medium`/`high`/`xhigh`/`max`) to set `output_config.effort`. Budgets are not
+  supported on adaptive models.
+
+Anthropic task budgets are configured separately from reasoning and are currently supported on
+Claude Opus 4.7:
+
+```yaml
+anthropic:
+  task_budget: 128k
+```
+
+Task budgets are advisory loop-wide budgets, not hard per-response caps.
+
+You can also set them directly in the model string:
+
+- `opus?task_budget=128k`
+- `claude-opus-4-7?reasoning=xhigh&task_budget=256k`
 
 For budget models, the reasoning budget must be lower than `max_tokens` (fast-agent raises
 `max_tokens` if needed).
@@ -188,7 +203,7 @@ Legacy `thinking_enabled` and `thinking_budget_tokens` settings are deprecated a
 
 Anthropic built-in web tools can also be toggled per run in the model string:
 
-- `claude-opus-4-6?web_search=on&web_fetch=on`
+- `claude-opus-4-7?web_search=on&web_fetch=on`
 - `sonnet?web_search=off`
 
 Allowed values: `on`/`off` (also accepts `true`/`false`, `1`/`0`).
@@ -444,37 +459,46 @@ precedence over derived values.
 (`--auth`, `--oauth`, `--timeout`, etc.) inside `target`; use structured fields
 like `headers` and `auth` instead.
 
-### Provider-managed MCP servers
+### Provider-managed remote MCP
 
-Remote MCP servers can be delegated to the model provider instead of being
-attached locally by fast-agent:
+Use `management: provider` when you want the model provider to execute a remote
+MCP server directly instead of having fast-agent connect to it as a local MCP
+client.
 
 ```yaml
 mcp:
   servers:
-    huggingface:
-      target: "https://huggingface.co/mcp"
+    stripe:
       management: provider
-      access_token: "${HF_TOKEN}"
+      transport: "http"
+      url: "https://mcp.stripe.com"
+      access_token: "${STRIPE_TOKEN}"
+      description: "Stripe official MCP"
+      defer_loading: true  # Responses-family hint; ignored by Anthropic
 ```
 
-Provider-managed MCP support is available with:
+Provider-managed remote MCP is supported only for:
 
 - `anthropic`
 - `responses`
-- `openresponses`
+- `codexresponses`
 
-It is not supported with `codexresponses`, including Codex OAuth aliases such
-as `codexplan`, `codexplan52`, and `codexspark`.
+It is not available for providers such as `openai`, `openresponses`,
+`google`, or `anthropic-vertex`.
 
-Additional constraints:
+Rules for provider-managed servers:
 
-- provider-managed servers must be remote URL targets (`http` or `sse`)
-- use `access_token` for bearer auth instead of custom `headers.Authorization`
-- tool allowlists must use exact tool names
-- prompt/resource filters are not supported
-- stdio-only settings such as `command`, `args`, `env`, and `cwd` are not valid
-  for provider-managed entries
+- Must be URL-based remote servers (`http` or `sse`)
+- `url` is required
+- Use `access_token` for bearer auth when needed
+- `command`, `args`, `env`, `cwd`, `headers`, `auth`, and `roots` are not supported
+- `defer_loading` is only used by Responses-family providers
+
+When a provider-managed server is attached to an agent/card:
+
+- `tools.<server_name>` must use exact tool names only
+- wildcard tool filters are not supported
+- `prompts.<server_name>` and `resources.<server_name>` filters are not supported
 
 ```yaml
 mcp:
@@ -600,7 +624,27 @@ You can edit these console display settings interactively with:
 
 ```bash
 fast-agent config display
+  render_fences_with_syntax: true  # Render markdown code fences with Rich Syntax
+  code_word_wrap: false  # Wrap Syntax-rendered code instead of cropping at the edge
 ```
+
+When `logger.show_tools` is enabled, fast-agent can render some tool calls with
+syntax highlighting:
+
+- shell tool calls are highlighted automatically (`bash`, `pwsh`, etc.)
+- local function tools using `variant: code` are rendered with the configured
+  `language` and `code_arg`
+
+There is no separate global tool-highlighting mode setting; this behavior is
+driven by tool metadata plus `logger.show_tools`.
+
+For assistant responses, the two rendering options above control how fenced code
+blocks appear:
+
+- `logger.render_fences_with_syntax: true` renders fenced code blocks with Rich
+  `Syntax` instead of the default markdown fence block styling
+- `logger.code_word_wrap: true` wraps `Syntax` blocks to the current viewport;
+  `false` preserves the older crop-at-right-edge behavior
 
 ## MCP UI Settings
 
@@ -678,6 +722,8 @@ logger:
   type: "file"
   level: "info"
   path: "logs/fastagent.jsonl"
+  render_fences_with_syntax: true
+  code_word_wrap: false
 ```
 
 ## Environment Variables

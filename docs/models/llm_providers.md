@@ -69,15 +69,30 @@ The `cache_ttl` setting controls how long cached content persists:
 
 **Reasoning + Structured Outputs:**
 
-`claude-opus-4-6` uses adaptive thinking by default. Use effort levels (`low`, `medium`, `high`,
-`max`) or `auto` with `anthropic.reasoning`:
+`claude-opus-4-7` uses adaptive thinking by default. Use effort levels (`low`, `medium`, `high`,
+`xhigh`, `max`) or `auto`/`adaptive` with `anthropic.reasoning`:
 
 ```yaml
 anthropic:
   reasoning: "high"
 ```
 
-Adaptive models default to `auto` (provider‑chosen) and do not accept explicit budgets.
+Adaptive models default to `auto` (provider‑chosen) and do not accept numerical thinking budgets - but do allow specification of effort levels.
+On Opus 4.7, fast-agent also requests summarized thinking display so adaptive progress remains
+visible in the UI.
+
+Task budgets are a separate optional control for Opus 4.7:
+
+```yaml
+anthropic:
+  task_budget: 128k
+```
+
+Task budgets are advisory, not hard caps. Combine them with adaptive reasoning when you want Claude
+to self-manage loop-wide spend:
+
+- `opus?reasoning=auto&task_budget=128k`
+- `claude-opus-4-7?reasoning=xhigh&task_budget=256k`
 
 Anthropic models using budget-based thinking default to **reasoning on** with a **1024 token budget**.
 Use `anthropic.reasoning` to set a budget, map from effort aliases, or disable reasoning entirely:
@@ -96,7 +111,7 @@ You can also set reasoning per run using the model string:
 
 - `sonnet?reasoning=4096`
 - `anthropic.claude-4-5-sonnet-latest?reasoning=4096`
-- `claude-opus-4-6?reasoning=auto`
+- `claude-opus-4-7?reasoning=auto`
 
 **Structured output selection (Anthropic JSON schema vs tool_use):**
 
@@ -131,7 +146,7 @@ Optional controls:
 
 You can override per run in the model string:
 
-- `claude-opus-4-6?web_search=on&web_fetch=on`
+- `claude-opus-4-7?web_search=on&web_fetch=on`
 - `sonnet?web_search=off`
 
 Supported values are `on`/`off` (also accepts `true`/`false`, `1`/`0`).
@@ -143,10 +158,33 @@ Version policy is model-aware:
 - Other supported Anthropic models use legacy versions
   (`web_search_20250305`, `web_fetch_20250910`).
 
+**Provider-managed remote MCP:**
 
-**Model Name Aliases:**
+The direct `anthropic` provider also supports provider-managed remote MCP
+servers declared with `management: provider` under `mcp.servers` or card
+`mcp_connect` entries.
 
---8<-- "_generated/model_aliases_anthropic.md"
+- Supported on `anthropic`
+- Not supported on `anthropic-vertex`
+- Server must be a remote `http`/`sse` URL
+- Use `access_token` for bearer auth if required
+
+See [Configuration Reference](../ref/config_file.md#mcp-server-configuration)
+for the MCP server schema and
+[AgentCards and ToolCards](../ref/agent_cards.md#runtime-mcp-targets-mcp_connect)
+for card-scoped runtime targets.
+
+
+**Model Presets:**
+
+--8<-- "_generated/model_presets_anthropic.md"
+
+<details markdown="1">
+<summary>Show current Anthropic catalog</summary>
+
+--8<-- "_generated/model_catalog_anthropic.md"
+
+</details>
 
 ## OpenAI
 
@@ -178,9 +216,19 @@ openai:
 - `OPENAI_API_KEY`: Your OpenAI API key
 - `OPENAI_BASE_URL`: Override the API endpoint
 
-**Model Name Aliases:**
+**Model Presets:**
 
---8<-- "_generated/model_aliases_openai.md"
+The `openai` provider primarily uses direct model names such as `openai.gpt-4.1`
+or `openai.gpt-4o`. Built-in short presets live on the `responses` provider.
+
+--8<-- "_generated/model_presets_openai.md"
+
+<details markdown="1">
+<summary>Show current OpenAI catalog</summary>
+
+--8<-- "_generated/model_catalog_openai.md"
+
+</details>
 
 ## Responses (OpenAI Responses API)
 
@@ -218,6 +266,32 @@ websocket transport is active, follow-up turns may be sent incrementally for eff
 
 Provider-managed MCP is supported with the `responses` provider for remote
 HTTP/SSE MCP servers (`management: provider`).
+
+**Model Presets:**
+
+--8<-- "_generated/model_presets_responses.md"
+
+<details markdown="1">
+<summary>Show current Responses catalog</summary>
+
+--8<-- "_generated/model_catalog_responses.md"
+
+</details>
+
+**Provider-managed remote MCP:**
+
+Responses-family providers support provider-managed remote MCP servers declared
+with `management: provider` under `mcp.servers` or card `mcp_connect` entries.
+
+- Supported on `responses` and `codexresponses`
+- Not supported on `openai` or `openresponses`
+- Server must be a remote `http`/`sse` URL
+- `defer_loading: true` is available as a Responses-family hint for lazy remote tool loading
+
+See [Configuration Reference](../ref/config_file.md#mcp-server-configuration)
+for the MCP server schema and
+[AgentCards and ToolCards](../ref/agent_cards.md#runtime-mcp-targets-mcp_connect)
+for card-scoped runtime targets.
 
 
 ## Codex (OAuth Responses)
@@ -269,9 +343,16 @@ codexresponses:
 - `fast-agent check` and `fast-agent auth` show Codex OAuth status.
 - Encrypted reasoning is not transferable between API keys/credentials. Remove reasoning traces if transporting between sessions (use the bundled session skill).
 
-**Model Name Aliases:**
+**Model Presets:**
 
---8<-- "_generated/model_aliases_codexresponses.md"
+--8<-- "_generated/model_presets_codexresponses.md"
+
+<details markdown="1">
+<summary>Show current Codex OAuth catalog</summary>
+
+--8<-- "_generated/model_catalog_codexresponses.md"
+
+</details>
 
 ## Open Responses
 
@@ -339,10 +420,10 @@ Use `hf.<model_name>[:provider]` to specify models. If no provider is specified,
 ```bash
 # Auto-routed
 fast-agent --model hf.openai/gpt-oss-120b
-fast-agent --model hf.moonshotai/kimi-k2-instruct-0905
+fast-agent --model hf.moonshotai/Kimi-K2.5
 
 # Explicit provider
-fast-agent --model hf.moonshotai/kimi-k2-instruct-0905:groq
+fast-agent --model hf.moonshotai/Kimi-K2.5:fireworks-ai
 fast-agent --model hf.deepseek-ai/deepseek-v3.1:fireworks-ai
 ```
 
@@ -360,18 +441,25 @@ fast-agent --model "hf.moonshotai/Kimi-K2.5?instant=off" # thinking enabled
 
 If you have a Hugging Face model ID (for example, `moonshotai/Kimi-K2-Thinking`) and want to see which Inference Providers are available, use `lookup_inference_providers` from `fast_agent.llm` (or `lookup_inference_providers_sync` for non-async code).
 
-### Model Aliases
+### Model Presets
 
 Aliased models are verified and tested to work with Structured Outputs and Tool Use. Functionality may vary between providers, or be clamped in some situations.
 
---8<-- "_generated/model_aliases_hf.md"
+--8<-- "_generated/model_presets_hf.md"
 
-**Using Aliases:**
+<details markdown="1">
+<summary>Show current Hugging Face catalog</summary>
+
+--8<-- "_generated/model_catalog_hf.md"
+
+</details>
+
+**Using Presets:**
 
 ```bash
 fast-agent --model kimi
 fast-agent --model deepseek31
-fast-agent --model kimi:together # provider can be specified with alias
+fast-agent --model qwen3:nebius # provider can be specified with alias
 ```
 
 ### MCP Server Connections
@@ -481,7 +569,8 @@ Use `azure.deployment-name` as the model string, where `deployment-name` is the 
 
 ## Groq
 
-Groq is supported for Structured Outputs and Tool Calling, and has been tested with `moonshotai/kimi-k2-instruct`, `qwen/qwen3-32b` and `deepseek-r1-distill-llama-70b`.
+Groq is supported for Structured Outputs and Tool Calling, and has been tested with
+`qwen/qwen3-32b` and `deepseek-r1-distill-llama-70b`.
 
 **YAML Configuration:**
 
@@ -496,9 +585,19 @@ groq:
 - `GROQ_API_KEY`: Your Groq API key
 - `GROQ_BASE_URL`: Override the API endpoint
 
-**Model Name Aliases:**
+**Model Presets:**
 
---8<-- "_generated/model_aliases_groq.md"
+fast-agent no longer ships a Groq Kimi K2-Instruct preset. Use the curated Groq
+catalog below, or explicit Groq model ids such as `groq.qwen/qwen3-32b`.
+
+--8<-- "_generated/model_presets_groq.md"
+
+<details markdown="1">
+<summary>Show current Groq catalog</summary>
+
+--8<-- "_generated/model_catalog_groq.md"
+
+</details>
 
 
 ## DeepSeek
@@ -518,9 +617,16 @@ deepseek:
 - `DEEPSEEK_API_KEY`: Your DeepSeek API key
 - `DEEPSEEK_BASE_URL`: Override the API endpoint
 
-**Model Name Aliases:**
+**Model Presets:**
 
---8<-- "_generated/model_aliases_deepseek.md"
+--8<-- "_generated/model_presets_deepseek.md"
+
+<details markdown="1">
+<summary>Show current DeepSeek catalog</summary>
+
+--8<-- "_generated/model_catalog_deepseek.md"
+
+</details>
 
 
 ## Google
@@ -539,9 +645,16 @@ google:
 
 - `GOOGLE_API_KEY`: Your Google API key
 
-**Model Name Aliases:**
+**Model Presets:**
 
---8<-- "_generated/model_aliases_google.md"
+--8<-- "_generated/model_presets_google.md"
+
+<details markdown="1">
+<summary>Show current Google catalog</summary>
+
+--8<-- "_generated/model_catalog_google.md"
+
+</details>
 
 ### OpenAI Mode
 
@@ -564,9 +677,16 @@ xai:
 - `XAI_API_KEY`: Your Grok API key
 - `XAI_BASE_URL`: Override the API endpoint
 
-**Model Name Aliases:**
+**Model Presets:**
 
---8<-- "_generated/model_aliases_xai.md"
+--8<-- "_generated/model_presets_xai.md"
+
+<details markdown="1">
+<summary>Show current xAI catalog</summary>
+
+--8<-- "_generated/model_catalog_xai.md"
+
+</details>
 
 
 ## Generic OpenAI / Ollama
@@ -699,9 +819,16 @@ aliyun:
 - `ALIYUN_API_KEY`: Your Aliyun API key
 - `ALIYUN_BASE_URL`: Override the API endpoint
 
-**Model Name Aliases:**
+**Model Presets:**
 
---8<-- "_generated/model_aliases_aliyun.md"
+--8<-- "_generated/model_presets_aliyun.md"
+
+<details markdown="1">
+<summary>Show current Aliyun catalog</summary>
+
+--8<-- "_generated/model_catalog_aliyun.md"
+
+</details>
 
 ## AWS Bedrock
 

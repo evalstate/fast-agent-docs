@@ -146,6 +146,12 @@ Function tool scoping is explicit:
 - Agents with `function_tools=[...]` only see the tools in that list
 - Agents with `function_tools=[]` explicitly opt out of global function tools
 
+Structured `function_tools` entries can also provide display metadata for
+syntax-highlighted tool calls in AgentCards/ToolCards.
+
+See [Function Tools](function_tools.md#code-style-tool-call-highlighting) for
+the schema and examples.
+
 ### Reusing the same helper with different metadata
 
 Per-agent metadata is scoped to each registration, so you can reuse the same helper function across agents with different names or descriptions:

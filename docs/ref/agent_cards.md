@@ -46,6 +46,41 @@ If a card should not appear in normal interactive agent lists, set:
 tool_only: true
 ```
 
+## Function tools in cards
+
+AgentCards can declare local Python function tools with `function_tools`.
+
+Simple form:
+
+```yaml
+function_tools:
+  - tools.py:run_query
+```
+
+Structured form with code-style display metadata:
+
+```yaml
+function_tools:
+  - entrypoint: tools.py:run_query
+    variant: code
+    code_arg: code
+    language: python
+```
+
+- `entrypoint` is required in the structured form.
+- `variant` currently supports `code`.
+- `code_arg` selects which tool argument is rendered as the code body.
+- `language` sets the syntax highlighter language used in tool-call display.
+
+If `variant: code` is present and the optional fields are omitted, fast-agent
+defaults to:
+
+- `code_arg: code`
+- `language: python`
+
+This changes only how the tool call is rendered in the console/TUI. It does not
+change tool execution.
+
 ## Runtime MCP targets (`mcp_connect`)
 
 Use `mcp_connect` when a card needs MCP servers that are **not** preconfigured
@@ -87,8 +122,60 @@ OAuth aliases such as `codexplan`.
 When both target-derived values and explicit fields are present, explicit fields
 (`headers`, `auth`, etc.) win.
 
+## Child-owned tool schemas (`tool_input_schema`)
+
+Agent cards can declare an optional tool schema used when that card is exposed as
+a child tool (`agent__<name>`) by a parent `agent`/`smart` card.
+
+```yaml
+tool_input_schema:
+  type: object
+  properties:
+    query:
+      type: string
+      description: What to investigate.
+  required: [query]
+```
+
+- If omitted, fast-agent falls back to the legacy schema:
+  `{ type: object, properties: { message: string }, required: [message] }`.
+- For structured schemas without `message`, child invocation receives a
+  deterministic JSON rendering of the tool arguments as user input.
+- Use `properties.<param>.description` (especially for required params) to help
+  parent LLM tool-call quality.
+
 If an inferred/provided name collides with another server using different settings,
 startup fails with a collision error. Prefer explicit `name` values for stability.
+
+Provider-managed remote MCP is also supported in cards:
+
+```yaml
+mcp_connect:
+  - target: "https://mcp.stripe.com"
+    name: "stripe"
+    description: "Stripe official MCP"
+    management: provider
+    access_token: "${STRIPE_TOKEN}"
+    defer_loading: true
+```
+
+- `management: provider` delegates remote MCP execution to the LLM provider.
+- `target` must be a URL-based remote server when `management: provider` is used.
+- `access_token` is the bearer token for the remote MCP server.
+- `description` is optional metadata used where the provider supports it.
+- `defer_loading` is a Responses-family hint for lazy remote tool loading.
+- Do not use `headers` or `auth` with provider-managed entries; use `access_token` instead.
+
+Provider-managed card targets are supported only for agents using:
+
+- `anthropic`
+- `responses`
+- `codexresponses`
+
+They are not supported for `anthropic-vertex` or other providers.
+
+For provider-managed servers, use exact tool names in `tools.<server_name>`.
+Wildcard tool filters, prompt filters, and resource filters are not supported.
 
 ## Examples
 
