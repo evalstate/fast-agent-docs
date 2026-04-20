@@ -58,7 +58,7 @@ hide:
 
     ---
 
-    Lightweight deployment - in-built Echo and Playback LLMs allow robust agent application testing
+    Simple, lightweight deployment. Export [Agent Traces](https://huggingface.co/changelog/agent-trace-viewer) directly to Hugging Face.
 
 </div>
 

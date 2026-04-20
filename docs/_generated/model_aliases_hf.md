@@ -10,7 +10,11 @@
 | `gpt-oss-20b` | `hf.openai/gpt-oss-20b` |
 | `kimi` | `hf.moonshotai/Kimi-K2.5:fireworks-ai?temperature=1.0&top_p=0.95&reasoning=on` |
 | `kimi-2.5` | `hf.moonshotai/Kimi-K2.5:fireworks-ai?temperature=1.0&top_p=0.95&reasoning=on` |
+| `kimi-2.6` | `hf.moonshotai/Kimi-K2.6:novita?temperature=1.0&top_p=0.95&reasoning=on` |
 | `kimi25` | `hf.moonshotai/Kimi-K2.5:fireworks-ai?temperature=1.0&top_p=0.95&reasoning=on` |
+| `kimi25instant` | `hf.moonshotai/Kimi-K2.5:fireworks-ai?temperature=0.6&top_p=0.95&reasoning=off` |
+| `kimi26` | `hf.moonshotai/Kimi-K2.6:novita?temperature=1.0&top_p=0.95&reasoning=on` |
+| `kimi26instant` | `hf.moonshotai/Kimi-K2.6:novita?temperature=0.6&top_p=0.95&reasoning=off` |
 | `kimithink` | `hf.moonshotai/Kimi-K2-Thinking:fireworks-ai` |
 | `minimax` | `hf.MiniMaxAI/MiniMax-M2.5:novita` |
 | `minimax2.5` | `hf.MiniMaxAI/MiniMax-M2.5:novita?temperature=1.0&top_p=0.95&top_k=40` |
