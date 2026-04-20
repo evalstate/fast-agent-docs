@@ -216,6 +216,9 @@ Per-run override via model string is also supported:
 Websocket transport is available for all models used through the `responses` provider. When
 websocket transport is active, follow-up turns may be sent incrementally for efficiency.
 
+Provider-managed MCP is supported with the `responses` provider for remote
+HTTP/SSE MCP servers (`management: provider`).
+
 
 ## Codex (OAuth Responses)
 
@@ -258,6 +261,10 @@ codexresponses:
 - Tokens are stored in your OS keyring via `fast-agent auth codexplan`.
 - `codexplan` maps to `codexresponses.gpt-5.3-codex` and `codexplan52` maps to
   `codexresponses.gpt-5.2-codex`; both use the same stored OAuth token.
+- Provider-managed MCP is **not** supported with `codexresponses`, including
+  Codex OAuth aliases such as `codexplan`, `codexplan52`, and `codexspark`.
+  Use `responses` or `openresponses` instead when you need
+  `management: provider`.
 - To remove tokens, use: `fast-agent auth codex-clear`.
 - `fast-agent check` and `fast-agent auth` show Codex OAuth status.
 - Encrypted reasoning is not transferable between API keys/credentials. Remove reasoning traces if transporting between sessions (use the bundled session skill).
@@ -302,6 +309,10 @@ openresponses:
 **Model Name Format:**
 
 Use `openresponses.<model_name>` to specify models, where `<model_name>` is the model identifier supported by your Open Responses endpoint.
+
+Provider-managed MCP is supported with `openresponses` for compatible remote
+HTTP/SSE MCP endpoints. This support does **not** extend to `codexplan`, which
+is a `codexresponses` alias rather than an `openresponses` model.
 
 ## Hugging Face
 

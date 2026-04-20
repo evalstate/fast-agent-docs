@@ -67,6 +67,20 @@ mcp_connect:
 - `headers` (optional): structured HTTP headers.
 - `auth` (optional): structured auth settings (for example `oauth: true`).
 
+For provider-managed remote MCP, use:
+
+```yaml
+mcp_connect:
+  - target: "https://huggingface.co/mcp"
+    name: "huggingface"
+    management: provider
+    access_token: "${HF_TOKEN}"
+```
+
+Provider-managed MCP support is available with `anthropic`, `responses`, and
+`openresponses`. It is not available with `codexresponses`, including Codex
+OAuth aliases such as `codexplan`.
+
 `target` is a pure target string. Do not embed fast-agent CLI flags (like
 `--auth` or `--oauth`) in card targets. Use `headers`/`auth` fields instead.
 

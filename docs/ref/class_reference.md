@@ -122,7 +122,7 @@ Starts the application as an MCP server.
 | `server_name` | `Optional[str]` | `None` | Optional custom name for the MCP server |
 | `server_description` | `Optional[str]` | `None` | Optional description for the MCP server |
 | `tool_description` | `str \| None` | `None` | Customise the exposed `send` tool description (supports `{agent}` placeholder) |
-| `instance_scope` | `str` | `"shared"` | Control how clients receive isolated agent instances (`shared`, `connection`, `request`) |
+| `instance_scope` | `str` | `"shared"` | Control how clients receive isolated agent instances (`shared`, `connection`, `request`); ACP is always connection-scoped |
 | `permissions_enabled` | `bool` | `True` | Enable tool permission requests (ACP only) |
 
 #### `main()`

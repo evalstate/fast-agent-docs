@@ -2,6 +2,8 @@
 
 **`fast-agent`** has comprehensive support for Zed Industries [Agent Client Protocol](https://zed.dev/acp). 
 
+ACP sessions are always connection-scoped. `fast-agent-acp` and `--transport acp` do not support request-scoped ACP sessions.
+
 Why use **`fast-agent`**?:
 
 - Robust, native LLM Provider infrastructure, with Streaming and Structured outputs.

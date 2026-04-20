@@ -14,12 +14,13 @@ fast-agent serve [OPTIONS]
 
 Key options:
 
-- `--transport [http|sse|stdio|acp]` (default http). Note: `acp` exposes Agent Client Protocol instead of MCP (see [ACP](../acp/index.md)).
+- `--transport [http|sse|stdio|acp]` (default http). Note: `acp` exposes Agent Client Protocol instead of MCP (see [ACP](../acp/index.md)). ACP is always connection-scoped.
 - `--port / --host` (for HTTP/SSE)
-- `--instance-scope [shared|connection|request] `– choose how agent state is isolated
+- `--instance-scope [shared|connection|request] `– choose how agent state is isolated for MCP transports
     - `shared` (default) reuses a single agent for all clients
     - `connection` (sessions) Create one Agent per MCP session (separate history per client)
     - `request` (stateless) - create a new Agent for every tool call and disable MCP Sessions
+- With `--transport acp`, omit `--instance-scope` or set it to `connection`
 - `--description` – Customise the MCP tool description (supports {agent} placeholder)
 - `--shell`, `-x` – Enable local shell tool access (bash or pwsh)
 - `--noenv`, `--no-env` – Run without implicit environment side effects (no implicit card discovery, no session persistence/resume, and no ACP permission-store writes)
@@ -65,7 +66,7 @@ uv run agent.py --transport http [OPTIONS]
 The embedded CLI parser supports the same server flags as the serve command:
 
 - `--transport`, `--host`, `--port`
-- `--instance-scope [shared|connection|request]`
+- `--instance-scope [shared|connection|request]` for MCP transports; ACP is always connection-scoped
 - `--description` (tool instructions)
 - `--quiet`, `--model`, and other agent startup options
 

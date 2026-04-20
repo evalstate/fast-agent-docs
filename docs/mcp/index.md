@@ -55,6 +55,35 @@ mcp_connect:
 `mcp.servers` remains the place for reusable, preconfigured aliases.
 `mcp_connect` is card-scoped runtime declaration.
 
+## Provider-managed MCP
+
+For remote HTTP/SSE MCP servers, cards can ask the model provider to manage the
+connection natively:
+
+```yaml
+mcp_connect:
+  - target: "https://huggingface.co/mcp"
+    name: "huggingface"
+    management: provider
+    access_token: "${HF_TOKEN}"
+```
+
+Use provider-managed MCP when you want the upstream model API to handle remote
+tool discovery and tool execution itself instead of attaching the MCP server
+locally through fast-agent.
+
+Notes:
+
+- Supported providers: `anthropic`, `responses`, and `openresponses`.
+- Not supported with `codexresponses` / Codex OAuth aliases such as
+  `codexplan`, `codexplan52`, and `codexspark`.
+- Provider-managed MCP is remote-only: use URL targets (`http`/`sse`), not
+  stdio/package targets.
+- Prefer `access_token` for bearer auth. Provider-managed targets do not use
+  arbitrary local `headers` / `auth` MCP connection settings.
+- Tool filters must be exact names. Prompt/resource filters are not supported
+  for provider-managed attachments.
+
 ## Adding a STDIO Server
 
 The below shows an example of configuring an MCP Server named `server_one`. 

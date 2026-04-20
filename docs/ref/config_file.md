@@ -444,6 +444,38 @@ precedence over derived values.
 (`--auth`, `--oauth`, `--timeout`, etc.) inside `target`; use structured fields
 like `headers` and `auth` instead.
 
+### Provider-managed MCP servers
+
+Remote MCP servers can be delegated to the model provider instead of being
+attached locally by fast-agent:
+
+```yaml
+mcp:
+  servers:
+    huggingface:
+      target: "https://huggingface.co/mcp"
+      management: provider
+      access_token: "${HF_TOKEN}"
+```
+
+Provider-managed MCP support is available with:
+
+- `anthropic`
+- `responses`
+- `openresponses`
+
+It is not supported with `codexresponses`, including Codex OAuth aliases such
+as `codexplan`, `codexplan52`, and `codexspark`.
+
+Additional constraints:
+
+- provider-managed servers must be remote URL targets (`http` or `sse`)
+- use `access_token` for bearer auth instead of custom `headers.Authorization`
+- tool allowlists must use exact tool names
+- prompt/resource filters are not supported
+- stdio-only settings such as `command`, `args`, `env`, and `cwd` are not valid
+  for provider-managed entries
+
 ```yaml
 mcp:
   servers:
@@ -561,6 +593,13 @@ logger:
   enable_markup: true # Disable if outputs conflict with rich library markup
   enable_prompt_marks: true # Emit OSC 133 prompt marks in supported terminals
   streaming: "markdown"  # "markdown", "plain", or "none"
+  apply_patch_preview_max_lines: 120  # Max preview lines before "(+N more lines)"; 0/null = unlimited
+```
+
+You can edit these console display settings interactively with:
+
+```bash
+fast-agent config display
 ```
 
 ## MCP UI Settings
