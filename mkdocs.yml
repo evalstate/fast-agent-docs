@@ -88,6 +88,7 @@ nav:
   - Guides:
       - guides/codex.md
       - guides/hf-dev.md
+      - Privacy Filter: guides/privacy_filter.md
 #  - Getting Started:
 #    - Installation: getting_started/installation.md
   - Agents:
@@ -121,6 +122,7 @@ nav:
       - mcp/resources.md
   - Reference:
       - fast-agent go: ref/go_command.md
+      - fast-agent export: ref/export_command.md
       - AgentCards and ToolCards: ref/agent_cards.md
       - Config File: ref/config_file.md
       - Command Line: ref/cmd_switches.md

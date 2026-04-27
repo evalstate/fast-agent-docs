@@ -87,6 +87,24 @@ This validates the response locally and writes only JSON to stdout.
 
 For card-based loading and the distinction between `--agent-cards` and `--card-tool`, see [AgentCards and ToolCards](agent_cards.md).
 
+## fast-agent export Command
+
+Use `fast-agent export` to list persisted sessions or export one as a Codex-style
+JSONL trace.
+
+```bash
+# List recent sessions
+fast-agent export --list
+
+# Export locally
+fast-agent export latest --output trace.jsonl
+
+# Upload to a Hugging Face dataset
+fast-agent export latest --hf-dataset your-name/fast-agent-traces
+```
+
+See the full reference [here](export_command.md).
+
 ## fast-agent check Command
 
 Use `fast-agent check` to diagnose your configuration:

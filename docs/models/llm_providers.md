@@ -420,21 +420,32 @@ Use `hf.<model_name>[:provider]` to specify models. If no provider is specified,
 ```bash
 # Auto-routed
 fast-agent --model hf.openai/gpt-oss-120b
-fast-agent --model hf.moonshotai/Kimi-K2.5
+fast-agent --model hf.moonshotai/Kimi-K2.6
 
 # Explicit provider
-fast-agent --model hf.moonshotai/Kimi-K2.5:fireworks-ai
+fast-agent --model hf.moonshotai/Kimi-K2.6:novita
 fast-agent --model hf.deepseek-ai/deepseek-v3.1:fireworks-ai
 ```
 
-### Kimi K2.5 Instant Mode
+### Kimi presets and instant mode
 
-Kimi K2.5 supports an **instant** toggle that disables reasoning when enabled. Use the
-`instant` query parameter with the Kimi 2.5 model string:
+Current curated Hugging Face Kimi presets are:
+
+- `kimi26` - Kimi 2.6 in thinking mode
+- `kimi26instant` - Kimi 2.6 in instant mode (reasoning disabled)
+
+`kimi` now points at Kimi 2.6. Legacy Kimi 2.5 presets remain available for compatibility:
+
+- `kimi-2.5`, `kimi25`
+- `kimi25instant`
+
+If you want to use the raw Hugging Face model strings directly, both Kimi 2.5 and
+Kimi 2.6 support the `instant` query parameter:
 
 ```bash
-fast-agent --model "hf.moonshotai/Kimi-K2.5?instant=on"  # thinking disabled
-fast-agent --model "hf.moonshotai/Kimi-K2.5?instant=off" # thinking enabled
+fast-agent --model "hf.moonshotai/Kimi-K2.6?instant=on"   # instant mode
+fast-agent --model "hf.moonshotai/Kimi-K2.6?instant=off"  # thinking mode
+fast-agent --model "hf.moonshotai/Kimi-K2.5?instant=on"   # legacy Kimi 2.5 instant mode
 ```
 
 ### Finding Available Providers
@@ -457,10 +468,15 @@ Aliased models are verified and tested to work with Structured Outputs and Tool 
 **Using Presets:**
 
 ```bash
-fast-agent --model kimi
-fast-agent --model deepseek31
-fast-agent --model qwen3:nebius # provider can be specified with alias
+fast-agent --model kimi26
+fast-agent --model kimi26instant
+fast-agent --model deepseek32
+fast-agent --model qwen35
 ```
+
+The curated Hugging Face catalog now prefers Kimi 2.6. Use `kimi` or `kimi26` for
+thinking mode, and `kimi26instant` for instant mode. The older `kimi25` /
+`kimi25instant` presets remain listed for compatibility.
 
 ### MCP Server Connections
 
@@ -484,7 +500,7 @@ mcp:
 
 ```bash
 # Command line - HF_TOKEN automatically applied
-fast-agent --model kimi --url https://hf.co/mcp
+fast-agent --model kimi26 --url https://hf.co/mcp
 fast-agent --url https://my-space.hf.space/mcp
 ```
 

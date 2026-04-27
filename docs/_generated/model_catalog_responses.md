@@ -6,3 +6,4 @@
 | `gpt-5.4` | `responses.gpt-5.4?reasoning=medium` | current | — |
 | `gpt-5.4-mini` | `responses.gpt-5.4-mini?reasoning=medium` | current | yes |
 | `gpt-5.4-nano` | `responses.gpt-5.4-nano?reasoning=medium` | current | yes |
+| `gpt-5.5` | `responses.gpt-5.5?reasoning=medium` | current | — |

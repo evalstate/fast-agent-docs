@@ -16,4 +16,13 @@ If you don't have `fast_agent` installed in the docs venv, run it against a loca
 FAST_AGENT_REPO_PATH=../fast-agent uv run python generate_reference_docs.py
 ```
 
+Provider preset/catalog tables can be generated from source metadata without runtime
+dependencies. For a full rebuild of import-based pages such as the models reference
+and request parameters reference, include the local package dependencies too:
+
+```bash
+FAST_AGENT_REPO_PATH=../fast-agent \
+  uv run --with-editable ../fast-agent python generate_reference_docs.py
+```
+
 Generated files are written to `docs/_generated/` and included in pages via MkDocs `pymdownx.snippets`.

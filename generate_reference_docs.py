@@ -765,6 +765,9 @@ def generate_openai_merged_table(*, repo_root: Path) -> str:
 
 def main() -> int:
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
+    warning_path = GENERATED_DIR / "_generation_warnings.md"
+    if warning_path.exists():
+        warning_path.unlink()
     repo_root = _find_fast_agent_repo()
 
     # Docs generation process note:

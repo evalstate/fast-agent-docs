@@ -24,8 +24,18 @@
 | `max_iterations` | `int` | `99` |  |
 | `parallel_tool_calls` | `bool` | `True` |  |
 | `response_format` | `typing.Any | None` | `None` |  |
+| `structured_schema` | `dict[str, typing.Any] | None` | `None` |  |
+| `structured_tool_policy` | `Literal` | `'always'` |  |
 | `template_vars` | `dict` | `PydanticUndefined` |  |
 | `mcp_metadata` | `dict[str, typing.Any] | None` | `None` |  |
 | `tool_execution_handler` | `typing.Any | None` | `None` |  |
 | `emit_loop_progress` | `bool` | `False` |  |
+| `tool_result_mode` | `Literal` | `'postprocess'` |  |
 | `streaming_timeout` | `float | None` | `300.0` |  |
+| `top_p` | `float | None` | `None` |  |
+| `top_k` | `int | None` | `None` |  |
+| `min_p` | `float | None` | `None` |  |
+| `presence_penalty` | `float | None` | `None` |  |
+| `frequency_penalty` | `float | None` | `None` |  |
+| `repetition_penalty` | `float | None` | `None` |  |
+| `service_tier` | `Optional` | `None` |  |

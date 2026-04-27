@@ -1,7 +1,8 @@
 | Model Alias | Maps to |
 | --- | --- |
-| `codexplan` | `codexresponses.gpt-5.4` |
+| `codexplan` | `codexresponses.gpt-5.5` |
 | `codexplan51` | `codexresponses.gpt-5.1-codex` |
 | `codexplan52` | `codexresponses.gpt-5.2-codex` |
 | `codexplan53` | `codexresponses.gpt-5.3-codex` |
+| `codexplan54` | `codexresponses.gpt-5.4` |
 | `codexspark` | `codexresponses.gpt-5.3-codex-spark` |
