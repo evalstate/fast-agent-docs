@@ -90,6 +90,20 @@ To use a Pydantic Model:
         recommendations: list[BookRecommendation]
     ```
 
+Structured Outputs can be used with Tools, custom System Prompts (with `--instruction`) or Agent Cards (`--card`):
+
+```bash
+fast-agent go \
+  --model gpt-5.5 \
+  --card review-agent.md \
+  --shell \
+  --json-schema ./code-review.schema.json \
+  --message "Review the current repository branch for uncommitted changes and \
+differences from main. Identify the main features and assess their size, risk \
+and touched files."
+```
+
+
 ## API
 
 The **`fast-agent`** API supports using either a Pydantic Model or JSON Schema:
@@ -266,7 +280,12 @@ and touched files."
 
 NB: `--shell` exposes the local shell tool. 
 
+### Anthropic on Vertex
+
+Anthropic Models on Vertex do not support modern structured outputs, so use the legacy `tool_use` mode. To select this mode supply the mode on the model string e.g. `haiku?structured_outputs=tool_use`.
+
 ### Model Support
+
 
 ### Capability Probe
 
