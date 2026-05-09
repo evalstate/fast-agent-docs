@@ -89,6 +89,7 @@ nav:
       - guides/codex.md
       - guides/hf-dev.md
       - Privacy Filter: guides/privacy_filter.md
+      - guides/structured-outputs.md
 #  - Getting Started:
 #    - Installation: getting_started/installation.md
   - Agents:
