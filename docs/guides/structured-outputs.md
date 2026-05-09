@@ -300,3 +300,5 @@ It runs 3 test cases in order:
 - Direct JSON Schema
 - Pydantic Model 
 - Combined Tool and Structured Outputs
+
+This is helpful for diagnosing Structured Output issues or configuring local Model Overlay configurations.
