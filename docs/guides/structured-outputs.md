@@ -114,6 +114,10 @@ uvx fast-agent-mcp@latest \
   --message "Summarize the AI Industry news for the last 24 hours"
 ```
 
+![ACPX Flow Viewer](./news-output.png)
+
+
+
 Browse the example files [here](https://huggingface.co/buckets/evalstate/demo-bucket)
 
 ## API
@@ -128,7 +132,6 @@ The **`fast-agent`** API supports using either a Pydantic Model or JSON Schema:
     from pydantic import BaseModel
 
     from fast_agent import FastAgent
-    from fast_agent.core.prompt import Prompt
 
 
     class CityInfo(BaseModel):
@@ -139,7 +142,6 @@ The **`fast-agent`** API supports using either a Pydantic Model or JSON Schema:
 
 
     fast = FastAgent("Pydantic Model Example", quiet=True)
-
 
     @fast.agent("city", instruction="Return accurate tourist information.")
     async def main() -> None:
@@ -260,6 +262,8 @@ Clients can request a Structured Output conforming to a schema by passing the fo
 
 **`fast-agent`** will then return generated JSON within the normal ACP TextContent response.
 
+![ACPX Flow Viewer](./ACPX-flow.png)
+
 This feature is compatible and tested with this fork of ACPX: [https://github.com/evalstate/acpx](https://github.com/evalstate/acpx)
 
 ## Using Tools with Structured Outputs
@@ -294,8 +298,43 @@ NB: `--shell` exposes the local shell tool.
 
 ## Model Support
 
-### 
+### Confirmed Tools + Structured Capable
 
+The following models are recommended for single-pass Tools + Structured output.
+
+| provider | model alias | resolved model | policy | pass | fail | failure rate |
+|---|---|---|---:|---:|---:|---:|
+| Anthropic | `haiku` | `claude-haiku-4-5` | `auto` | 10 | 0 | 0% |
+| Anthropic | `opus46` | `claude-opus-4-6` | `auto` | 10 | 0 | 0% |
+| Anthropic | `opus` | `claude-opus-4-7` | `auto` | 10 | 0 | 0% |
+| OpenAI | `gpt55` | `gpt-5.5` | `auto` | 10 | 0 | 0% |
+| OpenAI | `gpt54` | `gpt-5.4` | `auto` | 10 | 0 | 0% |
+| OpenAI | `gpt54-mini` | `gpt-5.4-mini` | `auto` | 10 | 0 | 0% |
+| OpenAI | `codex` | `gpt-5.3-codex` | `auto` | 10 | 0 | 0% |
+| xAI | `grok` | `grok-4.3` | `auto` | 10 | 0 | 0% |
+| Google | `gemini3flash` | `gemini-3-flash-preview` | `auto` | 10 | 0 | 0% |
+
+`claude-sonnet-4-6`, `gemini-3.1-flash-lite-preview` and `gemini-3.1-pro-preview` show elevated failure rates, so conduct your testing with your own schemas before finalizing a policy.
+
+<!--
+| provider | model alias | resolved model | policy | pass | fail | failure rate |
+| Anthropic | `sonnet` | `claude-sonnet-4-6` | `defer` | 10 | 0 | 0% |
+| Google | `gemini3.1pro` | `gemini-3.1-pro-preview` | `auto` | 5 | 5 | 50% |
+| Google | `gemini3flash` | `gemini-3-flash-preview` | `defer` | 10 | 0 | 0% |
+| Google | `gemini3.1flashlite` | `gemini-3.1-flash-lite-preview` | `defer` | 10 | 0 | 0% |
+| Google | `gemini3.1flashlite` | `gemini-3.1-flash-lite-preview` | `auto` | 0 | 10 | 100% |
+
+-->
+
+For other models (including Hugging Face), use `--structured-tool-policy defer` if you know that the final result requires earlier Tool Calls.
+
+### Remote Tools
+
+Structured Outputs are compatible with Provider Hosted tools.
+
+For xAI this includes `web_search` and `x_search`.
+
+For OpenAI this includes `web_search` as well as the [other connectors](https://developers.openai.com/api/docs/guides/tools-connectors-mcp?quickstart-panels=connector#available-connectors) including Google, Outlook, Dropbox and more.
 
 ### Anthropic on Vertex
 
