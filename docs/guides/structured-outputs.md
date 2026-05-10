@@ -4,11 +4,13 @@ description: How to use Structured Outputs with fast-agent
 
 # Using Structured Outputs
 
-**`fast-agent`** supports structured JSON generation using Schemas or Pydantic Models. See [Using Tools with Structured Outputs](#using-tools-with-structured-outputs) for advanced configuration.
+**`fast-agent`** supports structured JSON generation using Schemas or Pydantic Models. 
+
+The best technique for producing an output is automatically used depending on the chosen model and provider. See [Using Tools with Structured Outputs](#using-tools-with-structured-outputs) for advanced configuration.
 
 ## CLI 
 
-**`fast-agent`** generates Structured Outputs from the CLI from either a JSON Schema or Pydantic Model. 
+**`fast-agent`** generates Structured Outputs from the CLI by specifying either a JSON Schema or Pydantic Model. 
 
 Use the `--json-schema` option to supply a schema, and prompt with `--message <TEXT>` or `--prompt-file <PATH>`.
 
@@ -103,6 +105,16 @@ differences from main. Identify the main features and assess their size, risk \
 and touched files."
 ```
 
+Many items can be loaded from remote sources (`http` or `hf://` URIs), making **`fast-agent`** perfect for zero install automation and orchestration:
+
+```bash
+uvx fast-agent-mcp@latest \
+  --card hf://buckets/evalstate/demo-bucket/ai-news-summary-card.md \
+  --json-schema hf://buckets/evalstate/demo-bucket/ai-news-schema.json \
+  --message "Summarize the AI Industry news for the last 24 hours"
+```
+
+Browse the example files [here](https://huggingface.co/buckets/evalstate/demo-bucket)
 
 ## API
 
@@ -260,10 +272,10 @@ This can be overridden by setting the `structured-tool-policy`. The policy can b
 
 | Policy | Behaviour |
 |--------|-----------|
-| auto  | Use configuration in the Model Database |
-| no_tools | Do not send Tool Definitions when producing a Structured Output |
-| always | Force sending Tool Definitions when producing a Structured Output |  
-| defer | Use a two-phase call; first call with Tools, second to create Structured Output |
+| `auto`  | Use configuration in the Model Database |
+| `no_tools` | Do not send Tool Definitions when producing a Structured Output |
+| `always` | Force sending Tool Definitions when producing a Structured Output |  
+| `defer` | Use a two-phase call; first call with Tools, second to create Structured Output |
 
 To set with the CLI, use `--structured-tool-policy` alongside `--json-schema`:
 
@@ -280,12 +292,14 @@ and touched files."
 
 NB: `--shell` exposes the local shell tool. 
 
+## Model Support
+
+### 
+
+
 ### Anthropic on Vertex
 
 Anthropic Models on Vertex do not support modern structured outputs, so use the legacy `tool_use` mode. To select this mode supply the mode on the model string e.g. `haiku?structured_outputs=tool_use`.
-
-### Model Support
-
 
 ### Capability Probe
 
